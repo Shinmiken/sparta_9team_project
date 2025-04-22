@@ -12,13 +12,13 @@ namespace sparta_9team_project
         public int Hp { get; set; }
         public int Gold { get; set; }
         
-        public Character(int level, string name, string job, int attack, int defense, int hp, int gold)
+        public Character(int level, string name, string job, int atk, int def, int hp, int gold)
         {
             Level = level;
             Name = name;
             Job = job;
-            Attack = attack;
-            Defense = defense;
+            Atk = atk;
+            Def = def;
             Hp = hp;
             Gold = gold;
         }
@@ -31,8 +31,8 @@ namespace sparta_9team_project
             Console.WriteLine();
             Console.WriteLine($"Lv. {Level:00}");
             Console.WriteLine($"{Name} ( {Job} )");
-            Console.WriteLine($"공격력 : {Attack}");
-            Console.WriteLine($"방어력 : {Defense}");
+            Console.WriteLine($"공격력 : {Atk}");
+            Console.WriteLine($"방어력 : {Def}");
             Console.WriteLine($"체 력 : {Hp}");
             Console.WriteLine($"Gold : {Gold} G");
             Console.WriteLine();
