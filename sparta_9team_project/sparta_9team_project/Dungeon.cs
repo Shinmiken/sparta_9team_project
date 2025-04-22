@@ -11,7 +11,9 @@ namespace sparta_9team_project
         public Dungeon(Player player)
         {
             this.player = player;
-        {
+            {
 
-
+            }
+        }
+    }
 }
