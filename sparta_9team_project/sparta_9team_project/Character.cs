@@ -7,8 +7,8 @@ namespace sparta_9team_project
         public string Name { get; set; }
         public string Job { get; set; }
         public int Level { get; set; }
-        public int Attack { get; set; }
-        public int Defense { get; set; }
+        public int Atk { get; set; }
+        public int Def { get; set; }
         public int Hp { get; set; }
         public int Gold { get; set; }
         
