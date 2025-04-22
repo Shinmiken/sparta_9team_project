@@ -11,7 +11,10 @@ namespace sparta_9team_project
         {
             Console.OutputEncoding = System.Text.Encoding.UTF8;
             ConsoleManager.ConfigureConsoleSize();
-            Player player = new Player();
+            //플레이어 싱글톤
+            Player player = PlayerManager.instance.mainPlayer;
+            PlayerManager.instance.Init(player);
+            //Character character = new Character();
 
             StartGame();
             ChoiceJob(player);
@@ -106,21 +109,21 @@ namespace sparta_9team_project
                 string choice = Console.ReadLine();
                 if (choice == "1")
                 {
-                    player.Job = "마법사";
+                    player.Job = JobType.마법사;
                     type = 1;
                     break;
                 }
                 else if (choice == "2")
                 {
-                    player.Job = "전사";
+                    player.Job = JobType.전사;
                     type = 2;
                     break;
                 }
                 else
                 {
-                    Console.SetCursorPosition(53, 45);
+                    Console.SetCursorPosition(65, 51);
                     Console.WriteLine("잘못된 입력입니다.");
-                    Console.SetCursorPosition(53, 46);
+                    Console.SetCursorPosition(65, 52);
                     Console.WriteLine("다시 입력해주세요.");
                     Thread.Sleep(1000);
                 }
@@ -158,7 +161,7 @@ namespace sparta_9team_project
             Console.WriteLine($"방어력 : {player.Def}");
             Console.SetCursorPosition(42, 18);
             Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine($"체력 : {player.Hp} / {player.MaxHp}");
+            Console.WriteLine($"체력 : /*{player.Hp}*/ / {player.MaxHp}");
             Console.SetCursorPosition(40, 19);
             Console.ForegroundColor = ConsoleColor.Yellow;
             Console.WriteLine($"뼈다귀 : {player.Bones}");
