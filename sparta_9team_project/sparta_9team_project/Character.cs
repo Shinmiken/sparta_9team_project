@@ -21,17 +21,17 @@ namespace sparta_9team_project
             this.Gold = Gold;
         }
 
-        public void DealDamage(Enemy mob, int damage)
+        public void DealDamage(enemy mob, int damage)
         {
         }
     }
 
-    public class Enemy
+    public class enemy
     {
         public int Hp { get; set; }
         public string Name { get; set; }
 
-        public Enemy(string name, int hp)
+        public enemy(string name, int hp)
         {
             Name = name;
             Hp = hp;
