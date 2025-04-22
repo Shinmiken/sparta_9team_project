@@ -23,7 +23,6 @@ namespace sparta_9team_project
             Gold = gold;
         }
 
-        // [Methods]
         public void ShowStatus()
         {
             Console.WriteLine();
