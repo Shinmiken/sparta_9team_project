@@ -2,6 +2,12 @@
 
 namespace sparta_9team_project
 {
+    public enum JobType
+    {
+        전사,
+        마법사
+    }
+
     public class  PlayerManager
     {
         public static PlayerManager instance = new PlayerManager();
@@ -11,7 +17,8 @@ namespace sparta_9team_project
             mainPlayer = player;
         }
     }
-    public class Player
+
+    public class Player : Character
     {
 		// [Fields]
 		public string Name { get; set; } = "미르";
@@ -20,7 +27,7 @@ namespace sparta_9team_project
 		public int MaxHp { get; set; } = 100;
 		public int Atk { get; set; }
 		public int Def { get; set; }
-        public string Job { get; set; }
+        public JobType Job { get; set; }
         public string Bones { get; set; }
 
 
