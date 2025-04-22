@@ -8,6 +8,6 @@ namespace sparta_9team_project
 {
     class Inventory
     {
-        private List<Item> items; = new List<Item>();
+        private List<Item> items = new List<Item>();
     }
 }

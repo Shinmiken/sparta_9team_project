@@ -2,6 +2,12 @@
 
 namespace sparta_9team_project
 {
+    public enum JobType
+    {
+        전사,
+        마법사
+    }
+
     public class  PlayerManager
     {
         public static PlayerManager instance = new PlayerManager();
@@ -11,17 +17,23 @@ namespace sparta_9team_project
             mainPlayer = player;
         }
     }
-    public class Player
+
+    public class Player : Character
     {
 		// [Fields]
-		public string Name { get; set; } = "미르";
-        public int Level { get; set; } = 1;
-        public int Hp { get; set; }
+
 		public int MaxHp { get; set; } = 100;
-		public int Atk { get; set; }
-		public int Def { get; set; }
-        public string Job { get; set; }
+	    public JobType Job { get; set; }
         public string Bones { get; set; }
+
+        public Player (string name, int level, int hp, int maxHp, int atk, int def, JobType job, string bones) : base(name, level, atk, def, hp, maxHp) // 부모 클래스인 Character의 생성자 호출
+        {
+            MaxHp = maxHp;
+            Job = job;
+            Bones = bones;
+        }
+
+
 
 
         // [Methods]
@@ -42,9 +54,7 @@ namespace sparta_9team_project
 
         public void DealDamage(Enemy mob, int damage)
         {
-            Enemy enemy = new Enemy();
-            // 적에게 데미지를 주고 해당 적의 Hp를 줄인다.
-
+            mob.GetDamage(damage);
         }
 
         public void TakeDamage(int damage)
