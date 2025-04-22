@@ -4,7 +4,7 @@ namespace sparta_9team_project
 {
     public class Character
     {
-       public string Name { get; set; }
+        public string Name { get; set; }
         public string Job { get; set; }
         public int Level { get; set; }
         public int Attack { get; set; }
