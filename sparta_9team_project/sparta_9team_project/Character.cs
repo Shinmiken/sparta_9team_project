@@ -11,10 +11,10 @@ namespace sparta_9team_project
         public int Hp { get; set; }
         public int Gold { get; set; }
 
-        public Character(int Level, string Name, int Atk, int Def, int Hp, int Gold)
+        public Character(string Name, int Level, int Atk, int Def, int Hp, int Gold)
         {
-            this.Level = Level;
             this.Name = Name;
+            this.Level = Level;
             this.Atk = Atk;
             this.Def = Def;
             this.Hp = Hp;
