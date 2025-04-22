@@ -43,7 +43,7 @@ namespace sparta_9team_project
         private string enemypic;
         private int maxhp;
         Enemytype enetype;
-        public Enemy(Enemytype type) : base(Enemyinfos.enemyinfos[(int)type].level, Enemyinfos.enemyinfos[(int)type].nm, Enemyinfos.enemyinfos[(int)type].attack, Enemyinfos.enemyinfos[(int)type].defense, Enemyinfos.enemyinfos[(int)type].hpoint, Enemyinfos.enemyinfos[(int)type].gld) // 각 멤버변수 type에 맞게 초기화
+        public Enemy(Enemytype type) : base(Enemyinfos.enemyinfos[(int)type].nm, Enemyinfos.enemyinfos[(int)type].level, Enemyinfos.enemyinfos[(int)type].attack, Enemyinfos.enemyinfos[(int)type].defense, Enemyinfos.enemyinfos[(int)type].hpoint, Enemyinfos.enemyinfos[(int)type].gld) // 각 멤버변수 type에 맞게 초기화
         {
             maxhp = Enemyinfos.enemyinfos[(int)type].mhp;
             attackname = Enemyinfos.enemyinfos[(int)type].atkname;
