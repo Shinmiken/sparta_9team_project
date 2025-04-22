@@ -5,22 +5,20 @@ namespace sparta_9team_project
     public class Character
     {
         public string Name { get; set; }
-        public string Job { get; set; }
         public int Level { get; set; }
         public int Atk { get; set; }
         public int Def { get; set; }
         public int Hp { get; set; }
         public int Gold { get; set; }
         
-        public Character(int level, string name, string job, int atk, int def, int hp, int gold)
+        public Character(int Level, string Name, int Atk, int Def, int Hp, int Gold)
         {
-            Level = level;
-            Name = name;
-            Job = job;
-            Atk = atk;
-            Def = def;
-            Hp = hp;
-            Gold = gold;
+            level = Level;
+            name = Name;
+            atk = Atk;
+            def = Def;
+            hp = Hp;
+            gold = Gold;
         }
 
         public void ShowStatus()
