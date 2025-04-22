@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 namespace sparta_9team_project
 {
@@ -13,14 +13,15 @@ namespace sparta_9team_project
         
         public Character(int Level, string Name, int Atk, int Def, int Hp, int Gold)
         {
-            level = Level;
-            name = Name;
-            atk = Atk;
-            def = Def;
-            hp = Hp;
-            gold = Gold;
+            this.Level = Level;
+            this.Name = Name;
+            this.Atk = Atk;
+            this.Def = Def;
+            this.Hp = Hp;
+            this.Gold = Gold;
         }
 
+        /*
         public void ShowStatus()
         {
             Console.WriteLine();
@@ -28,7 +29,7 @@ namespace sparta_9team_project
             Console.WriteLine("캐릭터의 정보가 표시됩니다.");
             Console.WriteLine();
             Console.WriteLine($"Lv. {Level:00}");
-            Console.WriteLine($"{Name} ( {Job} )");
+            Console.WriteLine($"{Name}"); // (Job) 부분 제거했어
             Console.WriteLine($"공격력 : {Atk}");
             Console.WriteLine($"방어력 : {Def}");
             Console.WriteLine($"체 력 : {Hp}");
@@ -38,6 +39,7 @@ namespace sparta_9team_project
             Console.WriteLine();
             Console.Write("원하시는 행동을 입력해주세요.\n>> ");
         }
+
         public void ShowStatusWithExit()
         {
             bool isRunning = true;
@@ -60,5 +62,6 @@ namespace sparta_9team_project
                 }
             }
         }
+        */
     }
 }
