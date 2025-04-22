@@ -56,7 +56,7 @@ namespace sparta_9team_project
         private Enemy[] enimies;
         private int enemycount;
 
-        Enimies(int ecount) // enemycount : 적들의 수
+        public Enimies(int ecount) // enemycount : 적들의 수
         {
             Random rand = new Random();
             enemycount = ecount;
@@ -74,6 +74,10 @@ namespace sparta_9team_project
         }
 
         public void displayenemyinfo() // 적의 정보를 화면에 띄우는 함수
+        {
+
+        }
+        public void GetDamage(int a) // 몹이 데미지를 받았을때 함수
         {
 
         }
