@@ -50,6 +50,10 @@ namespace sparta_9team_project
             enetype = Enemyinfos.enemyinfos[(int)type].enetyp;   // 적 종류 체크
             enemypic = Enemyinfos.enemyinfos[(int)type].enepic;  // 적 모습 체크
         }
+        public void GetDamage(int a) // 몹이 데미지를 받았을때 함수
+        {
+
+        }
     }
     public class Enimies
     {
@@ -74,10 +78,6 @@ namespace sparta_9team_project
         }
 
         public void displayenemyinfo() // 적의 정보를 화면에 띄우는 함수
-        {
-
-        }
-        public void GetDamage(int a) // 몹이 데미지를 받았을때 함수
         {
 
         }
