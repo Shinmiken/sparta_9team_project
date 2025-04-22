@@ -12,7 +12,6 @@ namespace sparta_9team_project
         public int Hp { get; set; }
         public int Gold { get; set; }
 
-        // [Constructor]
         public Character(string name, string job, int level, int attack, int defense, int hp, int gold)
         {
             Name = name;
