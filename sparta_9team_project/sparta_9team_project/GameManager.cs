@@ -6,14 +6,28 @@ namespace sparta_9team_project
     class GameManager
     {
         public static int type; 
+        
         static void Main(string[] args)
         {
             Console.OutputEncoding = System.Text.Encoding.UTF8;
             ConsoleManager.ConfigureConsoleSize();
+            Player player = new Player();
 
-            //ShowStatus();
             StartGame();
-            MainScreen();
+            ChoiceJob(player);
+            while (true)
+            {
+                MainScreen();
+                int choice = int.Parse(Console.ReadLine());
+                if (choice == 1)
+                {
+                    ShowStatus(player);
+                }
+                else if (choice == 2)
+                {
+                    Walk();
+                }
+            }
         }
         //첫 시작화면
         public static void StartGame()
@@ -43,7 +57,6 @@ namespace sparta_9team_project
                 string choice = Console.ReadLine();
                 if (choice == "1")
                 {
-                    ChoiceJob();
                     break;
                 }
                 else if (choice == "0")
@@ -67,32 +80,39 @@ namespace sparta_9team_project
         }
 
         //직업 선택 화면
-        public static void ChoiceJob()
+        public static void ChoiceJob(Player player)
         {
+            
             while (true)
             {
                 Console.Clear();
-                Console.SetCursorPosition(60, 40);
-                Console.WriteLine("✦･ﾟ:* 직업을 선택하세요 *:･ﾟ✦");
-                Console.SetCursorPosition(63, 41);
+                Console.SetCursorPosition(48, 40);
+                Console.WriteLine("✦･ﾟ:* 락토프리 우유를 너무나도 좋아하는 댕댕이 미르는 *:･ﾟ✦");
+                Console.SetCursorPosition(49, 41);
+                Console.WriteLine("✦･ﾟ:* 주인들이 주는 우유의 양이 턱없이 부족했던 탓에 *:･ﾟ✦");
+                Console.SetCursorPosition(53, 42);
+                Console.WriteLine("✦･ﾟ:* 우유를 직접 찾으러 나서기로 하는데... *:･ﾟ✦");
+                Console.SetCursorPosition(52, 45);
+                Console.WriteLine("미르의 우유찾기 모험을 도와줄 직업을 선택해주세요!");
+                Console.SetCursorPosition(65, 47);
                 Console.WriteLine("⟡༺༒ 1. 마법사 ༒༻⟡");
-                Console.SetCursorPosition(63, 42);
-                Console.WriteLine("⟡༺༒ 2. 전사 ༒༻⟡");
+                Console.SetCursorPosition(65, 48);
+                Console.WriteLine("⟡༺༒ 2. 워리어 ༒༻⟡");
                 Console.ForegroundColor = ConsoleColor.Red;
                 ConsoleManager.PrintAsciiAt(Print.dogImage[3], 100, 50);
                 Console.ForegroundColor = ConsoleColor.Yellow;
                 ConsoleManager.PrintAsciiAt(Print.dogImage[5], 0, 50);
-                Console.SetCursorPosition(60, 43);
+                Console.SetCursorPosition(60, 49);
                 string choice = Console.ReadLine();
                 if (choice == "1")
                 {
-                    Player.job = "마법사";
+                    player.Job = "마법사";
                     type = 1;
                     break;
                 }
                 else if (choice == "2")
                 {
-                    Player.job = "전사";
+                    player.Job = "전사";
                     type = 2;
                     break;
                 }
@@ -117,32 +137,31 @@ namespace sparta_9team_project
             Console.WriteLine("✦･ﾟ:* 1. 상태보기 *:･ﾟ✦");
             Console.SetCursorPosition(65, 30);
             Console.WriteLine("✦･ﾟ:* 2. 산책하기 *:･ﾟ✦");
-            ChoiceMain();
         }
 
-        public static void ShowStatus()
+        public static void ShowStatus(Player player)
         {
             Console.Clear();
             Console.SetCursorPosition(40, 10);
             Console.WriteLine("미르의 상태보기");
             Console.SetCursorPosition(40, 13);
-            Console.WriteLine($"Lvl. {Player.level}");
+            Console.WriteLine($"Lvl. {player.Level}");
             Console.SetCursorPosition(40, 14);
-            Console.WriteLine($"미르           직업 : {Player.job}");
+            Console.WriteLine($"미르           직업 : {player.Job}");
             Console.SetCursorPosition(40, 15);
             Console.WriteLine("========================================");
             Console.SetCursorPosition(40, 16);
             Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine($"공격력 : {Player.attackPoint}");
+            Console.WriteLine($"공격력 : {player.Atk}");
             Console.ForegroundColor = ConsoleColor.Blue;
             Console.SetCursorPosition(40, 17);
-            Console.WriteLine($"방어력 : {Player.defense}");
+            Console.WriteLine($"방어력 : {player.Def}");
             Console.SetCursorPosition(42, 18);
             Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine($"체력 : {Player.hp}");
+            Console.WriteLine($"체력 : {player.Hp} / {player.MaxHp}");
             Console.SetCursorPosition(40, 19);
             Console.ForegroundColor = ConsoleColor.Yellow;
-            Console.WriteLine($"뼈다귀 : {Player.gold}");
+            Console.WriteLine($"뼈다귀 : {player.Bones}");
             Console.SetCursorPosition(40, 21);
             Console.ForegroundColor = ConsoleColor.White;
             Console.WriteLine(">> [0]돌아가기");
@@ -151,25 +170,11 @@ namespace sparta_9team_project
             Console.WriteLine(">>");
             Console.SetCursorPosition(43, 22);
             Console.ReadLine();
-            
         }
 
         public static void Walk()
         {
-
-        }
-
-        public static void ChoiceMain()
-        {
-            int choice = int.Parse(Console.ReadLine());
-            if (choice == 1)
-            {
-                ShowStatus();
-            }
-            else if(choice == 2)
-            {
-                Walk();
-            }
+            Console.ReadKey();
         }
     }
 
