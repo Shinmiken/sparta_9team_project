@@ -31,7 +31,22 @@ namespace sparta_9team_project
                 Console.SetCursorPosition(x, y + i);
                 Console.WriteLine(lines[i]);
             }
+
+        }// 글자 가운데로 천천히 나오게....
+        public static void PrintCenteredSlow(string text, int x, int y, int delay)
+        {
+            Console.SetCursorPosition(x, y);
+            foreach (char c in text)
+            {
+                Console.Write(c);
+                Thread.Sleep(delay);
+            }
+            Console.WriteLine();
+        }
+        public static void PrintAnywhere(string text, int x, int y)
+        {
+            Console.SetCursorPosition(x, y);
+            Console.WriteLine(text);
         }
     }
-
 }
