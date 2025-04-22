@@ -23,6 +23,7 @@ namespace sparta_9team_project
 
         public void DealDamage(Monster mob, int damage)
         {
+            
         }
     }
 
