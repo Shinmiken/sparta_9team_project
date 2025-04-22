@@ -21,7 +21,7 @@ namespace sparta_9team_project
             this.Gold = Gold;
         }
 
-        public void DealDamage(Monster mob, int damage)
+        public void DealDamage(Enemy mob, int damage)
         {
             
         }
