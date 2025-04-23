@@ -6,6 +6,7 @@ namespace sparta_9team_project
     {
         public static void Walk()
         {
+            Console.OutputEncoding = System.Text.Encoding.UTF8;
             Console.Clear();
             ConsoleManager.ConfigureConsoleSize();
             Random x = new Random();
