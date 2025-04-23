@@ -8,16 +8,18 @@ namespace sparta_9team_project
         마법사
     }
 
-    public class  PlayerManager
+    // [PlayerManager] 클래스 - 싱글톤 패턴으로 Player 객체를 관리
+    public class PlayerManager
     {
         public static PlayerManager instance = new PlayerManager();
-        public Player mainPlayer { get; private set;}
+        public Player mainPlayer { get; private set; }
         public void Init(Player player)
         {
             mainPlayer = player;
         }
     }
 
+    // [Player] 클래스 - 플레이어 캐릭터
     public class Player : Character
     {
 		// [Fields]
@@ -26,6 +28,7 @@ namespace sparta_9team_project
 	    public JobType Job { get; set; }
         public string Bones { get; set; }
 
+        // [Constructor]
         public Player (string name, int level, int hp, int maxHp, int atk, int def, JobType job, string bones) : base(name, level, atk, def, hp, maxHp) // 부모 클래스인 Character의 생성자 호출
         {
             MaxHp = maxHp;
