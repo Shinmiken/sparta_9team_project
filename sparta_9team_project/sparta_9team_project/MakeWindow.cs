@@ -48,5 +48,26 @@ namespace sparta_9team_project
             Console.SetCursorPosition(x, y);
             Console.WriteLine(text);
         }
+
+        // 글자 색깔 바꿔서 원하는 곳에 출력하기
+        public static void ColorPrintAnyWhere(ConsoleColor color, string text, int x, int y)
+        {
+            Console.ForegroundColor = color;
+            Console.SetCursorPosition(x, y);
+            Console.WriteLine(text);
+        }
+
+        // 이미지 색깔 바꿔서 원하는 곳에 출력하기
+        public static void ColorPrintAsciiAt(ConsoleColor color, string ascart, int x, int y)
+        {
+            Console.ForegroundColor = color;
+            string[] lines = ascart.Split('\n');
+            for (int i = 0; i < lines.Length; i++)
+            {
+                Console.SetCursorPosition(x, y + i);
+                Console.WriteLine(lines[i]);
+            }
+
+        }
     }
 }
