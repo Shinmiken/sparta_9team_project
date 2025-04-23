@@ -6,19 +6,35 @@ namespace sparta_9team_project
     {
         public static void Walk()
         {
-            int level = PlayerManager.instance.mainPlayer.Level;
-            int hp = PlayerManager.instance.mainPlayer.Hp;
-            string name = PlayerManager.instance.mainPlayer.Name;
-
-
             Console.Clear();
             ConsoleManager.ConfigureConsoleSize();
             Random x = new Random();
+            int ramdomx = x.Next(1, 4);
+            int hp = PlayerManager.instance.mainPlayer.Hp;
+            Hpbar(hp);
+
+            Console.WriteLine();
+            for (int i = 0; i < ramdomx; i++)
+            {
+
+                ConsoleManager.PrintCenteredSlow("🌲 미르는 산책중.... 🌲", 55, 2, 60);
+                ConsoleManager.PrintCenteredSlow("                       ", 55, 2, 60);
+                Thread.Sleep(500);
+                break;
+            }
+        }
+
+        // 현재체력 >> hp바로 표시
+        public static void Hpbar(int hp)
+        {
+            int level = PlayerManager.instance.mainPlayer.Level;
+            string name = PlayerManager.instance.mainPlayer.Name;
             int maxBarCount = 5;
             string[] hpview = new string[maxBarCount];
-            int ramdomx = x.Next(1, 4);
+
             int presenthp = hp / 20;
 
+            //현재 hp ■
             for (int i = 0; i < presenthp; i++)
             {
                 hpview[i] = "■";
@@ -35,16 +51,6 @@ namespace sparta_9team_project
             Console.WriteLine();
             ConsoleManager.PrintCentered($"hp : [{hpbar}]", 40);
             ConsoleManager.PrintCentered($"1. lv{level} [{name}]", 40);
-
-            Console.WriteLine();
-            for (int i = 0; i < ramdomx; i++)
-            {
-
-                ConsoleManager.PrintCenteredSlow("🌲 미르는 산책중.... 🌲", 55, 2, 60);
-                ConsoleManager.PrintCenteredSlow("                       ", 55, 2, 60);
-                Thread.Sleep(500);
-                break;
-            }
         }
 
         public static void EnterDungeon()
