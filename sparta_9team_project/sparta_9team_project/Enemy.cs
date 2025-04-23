@@ -69,7 +69,7 @@ namespace sparta_9team_project
             Random rand = new Random();
             enemycount = ecount;
             enemies = new Enemy[ecount]; // 적들의 수를 받아서 enemy 배열을 생성.
-            for(int i = 0; i < ecount; i++)
+            for (int i = 0; i < ecount; i++)
             {
                 int t = rand.Next(0, 5);
                 enemies[i] = new Enemy((Enemytype)t);
@@ -78,7 +78,7 @@ namespace sparta_9team_project
         }
         public void displayenemypicture(int x, int y) // 적의 모습을 화면에 띄우는 함수
         {
-            
+
         }
 
         public void displayenemyinfo() // 적의 정보를 화면에 띄우는 함수
@@ -88,14 +88,17 @@ namespace sparta_9team_project
 
         public bool EnemygetDamage(int enemynum, int damage) // enemynum번호의 몹이 데미지를 받는 동작을 하는 함수
         {
-            if (enemynum  <= 0 || enemynum >= enemycount) return false;
+            if (enemynum <= 0 || enemynum >= enemycount) return false;
             if (enemies[enemynum].Hp == 0) return false;
             enemies[enemynum].GetDamage(damage);
             return true;
             // 만약 잘못된 enemynum이나 이미 죽은 몹이면 false를 반환하여 잘못된 입력임을 알려줌
             // 입력이 제대로 되었다면 체력 깎는 GetDamage함수를 실행시키고 true를 반환하여 성공을 알려줌.
         }
+
+
     }
+
 }
 
 // 사용 예시 :
