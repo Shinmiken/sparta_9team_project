@@ -34,8 +34,6 @@ namespace sparta_9team_project
         }
 
 
-
-
         // [Methods]
         public void ShowStatus()
         {
@@ -54,14 +52,18 @@ namespace sparta_9team_project
 
         public void DealDamage(Enemy mob, int damage)
         {
-            mob.GetDamage(damage);
+            mob.GetDamage(damage); // 적의 HP에 데미지 적용
+
+            Console.WriteLine($"{Name}는 {mob.Name}에게 {damage}의 댕미지를 입혔습니다!");
+            Console.WriteLine($"{mob.Name}의 HP가 {mob.Hp} 남았습니다.");
         }
 
         public void TakeDamage(int damage)
         {
-            Hp = +damage;
-            if (Hp < 0) Hp = 0;
-            Console.WriteLine($"{Name}는 {damage}만큼의 데미지를 입었습니다!");
+            Hp -=damage;
+            if (Hp < 0) { Hp = 0; }
+
+            Console.WriteLine($"{Name}는 {damage}만큼의 댕미지를 입었습니다!");
             Console.WriteLine($"현재 {Name}의 체력: {Hp}");
         }
     }
