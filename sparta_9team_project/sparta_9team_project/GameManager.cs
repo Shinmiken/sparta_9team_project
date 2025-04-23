@@ -6,7 +6,7 @@ namespace sparta_9team_project
     class GameManager
     {
         public static int type;
-        static JobType selectjob = JobType.전사;
+        static JobType selectjob;
         static void Main(string[] args)
         {
             Console.OutputEncoding = System.Text.Encoding.UTF8;
@@ -20,16 +20,21 @@ namespace sparta_9team_project
             while (true)
             {
                 MainScreen();
-                int choice = int.Parse(Console.ReadLine());
-                if (choice == 1)
+                Console.SetCursorPosition(76, 37);
+                string choice = Console.ReadLine();
+                if (choice == "1")
                 {
                     ShowStatus(player);
                 }
-                else if (choice == 2)
+                else if (choice == "2")
                 {
                     Dungeon.Walk();
                     Dungeon.EnterDungeon();
                     Dungeon.DiscoverEnermy();
+                }
+                else if (choice == "0")
+                {
+                    ShowGameEnd();
                 }
             }
         }
@@ -39,25 +44,15 @@ namespace sparta_9team_project
             while (true)
             {
                 Console.Clear();
-                Console.SetCursorPosition(60, 40);
-                Console.WriteLine("『 미  르  의  모  험 』");
-                Console.SetCursorPosition(54, 41);
-                Console.ForegroundColor = ConsoleColor.Blue;
-                Console.WriteLine("✦･ﾟ:* 미지의 세계로 떠나는 여정 *:･ﾟ✦");
-                Console.ForegroundColor = ConsoleColor.White;
-                Console.SetCursorPosition(60, 45);
-                Console.WriteLine("⟡༺༒ 1. 시작하기 ༒༻⟡");
-                Console.SetCursorPosition(61, 46);
-                Console.WriteLine(" ⟡༺✦ 0. 종료 ✦༻⟡");
-                Console.ForegroundColor = ConsoleColor.Red;
-                ConsoleManager.PrintAsciiAt(Print.dogImage[3], 100, 50);
-                Console.ForegroundColor = ConsoleColor.Yellow;
-                ConsoleManager.PrintAsciiAt(Print.dogImage[5], 0, 50);
-                Console.SetCursorPosition(68, 47);
-                Console.WriteLine(">>");
-                Console.SetCursorPosition(73, 47);
-                Console.WriteLine("<<");
-                Console.SetCursorPosition(71, 47);
+                ConsoleManager.PrintAnywhere("『 미  르  의  모  험 』", 63, 40);
+                ConsoleManager.ColorPrintAnyWhere(ConsoleColor.Blue, "✦･ﾟ:* 미지의 세계로 떠나는 여정 *:･ﾟ✦", 57, 41);
+                ConsoleManager.ColorPrintAnyWhere(ConsoleColor.White, "⟡༺༒ 1. 시작하기 ༒༻⟡", 63, 45);
+                ConsoleManager.PrintAnywhere("⟡༺༒ 0. 종료하기 ༒༻⟡", 63, 46);
+                ConsoleManager.ColorPrintAsciiAt(ConsoleColor.Red, Print.dogImage[3], 90, 49);
+                ConsoleManager.ColorPrintAsciiAt(ConsoleColor.Yellow, Print.dogImage[5], 10, 50);
+                ConsoleManager.PrintAnywhere(">>", 70, 48);
+                ConsoleManager.PrintAnywhere("<<", 75, 48);
+                Console.SetCursorPosition(73, 48);
                 string choice = Console.ReadLine();
                 if (choice == "1")
                 {
@@ -65,12 +60,7 @@ namespace sparta_9team_project
                 }
                 else if (choice == "0")
                 {
-                    Console.Clear();
-                    Console.SetCursorPosition(64, 10);
-                    Console.WriteLine("게임을 종료합니다.");
-                    Console.SetCursorPosition(67, 15);
-                    Console.WriteLine("감사합니다.");
-                    Environment.Exit(0);
+                    ShowGameEnd();
                 }
                 else
                 {
@@ -89,26 +79,16 @@ namespace sparta_9team_project
             while (true)
             {
                 Console.Clear();
-                Console.SetCursorPosition(48, 40);
-                Console.WriteLine("✦･ﾟ:* 락토프리 우유를 너무나도 좋아하는 댕댕이 미르는 *:･ﾟ✦");
-                Console.SetCursorPosition(49, 41);
-                Console.WriteLine("✦･ﾟ:* 주인들이 주는 우유의 양이 턱없이 부족했던 탓에 *:･ﾟ✦");
-                Console.SetCursorPosition(53, 42);
-                Console.WriteLine("✦･ﾟ:* 우유를 직접 찾으러 나서기로 하는데... *:･ﾟ✦");
-                Console.SetCursorPosition(52, 45);
-                Console.WriteLine("미르의 우유찾기 모험을 도와줄 직업을 선택해주세요!");
-                Console.SetCursorPosition(65, 47);
-                Console.WriteLine("⟡༺༒ 1. 마법사 ༒༻⟡");
-                Console.SetCursorPosition(65, 48);
-                Console.WriteLine("⟡༺༒ 2. 워리어 ༒༻⟡");
-                Console.ForegroundColor = ConsoleColor.Red;
-                ConsoleManager.PrintAsciiAt(Print.dogImage[3], 100, 50);
-                Console.ForegroundColor = ConsoleColor.Yellow;
-                ConsoleManager.PrintAsciiAt(Print.dogImage[5], 0, 50);
-                Console.SetCursorPosition(72, 50);
-                Console.WriteLine(">>");
-                Console.SetCursorPosition(77, 50);
-                Console.WriteLine("<<");
+                ConsoleManager.PrintAnywhere("✦･ﾟ:* 락토프리 우유를 너무나도 좋아하는 댕댕이 미르는 *:･ﾟ✦", 48, 40);
+                ConsoleManager.PrintAnywhere("✦･ﾟ:* 주인들이 주는 우유의 양이 턱없이 부족했던 탓에 *:･ﾟ✦", 49, 41);
+                ConsoleManager.PrintAnywhere("✦･ﾟ:* 우유를 직접 찾으러 나서기로 하는데... *:･ﾟ✦", 53, 42);
+                ConsoleManager.PrintAnywhere("미르의 우유찾기 모험을 도와줄 직업을 선택해주세요!", 52, 45);
+                ConsoleManager.PrintAnywhere("⟡༺༒ 1. 마법사 ༒༻⟡", 65, 47);
+                ConsoleManager.PrintAnywhere("⟡༺༒ 2. 워리어 ༒༻⟡", 65, 48);
+                ConsoleManager.ColorPrintAsciiAt(ConsoleColor.Red, Print.dogImage[3], 100, 50);
+                ConsoleManager.ColorPrintAsciiAt(ConsoleColor.Yellow, Print.dogImage[5], 0, 50);
+                ConsoleManager.PrintAnywhere(">>", 72, 50);
+                ConsoleManager.PrintAnywhere("<<", 77, 50);
                 Console.SetCursorPosition(75, 50);
                 string choice = Console.ReadLine();
                 if (choice == "1")
@@ -138,45 +118,31 @@ namespace sparta_9team_project
         public static void MainScreen()
         {
             Console.Clear();
-            Console.ForegroundColor = ConsoleColor.White;
-            ConsoleManager.PrintAsciiAt(Print.dogImage[0], 50, 3);
-            Console.SetCursorPosition(65, 25);
-            Console.WriteLine("✦･ﾟ:* 1. 상태보기 *:･ﾟ✦");
-            Console.SetCursorPosition(65, 30);
-            Console.WriteLine("✦･ﾟ:* 2. 산책하기 *:･ﾟ✦");
+            ConsoleManager.ColorPrintAsciiAt(ConsoleColor.White, Print.dogImage[0], 50, 3);
+            ConsoleManager.PrintAnywhere("✦･ﾟ:* 1. 상태보기 *:･ﾟ✦", 65, 25);
+            ConsoleManager.PrintAnywhere("✦･ﾟ:* 2. 산책하기 *:･ﾟ✦", 65, 30);
+            ConsoleManager.PrintAnywhere("✦･ﾟ:* 0. 종료하기 *:･ﾟ✦", 65, 35);
+            ConsoleManager.PrintAnywhere(">>", 73, 37);
+            ConsoleManager.PrintAnywhere("<<", 78, 37);
         }
 
+        //미르의 상태보기
         public static void ShowStatus(Player player)
         {
             while (true)
             {
                 Console.Clear();
-                Console.SetCursorPosition(40, 10);
-                Console.WriteLine("미르의 상태보기");
-                Console.SetCursorPosition(40, 13);
-                Console.WriteLine($"Lvl. {player.Level}");
-                Console.SetCursorPosition(40, 14);
-                Console.WriteLine($"미르           직업 : {player.Job}");
-                Console.SetCursorPosition(40, 15);
-                Console.WriteLine("========================================");
-                Console.SetCursorPosition(40, 16);
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine($"공격력 : {player.Atk}");
-                Console.ForegroundColor = ConsoleColor.Blue;
-                Console.SetCursorPosition(40, 17);
-                Console.WriteLine($"방어력 : {player.Def}");
-                Console.SetCursorPosition(42, 18);
-                Console.ForegroundColor = ConsoleColor.Green;
-                Console.WriteLine($"체력 : {player.Hp} / {player.MaxHp}");
-                Console.SetCursorPosition(40, 19);
-                Console.ForegroundColor = ConsoleColor.Yellow;
-                Console.WriteLine($"뼈다귀 : {player.Bones}");
-                Console.SetCursorPosition(40, 21);
-                Console.ForegroundColor = ConsoleColor.White;
-                Console.WriteLine(">> [0]돌아가기");
+                ConsoleManager.PrintAnywhere("미르의 상태보기", 40, 10);
+                ConsoleManager.PrintAnywhere($"Lvl. {player.Level}", 40, 13);
+                ConsoleManager.PrintAnywhere($"미르           직업 : {player.Job}", 40, 14);
+                ConsoleManager.PrintAnywhere("========================================", 40, 15);
+                ConsoleManager.ColorPrintAnyWhere(ConsoleColor.Red, $"공격력 : {player.Atk}", 40, 16);
+                ConsoleManager.ColorPrintAnyWhere(ConsoleColor.Blue, $"방어력 : {player.Def}", 40, 17);
+                ConsoleManager.ColorPrintAnyWhere(ConsoleColor.Green, $"체력 : {player.Hp} / {player.MaxHp}", 42, 18);
+                ConsoleManager.ColorPrintAnyWhere(ConsoleColor.Yellow, $"뼈다귀 : {player.Bones}", 40, 19);
+                ConsoleManager.ColorPrintAnyWhere(ConsoleColor.White, ">> [0]돌아가기", 40, 21);
                 ConsoleManager.PrintAsciiAt(Print.dogImage[type + 2], 80, 10);
-                Console.SetCursorPosition(40, 22);
-                Console.WriteLine(">>");
+                ConsoleManager.PrintAnywhere(">>", 40, 22);
                 Console.SetCursorPosition(43, 22);
                 string choice = Console.ReadLine();
                 if (choice == "0")
@@ -193,9 +159,20 @@ namespace sparta_9team_project
                 }
             }
         }
+
+        //게임 종료 화면
+        static void ShowGameEnd()
+        {
+            Console.Clear();
+            Console.SetCursorPosition(64, 10);
+            Console.WriteLine("게임을 종료합니다.");
+            Console.SetCursorPosition(68, 15);
+            Console.WriteLine("감사합니다.");
+            Environment.Exit(0);
+        }
     }
 
-    // 강아지 이미지
+    //이미지
     public class Print
     {
         public static string[] dogImage = new string[10]
