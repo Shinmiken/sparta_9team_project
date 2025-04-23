@@ -69,7 +69,7 @@ namespace sparta_9team_project
             Random rand = new Random();
             enemycount = ecount;
             enemies = new Enemy[ecount]; // 적들의 수를 받아서 enemy 배열을 생성.
-            for(int i = 0; i < ecount; i++)
+            for (int i = 0; i < ecount; i++)
             {
                 int t = rand.Next(0, 5);
                 enemies[i] = new Enemy((Enemytype)t);
@@ -78,24 +78,39 @@ namespace sparta_9team_project
         }
         public void displayenemypicture(int x, int y) // 적의 모습을 화면에 띄우는 함수
         {
-            
+
         }
 
         public void displayenemyinfo() // 적의 정보를 화면에 띄우는 함수
         {
-
+           
         }
 
         public bool EnemygetDamage(int enemynum, int damage) // enemynum번호의 몹이 데미지를 받는 동작을 하는 함수
         {
-            if (enemynum  <= 0 || enemynum >= enemycount) return false;
+            if (enemynum <= 0 || enemynum >= enemycount) return false;
             if (enemies[enemynum].Hp == 0) return false;
-            enemies[enemynum].GetDamage(damage);
+            enemies[enemynum-1].GetDamage(damage);
             return true;
             // 만약 잘못된 enemynum이나 이미 죽은 몹이면 false를 반환하여 잘못된 입력임을 알려줌
             // 입력이 제대로 되었다면 체력 깎는 GetDamage함수를 실행시키고 true를 반환하여 성공을 알려줌.
         }
+
+
+
+
+        
+        public bool GetEnemyInfo(int input, ref Enemy Ei)
+        {
+            if(input <= 0 || input >= enemycount) {  return false; }
+            Ei = enemies[input-1];
+            return true;
+        }
+        // input이 잘못된 입력이면 false를 반환하고 Ei에 enemy 정보를 입력하지 않음
+        // 맞는 입력이라면 true를 반환하고 Ei에 enemy 정보를 입력
+
     }
+
 }
 
 // 사용 예시 :
@@ -106,4 +121,9 @@ namespace sparta_9team_project
 //                                -> 1번 몹이 10 데미지를 받는데, 만약 1번몹이 이미 죽었다면 false를 반환
 //                                   맞는 몹 선택이라면 데미지를 받게하고 true를 반환
 //                                   이 true/false 반환으로 맞는 선택을했는지 알 수 있음 -> 활용 가능
+// 던전에서 1번 적의 현재 정보를 확인하고 싶다면 :
+//                               Enemy enemy1;
+//                               dungeonmob.GetEnemyInfo(1, enemy1);
+//                               1번 몹의 정보가 enemy1에 들어가게 됨 그리고 true 반환
+//                               잘못된 번호의 입력이라면 false 반환
 // 추가 예정...
