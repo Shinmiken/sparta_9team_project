@@ -7,6 +7,7 @@ namespace sparta_9team_project
 
     public enum Enemytype // 적 타입 enum형태로 표현
     {
+        catling,      //새끼고양이
         chihuahua,   //치와와
         cat,         //고양이
         husky,       //허스키
@@ -27,17 +28,33 @@ namespace sparta_9team_project
         public string enepic; // 적 그림
         public int mhp; // 최대 hp
         public Enemytype enetyp; // 적 타입
+        
+        public Enemyinfo(string _nm, int _level, int _attack, int _defense, int _hpoint, int _gld, string _atkname, string _enepic, int _mhp, Enemytype _enetyp)
+        {
+            nm = _nm;
+            level = _level;
+            attack = _attack;
+            defense = _defense;
+            hpoint = _hpoint;
+            gld = _gld;
+            atkname = _atkname;
+            enepic = _enepic;
+            mhp = _mhp;
+            enetyp = _enetyp;
+        }
     }
 
 
     public class Enemyinfos
     {
-        public static Enemyinfo[] enemyinfos = new Enemyinfo[4]; // 각 enmyinfo를 미리 배열에 저장
-        // 0, 1, 2에 각각 enemy 정보 저장...
+        public static Enemyinfo[] enemyinfos =  // 각 enmyinfo를 미리 배열에 저장
+        {
+            new Enemyinfo("새끼고양이", 1, 6, 3, 30, 4, "냥냥 펀치", Print.dogImage[10], 30, Enemytype.catling),
+            new Enemyinfo("치와와", 2, 10, 5, 40, 6, "물어 뜯기", Print.dogImage[6], 40, Enemytype.chihuahua),
+            new Enemyinfo("고양이", 3, 15, 7, 60, 8, "할퀴기", Print.dogImage[9], 60, Enemytype.cat)
+        };
     }
-    // 사용 방법 : enemyinfo가 필요한 main 함수에서 Enemyinfos()클래스를 생성하면 자동으로 enemyinfos배열에
-    //            몹 정보가 들어가게 할 것임
-    //            그 후에 Enemyinfos.emeyinfos[i]로 접근하면 Enemy정보에 접근 가능(static이기 때문)
+    // 사용 방법 :  Enemyinfos.emeyinfos[i]로 접근하면 Enemy정보에 접근 가능(static이기 때문)
 
     public class Enemy : Character
     {
@@ -71,19 +88,10 @@ namespace sparta_9team_project
             enemies = new Enemy[ecount]; // 적들의 수를 받아서 enemy 배열을 생성.
             for (int i = 0; i < ecount; i++)
             {
-                int t = rand.Next(0, 5);
+                int t = rand.Next(0, 6);
                 enemies[i] = new Enemy((Enemytype)t);
             }
 
-        }
-        public void displayenemypicture(int x, int y) // 적의 모습을 화면에 띄우는 함수
-        {
-
-        }
-
-        public void displayenemyinfo() // 적의 정보를 화면에 띄우는 함수
-        {
-           
         }
 
         public bool EnemygetDamage(int enemynum, int damage) // enemynum번호의 몹이 데미지를 받는 동작을 하는 함수
@@ -95,10 +103,6 @@ namespace sparta_9team_project
             // 만약 잘못된 enemynum이나 이미 죽은 몹이면 false를 반환하여 잘못된 입력임을 알려줌
             // 입력이 제대로 되었다면 체력 깎는 GetDamage함수를 실행시키고 true를 반환하여 성공을 알려줌.
         }
-
-
-
-
         
         public bool GetEnemyInfo(int input, ref Enemy Ei)
         {
@@ -108,6 +112,7 @@ namespace sparta_9team_project
         }
         // input이 잘못된 입력이면 false를 반환하고 Ei에 enemy 정보를 입력하지 않음
         // 맞는 입력이라면 true를 반환하고 Ei에 enemy 정보를 입력
+
 
     }
 
