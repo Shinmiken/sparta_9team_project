@@ -35,6 +35,9 @@ namespace sparta_9team_project
         public static Enemyinfo[] enemyinfos = new Enemyinfo[4]; // 각 enmyinfo를 미리 배열에 저장
         // 0, 1, 2에 각각 enemy 정보 저장...
     }
+    // 사용 방법 : enemyinfo가 필요한 main 함수에서 Enemyinfos()클래스를 생성하면 자동으로 enemyinfos배열에
+    //            몹 정보가 들어가게 할 것임
+    //            그 후에 Enemyinfos.emeyinfos[i]로 접근하면 Enemy정보에 접근 가능(static이기 때문)
 
     public class Enemy : Character
     {
@@ -50,25 +53,26 @@ namespace sparta_9team_project
             enetype = Enemyinfos.enemyinfos[(int)type].enetyp;   // 적 종류 체크
             enemypic = Enemyinfos.enemyinfos[(int)type].enepic;  // 적 모습 체크
         }
-        public void GetDamage(int a) // 몹이 데미지를 받았을때 함수
+        public void GetDamage(int damage) // 몹이 데미지를 받았을때 함수
         {
-
+            Hp -= damage;
+            if (Hp < 0) { Hp = 0; }
         }
     }
     public class Enimies
     {
-        private Enemy[] enimies;
+        private Enemy[] enemies;
         private int enemycount;
 
         public Enimies(int ecount) // enemycount : 적들의 수
         {
             Random rand = new Random();
             enemycount = ecount;
-            enimies = new Enemy[ecount]; // 적들의 수를 받아서 enemy 배열을 생성.
+            enemies = new Enemy[ecount]; // 적들의 수를 받아서 enemy 배열을 생성.
             for(int i = 0; i < ecount; i++)
             {
-                int t = rand.Next(0, 4);
-                enimies[i] = new Enemy((Enemytype)t);
+                int t = rand.Next(0, 5);
+                enemies[i] = new Enemy((Enemytype)t);
             }
 
         }
@@ -81,5 +85,25 @@ namespace sparta_9team_project
         {
 
         }
+
+        public bool EnemygetDamage(int enemynum, int damage) // enemynum번호의 몹이 데미지를 받는 동작을 하는 함수
+        {
+            if (enemynum  <= 0 || enemynum >= enemycount) return false;
+            if (enemies[enemynum].Hp == 0) return false;
+            enemies[enemynum].GetDamage(damage);
+            return true;
+            // 만약 잘못된 enemynum이나 이미 죽은 몹이면 false를 반환하여 잘못된 입력임을 알려줌
+            // 입력이 제대로 되었다면 체력 깎는 GetDamage함수를 실행시키고 true를 반환하여 성공을 알려줌.
+        }
     }
 }
+
+// 사용 예시 :
+// 던전에서 적들 3명을 생성하려면 : Enimies dungeonmob = new Enimies(3);
+//                                -> 3명의 몹이 랜덤으로 정해지면서 Enimies에 저장됨
+// 던전에서 적들 중 1번 몹에게 10의 데미지를 주고 싶다면 :
+//                               dungeonmob.EnemygetDamage(1, 10);
+//                                -> 1번 몹이 10 데미지를 받는데, 만약 1번몹이 이미 죽었다면 false를 반환
+//                                   맞는 몹 선택이라면 데미지를 받게하고 true를 반환
+//                                   이 true/false 반환으로 맞는 선택을했는지 알 수 있음 -> 활용 가능
+// 추가 예정...
