@@ -5,19 +5,18 @@ namespace sparta_9team_project
 {
     class GameManager
     {
-        public static int type; 
-        
+        public static int type;
+        static JobType selectjob = JobType.전사;
         static void Main(string[] args)
         {
             Console.OutputEncoding = System.Text.Encoding.UTF8;
             ConsoleManager.ConfigureConsoleSize();
-            //플레이어 싱글톤
-            Player player = PlayerManager.instance.mainPlayer;
-            PlayerManager.instance.Init(player);
-            //Character character = new Character();
 
             StartGame();
-            ChoiceJob(player);
+            ChoiceJob();
+            Player player = new Player("미르", 1, 100, 100, 10, 5, selectjob, "0");
+            PlayerManager.instance.Init(player);
+
             while (true)
             {
                 MainScreen();
@@ -28,7 +27,9 @@ namespace sparta_9team_project
                 }
                 else if (choice == 2)
                 {
-                    Walk();
+                    Dungeon.Walk();
+                    Dungeon.EnterDungeon();
+                    Dungeon.DiscoverEnermy();
                 }
             }
         }
@@ -83,9 +84,8 @@ namespace sparta_9team_project
         }
 
         //직업 선택 화면
-        public static void ChoiceJob(Player player)
+        public static void ChoiceJob()
         {
-            
             while (true)
             {
                 Console.Clear();
@@ -105,17 +105,21 @@ namespace sparta_9team_project
                 ConsoleManager.PrintAsciiAt(Print.dogImage[3], 100, 50);
                 Console.ForegroundColor = ConsoleColor.Yellow;
                 ConsoleManager.PrintAsciiAt(Print.dogImage[5], 0, 50);
-                Console.SetCursorPosition(60, 49);
+                Console.SetCursorPosition(72, 50);
+                Console.WriteLine(">>");
+                Console.SetCursorPosition(77, 50);
+                Console.WriteLine("<<");
+                Console.SetCursorPosition(75, 50);
                 string choice = Console.ReadLine();
                 if (choice == "1")
                 {
-                    player.Job = JobType.마법사;
+                    selectjob = JobType.마법사;
                     type = 1;
                     break;
                 }
                 else if (choice == "2")
                 {
-                    player.Job = JobType.전사;
+                    selectjob = JobType.전사;
                     type = 2;
                     break;
                 }
@@ -144,40 +148,50 @@ namespace sparta_9team_project
 
         public static void ShowStatus(Player player)
         {
-            Console.Clear();
-            Console.SetCursorPosition(40, 10);
-            Console.WriteLine("미르의 상태보기");
-            Console.SetCursorPosition(40, 13);
-            Console.WriteLine($"Lvl. {player.Level}");
-            Console.SetCursorPosition(40, 14);
-            Console.WriteLine($"미르           직업 : {player.Job}");
-            Console.SetCursorPosition(40, 15);
-            Console.WriteLine("========================================");
-            Console.SetCursorPosition(40, 16);
-            Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine($"공격력 : {player.Atk}");
-            Console.ForegroundColor = ConsoleColor.Blue;
-            Console.SetCursorPosition(40, 17);
-            Console.WriteLine($"방어력 : {player.Def}");
-            Console.SetCursorPosition(42, 18);
-            Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine($"체력 : /*{player.Hp}*/ / {player.MaxHp}");
-            Console.SetCursorPosition(40, 19);
-            Console.ForegroundColor = ConsoleColor.Yellow;
-            Console.WriteLine($"뼈다귀 : {player.Bones}");
-            Console.SetCursorPosition(40, 21);
-            Console.ForegroundColor = ConsoleColor.White;
-            Console.WriteLine(">> [0]돌아가기");
-            ConsoleManager.PrintAsciiAt(Print.dogImage[type + 2], 80, 10);
-            Console.SetCursorPosition(40, 22);
-            Console.WriteLine(">>");
-            Console.SetCursorPosition(43, 22);
-            Console.ReadLine();
-        }
-
-        public static void Walk()
-        {
-            Console.ReadKey();
+            while (true)
+            {
+                Console.Clear();
+                Console.SetCursorPosition(40, 10);
+                Console.WriteLine("미르의 상태보기");
+                Console.SetCursorPosition(40, 13);
+                Console.WriteLine($"Lvl. {player.Level}");
+                Console.SetCursorPosition(40, 14);
+                Console.WriteLine($"미르           직업 : {player.Job}");
+                Console.SetCursorPosition(40, 15);
+                Console.WriteLine("========================================");
+                Console.SetCursorPosition(40, 16);
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine($"공격력 : {player.Atk}");
+                Console.ForegroundColor = ConsoleColor.Blue;
+                Console.SetCursorPosition(40, 17);
+                Console.WriteLine($"방어력 : {player.Def}");
+                Console.SetCursorPosition(42, 18);
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine($"체력 : {player.Hp} / {player.MaxHp}");
+                Console.SetCursorPosition(40, 19);
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.WriteLine($"뼈다귀 : {player.Bones}");
+                Console.SetCursorPosition(40, 21);
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.WriteLine(">> [0]돌아가기");
+                ConsoleManager.PrintAsciiAt(Print.dogImage[type + 2], 80, 10);
+                Console.SetCursorPosition(40, 22);
+                Console.WriteLine(">>");
+                Console.SetCursorPosition(43, 22);
+                string choice = Console.ReadLine();
+                if (choice == "0")
+                {
+                    break;
+                }
+                else
+                {
+                    Console.SetCursorPosition(40, 23);
+                    Console.WriteLine("잘못된 입력입니다.");
+                    Console.SetCursorPosition(40, 24);
+                    Console.WriteLine("다시 입력해주세요.");
+                    Thread.Sleep(1000);
+                }
+            }
         }
     }
 
