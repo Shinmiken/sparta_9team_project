@@ -12,6 +12,8 @@ namespace sparta_9team_project
             Console.OutputEncoding = System.Text.Encoding.UTF8;
             ConsoleManager.ConfigureConsoleSize();
 
+            CharacterCustom.SetupCharacter(); // 캐릭터 이름 + 직업 선택 처리
+
             StartGame();
             ChoiceJob();
             Player player = new Player("미르", 1, 100, 100, 10, 5, selectjob, "0");
