@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Numerics;
+using System.Text;
 
 namespace sparta_9team_project
 {
@@ -10,9 +11,8 @@ namespace sparta_9team_project
         static void Main(string[] args)
         {
             Console.OutputEncoding = System.Text.Encoding.UTF8;
+            Console.OutputEncoding = Encoding.UTF8;
             ConsoleManager.ConfigureConsoleSize();
-
-            CharacterCustom.SetupCharacter(); // 캐릭터 이름 + 직업 선택 처리
 
             StartGame();
             ChoiceJob();
@@ -46,15 +46,15 @@ namespace sparta_9team_project
             while (true)
             {
                 Console.Clear();
-                ConsoleManager.PrintAnywhere("『 미  르  의  모  험 』", 63, 40);
-                ConsoleManager.ColorPrintAnyWhere(ConsoleColor.Blue, "✦･ﾟ:* 미지의 세계로 떠나는 여정 *:･ﾟ✦", 57, 41);
-                ConsoleManager.ColorPrintAnyWhere(ConsoleColor.White, "⟡༺༒ 1. 시작하기 ༒༻⟡", 63, 45);
-                ConsoleManager.PrintAnywhere("⟡༺༒ 0. 종료하기 ༒༻⟡", 63, 46);
-                ConsoleManager.ColorPrintAsciiAt(ConsoleColor.Red, Print.dogImage[3], 90, 49);
-                ConsoleManager.ColorPrintAsciiAt(ConsoleColor.Yellow, Print.dogImage[5], 10, 50);
-                ConsoleManager.PrintAnywhere(">>", 70, 48);
-                ConsoleManager.PrintAnywhere("<<", 75, 48);
-                Console.SetCursorPosition(73, 48);
+                ConsoleManager.PrintAnywhere("『 미  르  의  모  험 』", 50, 2);
+                ConsoleManager.ColorPrintAnyWhere(ConsoleColor.Blue, "✦･ﾟ:* 미지의 세계로 떠나는 여정 *:･ﾟ✦", 43, 3);
+                ConsoleManager.ColorPrintAnyWhere(ConsoleColor.White, "⟡༺༒ 1. 시작하기 ༒༻⟡", 51, 5);
+                ConsoleManager.PrintAnywhere("⟡༺༒ 0. 종료하기 ༒༻⟡", 51, 7);
+                ConsoleManager.ColorPrintAsciiAt(ConsoleColor.Red, Print.dogImage[3], 72, 5);
+                ConsoleManager.ColorPrintAsciiAt(ConsoleColor.Yellow, Print.dogImage[5], 0, 6);
+                ConsoleManager.PrintAnywhere(">>", 57, 9);
+                ConsoleManager.PrintAnywhere("<<", 62, 9);
+                Console.SetCursorPosition(60, 9);
                 string choice = Console.ReadLine();
                 if (choice == "1")
                 {
