@@ -2,7 +2,7 @@
 {
     class Inventory
     {
-        // 플레이어 & 아이템베이스 싱글톤 활성화
+        // 플레이어 싱글톤 활성화
         Player player = PlayerManager.instance.mainPlayer;
 
 
