@@ -242,7 +242,6 @@ namespace sparta_9team_project
 
         public static void Die()
         {
-            Console.OutputEncoding = System.Text.Encoding.UTF8;
             Console.Clear();
             ConsoleManager.ConfigureConsoleSize();
 
@@ -250,18 +249,18 @@ namespace sparta_9team_project
             int randomx = x.Next(1, 4);
 
 
-            Console.WriteLine();
+            ConsoleManager.PrintAsciiAt(Print.dogImage[12], 40, 10);
+
             for (int i = 0; i < randomx; i++)
             {
-                ConsoleManager.PrintCenteredSlow("🌲 미르는 산책중.... 🌲", 55, 2, 60);
-                ConsoleManager.PrintCenteredSlow("                       ", 55, 2, 60);
+                ConsoleManager.PrintCenteredSlow("🚑🚑🚑 마을로 실려 가는 중... ", 55, 2, 4);
+                ConsoleManager.PrintCenteredSlow("                                ", 55, 2, 4);
                 Thread.Sleep(500);
             }
 
-            //던전 진입 호출
-            EnterDungeon();
+            GameManager.MainScreen();
 
-            ConsoleManager.PrintAsciiAt(Print.dogImage[2], 73, 5);
+
         }
     }
 }
