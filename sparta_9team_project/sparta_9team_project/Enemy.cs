@@ -51,7 +51,9 @@ namespace sparta_9team_project
         {
             new Enemyinfo("새끼고양이", 1, 6, 3, 30, 4, "냥냥 펀치", Print.dogImage[10], 30, Enemytype.catling),
             new Enemyinfo("치와와", 2, 10, 5, 40, 6, "물어 뜯기", Print.dogImage[6], 40, Enemytype.chihuahua),
-            new Enemyinfo("고양이", 3, 15, 7, 60, 8, "할퀴기", Print.dogImage[9], 60, Enemytype.cat)
+            new Enemyinfo("고양이", 3, 15, 7, 60, 8, "할퀴기", Print.dogImage[9], 60, Enemytype.cat),
+            new Enemyinfo("허스키", 0, 0, 0, 0, 0, "", Print.dogImage[7], 0, Enemytype.husky),
+            new Enemyinfo("오토바이", 0, 0, 0, 0, 0, "", Print.dogImage[8], 0, Enemytype.mortorcycle)
         };
     }
     // 사용 방법 :  Enemyinfos.emeyinfos[i]로 접근하면 Enemy정보에 접근 가능(static이기 때문)
