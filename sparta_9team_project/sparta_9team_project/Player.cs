@@ -64,8 +64,8 @@ namespace sparta_9team_project
 
             mob.GetDamage(damage); // 적의 HP에 데미지 적용
 
-            ConsoleManager.PrintAnywhere($"{Name}는 {mob.Name}에게 {damage}의 댕미지를 입혔습니다!",40,24);
-            ConsoleManager.PrintAnywhere($"{mob.Name}의 HP가 {mob.Hp} 남았습니다.",46,26);
+            ConsoleManager.PrintAnywhere($"{Name}는 {mob.Name}에게 {damage}의 댕미지를 입혔습니다!",40,25);
+            ConsoleManager.PrintAnywhere($"{mob.Name}의 HP가 {mob.Hp} 남았습니다.",46,27);
         }
 
         public void TakeDamage(int damage)
@@ -73,8 +73,8 @@ namespace sparta_9team_project
             Hp -=damage;
             if (Hp < 0) { Hp = 0; }
 
-            ConsoleManager.PrintAnywhere($"{Name}는 {damage}만큼의 댕미지를 입었습니다!",40,24);
-            ConsoleManager.PrintAnywhere($"현재 {Name}의 체력: {Hp}",46,26);
+            ConsoleManager.PrintAnywhere($"{Name}는 {damage}만큼의 댕미지를 입었습니다!",40,25);
+            ConsoleManager.PrintAnywhere($"현재 {Name}의 체력: {Hp}",46,27);
         }
     }
 }
