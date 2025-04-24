@@ -98,25 +98,44 @@ namespace sparta_9team_project
 
         public static void DiscoverEnermy()
         {
-            ConsoleManager.PrintCentered("👾 적을 발견했다! 👾", 5);
+            ConsoleManager.PrintAnywhere("👾앗! 미르의 적을 발견했다! 👾",44, 2);
 
             Random rand = new Random();
             for (int i = 0; i < 3; i++)
             {
-                int typeIndex = rand.Next(0, 3); // catling(0), chihuahua(1), cat(2)
-                enemies[i] = new Enemy((Enemytype)typeIndex);
+                int typeIndex = rand.Next(0, 3); // 0 ~ 2 (catling, chihuahua, cat)
+                enemies[i] = new Enemy((Enemytype)typeIndex); // 여기가 빠졌을 가능성이 높음
             }
-
-            
 
             for (int i = 0; i < 3; i++)
             {
-                Enemy e = enemies[i];
-                ConsoleManager.PrintAnywhere($"[{i + 1}] 이름: {e.Name}, 레벨: {e.Level}, HP: {e.Hp}", locationx[i], 25);
+                Enemy enemy = enemies[i];
+
+                int infoIndex = Array.FindIndex(Enemyinfos.enemyinfos, info => info.nm == enemy.Name);
+                Enemyinfo info = Enemyinfos.enemyinfos[infoIndex];
+
+                ConsoleManager.PrintAnywhere($"HP: [{enemy.Hp}]", locationx[i] + 10, 22);
+                ConsoleManager.PrintAnywhere($"레벨: {enemy.Level}, 이름: [{enemy.Name}]", locationx[i], 23);
+                ConsoleManager.PrintAsciiAt(info.enepic, locationx[i], 6);
             }
-                ConsoleManager.PrintAsciiAt(Print.dogImage[6], 0, 10);
-                ConsoleManager.PrintAsciiAt(Print.dogImage[7], 40, 9);
-                ConsoleManager.PrintAsciiAt(Print.dogImage[8], 83, 10);
+
+            while (true)
+            {
+                
+                ConsoleManager.PrintAnywhere(">> 0. 전투 시작: ", 49, 27);
+                Console.SetCursorPosition(66, 27);
+                string choise = Console.ReadLine();
+                if (choise == "0")
+                {
+                    Thread.Sleep(1000);
+                    break;
+                }
+                else
+                {
+                    ConsoleManager.PrintAnywhere("잘못된 입력입니다.", 44, 27);
+                    Thread.Sleep(1000);
+                }
+            }
         }
 
         public static void PlayerPhase()
