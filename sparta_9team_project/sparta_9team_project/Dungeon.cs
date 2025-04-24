@@ -24,7 +24,7 @@ namespace sparta_9team_project
                 Thread.Sleep(500);
                 
             }
-            EnterDungeon();
+
         }
         
         // 현재체력 >> hp바로 표시
@@ -67,47 +67,33 @@ namespace sparta_9team_project
 
         public static void DiscoverEnermy()
         {
-
             ConsoleManager.PrintCentered("👾 적을 발견했다! 👾", 2);
 
-            Random rand = new Random();
-            int[] randomenermy = new int[3];
-            int count = 0;
+            Enimies dungeonmob = new Enimies(3); // 적 3명 생성
 
-            while (count < 3)
+            for (int i = 1; i <= 3; i++)
             {
-                int randomenermytype = rand.Next(0, 4);
-                bool isDuplicate = false;  // 중복 체크
-                for (int j = 0; j < count; j++)
+                Enemy enemy = new Enemy(Enemytype.cat);
+                if (dungeonmob.GetEnemyInfo(i, ref enemy))
                 {
-                    if (randomenermy[j] == randomenermytype)
-                    {
-                        isDuplicate = true;
-                        break;
-                    }
+                    Console.WriteLine($"이름: {enemy.Name}, 레벨: {enemy.Level}, HP: {enemy.Hp}");
                 }
-                if (!isDuplicate)
+                else
                 {
-                    randomenermy[count] = randomenermytype;
-                    count++;
+                    Console.WriteLine($"{i}번 적 정보 불러오기 실패");
                 }
             }
-            // 출력 (이름, 레벨, HP)
-            for (int i = 0; i < 3; i++)
-            {
-                Enemyinfo info = Enemyinfos.enemyinfos[randomenermy[i]];
-                Console.WriteLine($"이름: {info.nm}, 레벨: {info.level}, HP: {info.hpoint}");
-                
-            }
-
-
-            //ConsoleManager.PrintAsciiAt(Print.dogImage[6], 0, 0);
-            ////ConsoleManager.PrintAsciiAt(Print.dogImage[7], 0, 0);
-            //ConsoleManager.PrintAsciiAt(Print.dogImage[8], 73, 5);
-
         }
 
-        public void PlayerPhase()
+
+
+    //ConsoleManager.PrintAsciiAt(Print.dogImage[6], 0, 0);
+    ////ConsoleManager.PrintAsciiAt(Print.dogImage[7], 0, 0);
+    //ConsoleManager.PrintAsciiAt(Print.dogImage[8], 73, 5);
+
+
+
+public void PlayerPhase()
         {
             Console.Clear();
             ConsoleManager.PrintCentered("🗡️ 플레이어의 턴입니다! 공격할 적을 선택하세요.", 2);
@@ -115,7 +101,7 @@ namespace sparta_9team_project
 
             for (int i = 1; i <= 3; i++)
             {
-                Enemy enemy = new Enemy(Enemytype.cat); // 임시 객체
+                Enemy enemy = new Enemy(Enemytype.cat);
                 if (enimies.GetEnemyInfo(i, ref enemy) && enemy.Hp > 0)
                 {
                     Console.WriteLine($"[{i}] 이름: {enemy.Name}, HP: {enemy.Hp}");
@@ -124,7 +110,7 @@ namespace sparta_9team_project
 
             int choice;
             Console.Write(">> 선택: ");
-            Enemy tempEnemy = new Enemy(Enemytype.cat);  // 임시 Enemy 변수
+            Enemy tempEnemy = new Enemy(Enemytype.cat);  
             while (!int.TryParse(Console.ReadLine(), out choice) || !enimies.GetEnemyInfo(choice, ref tempEnemy))
             {
                 Console.WriteLine("잘못된 입력입니다. 다시 선택하세요.");
