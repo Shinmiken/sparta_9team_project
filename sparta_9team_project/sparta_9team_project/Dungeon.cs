@@ -5,6 +5,9 @@ namespace sparta_9team_project
     public class Dungeon
     {
         private Enimies enimies;
+        private static Enemy[] enemies = new Enemy[3];
+        private static int[] locationx = { 1, 40, 82 };
+
         public static void Walk()
         {
             Console.OutputEncoding = System.Text.Encoding.UTF8;
@@ -60,110 +63,133 @@ namespace sparta_9team_project
 
         public static void EnterDungeon()
         {
+            bool win = false;
+
             Console.Clear();
             DiscoverEnermy();
-
-
-
-
+            while (true)
+            {
+                PlayerPhase();
+                bool enemyAllDead = true;
+                for (int i = 0; i < enemies.Length; i++)
+                {
+                    if (enemies[i].Hp > 0)
+                    {
+                        enemyAllDead = false;
+                        break;
+                    }
+                }
+                if (enemyAllDead)
+                {
+                    win = true;
+                    break;
+                }
+                EnemyPhase();
+                if (PlayerManager.instance.mainPlayer.Hp <= 0)
+                {
+                    win = false;
+                    break;
+                }
+            }
+            Result(win);
         }
+
 
         public static void DiscoverEnermy()
         {
-            ConsoleManager.PrintCentered("👾 적을 발견했다! 👾", 2);
+            ConsoleManager.PrintCentered("👾 적을 발견했다! 👾", 5);
 
             Random rand = new Random();
-            Enemy[] enemies = new Enemy[3];
-
             for (int i = 0; i < 3; i++)
             {
                 int typeIndex = rand.Next(0, 3); // catling(0), chihuahua(1), cat(2)
                 enemies[i] = new Enemy((Enemytype)typeIndex);
             }
 
+            
+
             for (int i = 0; i < 3; i++)
             {
                 Enemy e = enemies[i];
-                string name = e.Name;
-
-                Enemytype type = (Enemytype)Enum.Parse(typeof(Enemytype), name switch
-                {
-                    "새끼고양이" => "catling",
-                    "치와와" => "chihuahua",
-                    "고양이" => "cat",
-                    _ => "catling"  // 기본값 fallback
-                });
-
-                Enemyinfo info = Enemyinfos.enemyinfos[(int)type];
-                int[] locationx = [0, 40, 83]; // 위치 값 저장
-                
-                ConsoleManager.PrintAnywhere($"[{i + 1}] 이름: {info.nm}, 레벨: {info.level}, HP: {info.hpoint}", locationx[i],25);
-                ConsoleManager.PrintAsciiAt(Print.dogImage[6], 0, 11);
-                ConsoleManager.PrintAsciiAt(Print.dogImage[7], 40, 9);
-                ConsoleManager.PrintAsciiAt(Print.dogImage[8], 83, 11);
+                ConsoleManager.PrintAnywhere($"[{i + 1}] 이름: {e.Name}, 레벨: {e.Level}, HP: {e.Hp}", locationx[i], 25);
             }
+                ConsoleManager.PrintAsciiAt(Print.dogImage[6], 0, 10);
+                ConsoleManager.PrintAsciiAt(Print.dogImage[7], 40, 9);
+                ConsoleManager.PrintAsciiAt(Print.dogImage[8], 83, 10);
         }
 
-
-
-
-
-        public void PlayerPhase()
+        public static void PlayerPhase()
         {
             Console.Clear();
-            ConsoleManager.PrintCentered("🗡️ 플레이어의 턴입니다! 공격할 적을 선택하세요.", 2);
+            ConsoleManager.PrintAnywhere("🗡️ 플레이어의 턴입니다! 공격할 적을 선택하세요.",36, 2);
             Console.WriteLine();
 
-            for (int i = 1; i <= 3; i++)
+            for (int i = 0; i < 3; i++)
             {
-                Enemy enemy = new Enemy(Enemytype.cat);
-                if (enimies.GetEnemyInfo(i, ref enemy) && enemy.Hp > 0)
+                Enemy enemy = enemies[i];
+                if (enemy.Hp > 0)
                 {
-                    Console.WriteLine($"[{i}] 이름: {enemy.Name}, HP: {enemy.Hp}");
+                    ConsoleManager.PrintAnywhere($"HP: [{enemy.Hp}]", locationx[i]+10 , 21);
+                    ConsoleManager.PrintAnywhere($"[{i + 1}] 레벨: {enemy.Level}, 이름: [{enemy.Name}]", locationx[i], 22);
                 }
+                ConsoleManager.PrintAsciiAt(Print.dogImage[6], 0, 6);
+                ConsoleManager.PrintAsciiAt(Print.dogImage[7], 40, 5);
+                ConsoleManager.PrintAsciiAt(Print.dogImage[8], 83, 6);
             }
 
             int choice;
-            Console.Write(">> 선택: ");
-            Enemy tempEnemy = new Enemy(Enemytype.cat);  
-            while (!int.TryParse(Console.ReadLine(), out choice) || !enimies.GetEnemyInfo(choice, ref tempEnemy))
+            ConsoleManager.PrintAnywhere(">> 선택: ",49, 24);
+            Console.SetCursorPosition(58, 24);
+            while (!int.TryParse(Console.ReadLine(), out choice) || choice < 1 || choice > 3 || enemies[choice - 1].Hp <= 0)
             {
-                Console.WriteLine("잘못된 입력입니다. 다시 선택하세요.");
-                Console.Write(">> 선택: ");
+                ConsoleManager.PrintAnywhere("잘못된 입력입니다. 다시 선택하세요.", 36, 24);
+                ConsoleManager.PrintAnywhere(">> 선택: ", 49, 24);
             }
 
-            Enemy selected = new Enemy(Enemytype.cat);
-            if (enimies.GetEnemyInfo(choice, ref selected))
-            {
-                int damage = PlayerManager.instance.mainPlayer.Atk;
-                enimies.EnemygetDamage(choice, damage);
-                Console.WriteLine($"{selected.Name}에게 {damage}의 피해를 입혔습니다!");
-            }
+            int damage = PlayerManager.instance.mainPlayer.Atk;
+            enemies[choice - 1].GetDamage(damage);
+            Console.WriteLine($"{enemies[choice - 1].Name}에게 {damage}의 피해를 입혔습니다!");
 
             Thread.Sleep(1000);
         }
 
-        public void EnemyPhase()
+
+
+        public static void EnemyPhase()
         {
             Console.Clear();
             ConsoleManager.PrintCentered("👾 적의 턴입니다! 공격이 시작됩니다...", 2);
             Console.WriteLine();
 
-            for (int i = 1; i <= 3; i++)
+            for (int i = 0; i < 3; i++)
             {
-                Enemy enemy = new Enemy(Enemytype.cat);
-                if (enimies.GetEnemyInfo(i, ref enemy) && enemy.Hp > 0)
+                Enemy enemy = enemies[i];
+                if (enemy.Hp > 0)
                 {
-                    int damage = Math.Max(0, enemy.Atk - PlayerManager.instance.mainPlayer.Def);
-                    PlayerManager.instance.mainPlayer.TakeDamage(damage);
-                    Console.WriteLine($"{enemy.Name}이(가) {damage}의 피해를 입혔습니다!");
-                    Thread.Sleep(1000);
+                    ConsoleManager.PrintAnywhere($"HP: [{enemy.Hp}]", locationx[i] + 10, 21);
+                    ConsoleManager.PrintAnywhere($"[{i + 1}] 레벨: {enemy.Level}, 이름: [{enemy.Name}]", locationx[i], 22);
                 }
+                ConsoleManager.PrintAsciiAt(Print.dogImage[6], 0, 6);
+                ConsoleManager.PrintAsciiAt(Print.dogImage[7], 40, 5);
+                ConsoleManager.PrintAsciiAt(Print.dogImage[8], 83, 6);
+            }
+
+            for (int i = 0; i < 3; i++)
+            {
+                Enemy e = enemies[i];
+                if (e.Hp <= 0) continue;
+
+                int damage = Math.Max(0, e.Atk - PlayerManager.instance.mainPlayer.Def);
+                PlayerManager.instance.mainPlayer.TakeDamage(damage);
+                ConsoleManager.PrintAnywhere($"{e.Name}이(가) {damage}의 피해를 입혔습니다!",30,24);2
+                Thread.Sleep(1000);
             }
         }
 
 
-        public void Result(bool win)
+
+
+        public static void Result(bool win)
         {
             Console.Clear();
             if (win)
