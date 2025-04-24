@@ -38,21 +38,6 @@ namespace sparta_9team_project
 
 
         // [Methods]
-        public void ShowStatus()
-        {
-            Console.Clear();
-
-            Console.WriteLine($"[{Name}의 상태보기]");
-            Console.WriteLine($"{Name, 5} ( {Job} )");
-            Console.WriteLine("-----------------------");
-            Console.WriteLine($"공격력: {Atk}");
-            Console.WriteLine($"방어력: {Def}");
-            Console.WriteLine($"체 력: {Hp} / {MaxHp}");
-            Console.WriteLine($"뼈다귀: {Bones}\n");
-            Console.WriteLine(">> [0] 돌아가기");
-
-        }
-
         public void DealDamage(Enemy mob, int damage)
         {
             Random random = new Random();
@@ -70,7 +55,7 @@ namespace sparta_9team_project
 
         public void TakeDamage(int damage)
         {
-            Hp -=damage;
+            Hp -= damage;
             if (Hp < 0) { Hp = 0; }
 
             ConsoleManager.PrintAnywhere($"{Name}는 {damage}만큼의 댕미지를 입었습니다!",40,25);

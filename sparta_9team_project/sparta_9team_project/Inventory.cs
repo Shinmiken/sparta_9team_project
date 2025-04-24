@@ -46,7 +46,7 @@
                 Console.WriteLine($"{player.Name}의 소지품에 {item.Name}이 없습니다.");
             }
         }
-        public void RemoveCompletely(Item item )
+        public void RemoveAll(Item item )
         {
             if (items.Contains(item))
             {
