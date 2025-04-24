@@ -25,8 +25,7 @@ namespace sparta_9team_project
             }
 
             //던전 진입 호출
-            Dungeon dungeon = new Dungeon();
-            dungeon.EnterDungeon();
+            EnterDungeon();
         }
 
 
@@ -59,11 +58,11 @@ namespace sparta_9team_project
             ConsoleManager.PrintCentered($"1. lv{level} [{name}]", 40);
         }
 
-        public void EnterDungeon()
+        public static void EnterDungeon()
         {
             Console.Clear();
             DiscoverEnermy();
-            PlayerPhase();
+
 
 
 
@@ -96,8 +95,12 @@ namespace sparta_9team_project
                 });
 
                 Enemyinfo info = Enemyinfos.enemyinfos[(int)type];
-
-                Console.WriteLine($"[{i + 1}] 이름: {info.nm}, 레벨: {info.level}, HP: {info.hpoint}");
+                int[] locationx = [0, 40, 83]; // 위치 값 저장
+                
+                ConsoleManager.PrintAnywhere($"[{i + 1}] 이름: {info.nm}, 레벨: {info.level}, HP: {info.hpoint}", locationx[i],25);
+                ConsoleManager.PrintAsciiAt(Print.dogImage[6], 0, 11);
+                ConsoleManager.PrintAsciiAt(Print.dogImage[7], 40, 9);
+                ConsoleManager.PrintAsciiAt(Print.dogImage[8], 83, 11);
             }
         }
 
