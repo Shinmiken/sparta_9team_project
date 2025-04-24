@@ -218,7 +218,7 @@ namespace sparta_9team_project
             Console.Clear();
             if (win)
             {
-                ConsoleManager.PrintCentered("🎉 전투에서 승리했습니다! 🎉", 2);
+                ConsoleManager.PrintAnywhere("🎉 전투에서 승리했습니다! 🎉",40 , 2);
                 Console.WriteLine("경험치와 보상을 획득했습니다.");
                 ConsoleManager.PrintAsciiAt(Print.dogImage[1], 73, 5);
                 // 경험치나 골드 증가 코드는 여기에 추가 가능
@@ -229,19 +229,39 @@ namespace sparta_9team_project
             }
             else
             {
-                ConsoleManager.PrintCentered("💀 전투에서 패배했습니다... 💀", 2);
-                Console.WriteLine("체력이 0이 되어 전투에서 쓰러졌습니다.");
-                ConsoleManager.PrintAsciiAt(Print.dogImage[2], 73, 5);
-                ConsoleManager.PrintAnywhere("\n>> [Enter]를 눌러 마을로 돌아가기...", 35, 27);
+                ConsoleManager.PrintAnywhere("💀 전투에서 패배했습니다... 💀",40, 2);
+                ConsoleManager.PrintAnywhere("체력이 0이 되어 전투에서 쓰러졌습니다.",40,4);
+                ConsoleManager.PrintAsciiAt(Print.dogImage[10], 0, 8);
+                ConsoleManager.PrintAnywhere("\n>> [Enter]를 눌러 마을로 돌아가기...", 35, 50);
                 Console.ReadLine();
+                Die();
             }
 
 
         }
 
-        public void Die()
+        public static void Die()
         {
+            Console.OutputEncoding = System.Text.Encoding.UTF8;
+            Console.Clear();
+            ConsoleManager.ConfigureConsoleSize();
 
+            Random x = new Random();
+            int randomx = x.Next(1, 4);
+
+
+            Console.WriteLine();
+            for (int i = 0; i < randomx; i++)
+            {
+                ConsoleManager.PrintCenteredSlow("🌲 미르는 산책중.... 🌲", 55, 2, 60);
+                ConsoleManager.PrintCenteredSlow("                       ", 55, 2, 60);
+                Thread.Sleep(500);
+            }
+
+            //던전 진입 호출
+            EnterDungeon();
+
+            ConsoleManager.PrintAsciiAt(Print.dogImage[2], 73, 5);
         }
     }
 }
