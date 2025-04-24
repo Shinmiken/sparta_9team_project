@@ -90,7 +90,7 @@ namespace sparta_9team_project
             enemies = new Enemy[ecount]; // 적들의 수를 받아서 enemy 배열을 생성.
             for (int i = 0; i < ecount; i++)
             {
-                int t = rand.Next(0, 6);
+                int t = rand.Next(0, Enemyinfos.enemyinfos.Length);
                 enemies[i] = new Enemy((Enemytype)t);
             }
 
