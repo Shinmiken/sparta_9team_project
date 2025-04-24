@@ -8,6 +8,7 @@ namespace sparta_9team_project
         private static Enemy[] enemies = new Enemy[3];
         private static int[] locationx = { 1, 40, 82 };
 
+
         public static void Walk()
         {
             Console.OutputEncoding = System.Text.Encoding.UTF8;
@@ -127,14 +128,16 @@ namespace sparta_9team_project
             for (int i = 0; i < 3; i++)
             {
                 Enemy enemy = enemies[i];
+                int infoIndex = Array.FindIndex(Enemyinfos.enemyinfos, info => info.nm == enemy.Name);
+                Enemyinfo info = Enemyinfos.enemyinfos[infoIndex];
+
                 if (enemy.Hp > 0)
                 {
+
                     ConsoleManager.PrintAnywhere($"HP: [{enemy.Hp}]", locationx[i]+10 , 22);
                     ConsoleManager.PrintAnywhere($"[{i + 1}] 레벨: {enemy.Level}, 이름: [{enemy.Name}]", locationx[i], 23);
                 }
-                ConsoleManager.PrintAsciiAt(Print.dogImage[6], 0, 6);
-                ConsoleManager.PrintAsciiAt(Print.dogImage[7], 40, 5);
-                ConsoleManager.PrintAsciiAt(Print.dogImage[10], 83, 4);
+                ConsoleManager.PrintAsciiAt(info.enepic, locationx[i], 6);
             }
 
             int choice;
