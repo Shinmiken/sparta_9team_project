@@ -167,7 +167,9 @@ namespace sparta_9team_project
             while (!int.TryParse(Console.ReadLine(), out choice) || choice < 1 || choice > 3 || enemies[choice - 1].Hp <= 0)
             {
                 ConsoleManager.PrintAnywhere("잘못된 입력입니다. 다시 선택하세요.", 36, 26);
+                ConsoleManager.PrintAnywhere("                                                 ", 36, 26);
                 ConsoleManager.PrintAnywhere(">> 선택: ", 49, 27);
+                Console.SetCursorPosition(58, 27);
             }
 
             int damage = PlayerManager.instance.mainPlayer.Atk;
@@ -194,8 +196,7 @@ namespace sparta_9team_project
                 {
                     ConsoleManager.PrintAnywhere($"HP: [{enemy.Hp}]", locationx[i] + 10, 26);
                     ConsoleManager.PrintAnywhere($"[{i + 1}] 레벨: {enemy.Level}, 이름: [{enemy.Name}]", locationx[i], 28);
-                    
-                }
+
                 ConsoleManager.PrintAsciiAt(info.enepic, locationx[i], 6);
             }
 
@@ -222,17 +223,17 @@ namespace sparta_9team_project
                 Console.WriteLine("경험치와 보상을 획득했습니다.");
                 ConsoleManager.PrintAsciiAt(Print.dogImage[1], 73, 5);
                 // 경험치나 골드 증가 코드는 여기에 추가 가능
-                ConsoleManager.PrintAnywhere("\n>> [Enter]를 눌러 마을로 돌아가기...",35,27);
+                ConsoleManager.PrintAnywhere("\n>> [Enter]를 눌러 마을로 돌아가기...",42,27);
                 Console.ReadLine();
                 GameManager.MainScreen();
                 
             }
             else
             {
-                ConsoleManager.PrintAnywhere("💀 전투에서 패배했습니다... 💀",40, 2);
-                ConsoleManager.PrintAnywhere("체력이 0이 되어 전투에서 쓰러졌습니다.",40,4);
-                ConsoleManager.PrintAsciiAt(Print.dogImage[10], 0, 8);
-                ConsoleManager.PrintAnywhere("\n>> [Enter]를 눌러 마을로 돌아가기...", 35, 50);
+                ConsoleManager.PrintAnywhere("💀 전투에서 패배했습니다... 💀",45, 7);
+                ConsoleManager.PrintAsciiAt(Print.dogImage[11], 35, 8);
+                ConsoleManager.PrintAnywhere(">> [Enter]를 눌러 마을로 돌아가기...", 42, 50);
+                Console.SetCursorPosition(49, 51);
                 Console.ReadLine();
                 Die();
             }
@@ -245,16 +246,12 @@ namespace sparta_9team_project
             Console.Clear();
             ConsoleManager.ConfigureConsoleSize();
 
-            Random x = new Random();
-            int randomx = x.Next(1, 4);
+            ConsoleManager.PrintAsciiAt(Print.dogImage[12], 40, 60);
 
-
-            ConsoleManager.PrintAsciiAt(Print.dogImage[12], 40, 10);
-
-            for (int i = 0; i < randomx; i++)
+            for (int i = 0; i < 3; i++)
             {
-                ConsoleManager.PrintCenteredSlow("🚑🚑🚑 마을로 실려 가는 중... ", 55, 2, 4);
-                ConsoleManager.PrintCenteredSlow("                                ", 55, 2, 4);
+                ConsoleManager.PrintCenteredSlow("🚑🚑🚑 마을로 실려 가는 중... ", 49, 2, 30);
+                ConsoleManager.PrintCenteredSlow("                                ", 49, 2, 30);
                 Thread.Sleep(500);
             }
 

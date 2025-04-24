@@ -32,7 +32,7 @@ namespace sparta_9team_project
                 {
                     Dungeon.Walk();
                     Dungeon.EnterDungeon();
-                    Dungeon.DiscoverEnermy();
+                    
                 }
                 else if (choice == "0")
                 {
