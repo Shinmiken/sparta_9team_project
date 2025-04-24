@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Security.Cryptography.X509Certificates;
 
 namespace sparta_9team_project
 {
@@ -67,7 +68,7 @@ namespace sparta_9team_project
             bool win = false;
 
             Console.Clear();
-            DiscoverEnermy();
+            DiscoverEnemy();
             while (true)
             {
                 PlayerPhase();
@@ -98,15 +99,15 @@ namespace sparta_9team_project
         }
 
 
-        public static void DiscoverEnermy()
+        public static void DiscoverEnemy()
         {
             ConsoleManager.PrintAnywhere("👾앗! 미르의 적을 발견했다! 👾",44, 2);
 
             Random rand = new Random();
             for (int i = 0; i < 3; i++)
             {
-                int typeIndex = rand.Next(0, 3); // 0 ~ 2 (catling, chihuahua, cat)
-                enemies[i] = new Enemy((Enemytype)typeIndex); // 여기가 빠졌을 가능성이 높음
+                int typeIndex = rand.Next(0, 3);
+                enemies[i] = new Enemy((Enemytype)typeIndex); 
             }
 
             for (int i = 0; i < 3; i++)
@@ -132,9 +133,10 @@ namespace sparta_9team_project
                     Thread.Sleep(1000);
                     break;
                 }
-                else
+                else 
                 {
-                    ConsoleManager.PrintAnywhere("잘못된 입력입니다.", 44, 27);
+                    ConsoleManager.PrintAnywhere("                                                 ", 44, 27);
+                    ConsoleManager.PrintAnywhere("잘못된 입력입니다.", 49, 27);
                     Thread.Sleep(1000);
                 }
             }
@@ -143,8 +145,10 @@ namespace sparta_9team_project
         public static void PlayerPhase()
         {
             Console.Clear();
-            ConsoleManager.PrintAnywhere("🗡️ 플레이어의 턴입니다! 공격할 적을 선택하세요.",40, 2);
+            ConsoleManager.PrintAnywhere("🗡️ 플레이어의 턴입니다! 행동을 선택하세요.", 40, 2);
             Console.WriteLine();
+
+
 
             for (int i = 0; i < 3; i++)
             {
@@ -155,15 +159,72 @@ namespace sparta_9team_project
                 if (enemy.Hp > 0)
                 {
 
-                    ConsoleManager.PrintAnywhere($"HP: [{enemy.Hp}]", locationx[i]+10 , 22);
+                    ConsoleManager.PrintAnywhere($"HP: [{enemy.Hp}]", locationx[i] + 10, 22);
                     ConsoleManager.PrintAnywhere($"[{i + 1}] 레벨: {enemy.Level}, 이름: [{enemy.Name}]", locationx[i], 23);
+                }
+                else if (enemy.Hp <= 0)
+                {
+                    Console.ForegroundColor = ConsoleColor.DarkGray;
+                    ConsoleManager.PrintAnywhere($"[{i + 1}] 레벨: {enemy.Level}, 이름: [{enemy.Name}]", locationx[i], 23);
+                    ConsoleManager.PrintAnywhere($"[D E A D]", locationx[i] + 10, 22);
+                    Console.ResetColor();
                 }
                 ConsoleManager.PrintAsciiAt(info.enepic, locationx[i], 6);
             }
 
+            ConsoleManager.PrintAnywhere("1. 공격 ", 49, 26);
+            ConsoleManager.PrintAnywhere("2. 스킬 ", 49, 27);
+            ConsoleManager.PrintAnywhere(">> 선택: ", 49, 28);
+            Console.SetCursorPosition(58, 28);
+            string Playerchoice = Console.ReadLine();
+
+            int choice = int.Parse(Playerchoice);
+
+            if (choice == 1)
+            {
+                ConsoleManager.PrintAnywhere("                                                 ", 36, 26);
+                ConsoleManager.PrintAnywhere("                                                 ", 36, 27);
+                ConsoleManager.PrintAnywhere("                                                 ", 36, 28);
+                Attackenemy();
+            }
+            else if (choice == 2) 
+            {
+                Skill();
+            }
+            else if (choice < 1 || choice > 3 || enemies[choice - 1].Hp <= 0)
+            {
+
+                ConsoleManager.PrintAnywhere("                                                 ", 36, 26);
+                ConsoleManager.PrintAnywhere("                                                 ", 36, 27);
+                ConsoleManager.PrintAnywhere("                                                 ", 36, 28);
+                ConsoleManager.PrintAnywhere("잘못된 입력입니다. 다시 선택하세요.", 36, 26);
+                ConsoleManager.PrintAnywhere("                                                 ", 36, 26);
+                ConsoleManager.PrintAnywhere(">> 선택: ", 49, 27);
+                Console.SetCursorPosition(58, 27);
+            }
+        }
+
+        // 스킬 (임시)
+        public static void Skill ()
+        {
+            ConsoleManager.PrintAnywhere("                                                 ", 36, 26);
+            ConsoleManager.PrintAnywhere("                                                 ", 36, 27);
+            ConsoleManager.PrintAnywhere("                                                 ", 36, 28);
+            ConsoleManager.PrintAnywhere("미구현입니다.", 50, 26);
+            ConsoleManager.PrintAnywhere(">> [Enter]를 눌러 돌아가기...", 42, 27);
+            Console.ReadLine();
+            PlayerPhase();
+        }
+
+
+        // 적공격하기 
+        public static void Attackenemy()
+        {
+            ConsoleManager.PrintAnywhere("🗡️ 공격할 적을 선택하세요.", 40, 2);
             int choice;
-            ConsoleManager.PrintAnywhere(">> 선택: ",49, 27);
+            ConsoleManager.PrintAnywhere(">> 선택: ", 49, 27);
             Console.SetCursorPosition(58, 27);
+
             while (!int.TryParse(Console.ReadLine(), out choice) || choice < 1 || choice > 3 || enemies[choice - 1].Hp <= 0)
             {
                 ConsoleManager.PrintAnywhere("잘못된 입력입니다. 다시 선택하세요.", 36, 26);
@@ -174,16 +235,15 @@ namespace sparta_9team_project
 
             int damage = PlayerManager.instance.mainPlayer.Atk;
             enemies[choice - 1].GetDamage(damage);
-            
+
             Thread.Sleep(1000);
         }
-
 
 
         public static void EnemyPhase()
         {
             Console.Clear();
-            ConsoleManager.PrintAnywhere("👾 적의 턴입니다! 공격이 시작됩니다...",40, 2);
+            ConsoleManager.PrintAnywhere("👾 적의 턴입니다! 공격이 시작됩니다...", 40, 2);
             Console.WriteLine();
 
             for (int i = 0; i < 3; i++)
@@ -194,20 +254,14 @@ namespace sparta_9team_project
                 Enemyinfo info = Enemyinfos.enemyinfos[infoIndex];
                 if (enemy.Hp > 0)
                 {
-                    ConsoleManager.PrintAnywhere($"HP: [{enemy.Hp}]", locationx[i] + 10, 26);
-                    ConsoleManager.PrintAnywhere($"[{i + 1}] 레벨: {enemy.Level}, 이름: [{enemy.Name}]", locationx[i], 28);
+                    ConsoleManager.PrintAnywhere($"HP: [{enemy.Hp}]", locationx[i] + 10, 22);
+                    ConsoleManager.PrintAnywhere($"[{i + 1}] 레벨: {enemy.Level}, 이름: [{enemy.Name}]", locationx[i], 23);
+                    ConsoleManager.PrintAsciiAt(info.enepic, locationx[i], 6);
 
-                ConsoleManager.PrintAsciiAt(info.enepic, locationx[i], 6);
-            }
-
-            for (int i = 0; i < 3; i++)
-            {
-                Enemy e = enemies[i];
-                if (e.Hp <= 0) continue;
-
-                int damage = Math.Max(0, e.Atk - PlayerManager.instance.mainPlayer.Def);
-                PlayerManager.instance.mainPlayer.TakeDamage(damage);
-                Thread.Sleep(1000);
+                    int damage = Math.Max(0, enemy.Atk - PlayerManager.instance.mainPlayer.Def);
+                    PlayerManager.instance.mainPlayer.TakeDamage(damage);
+                    Thread.Sleep(1000);
+                }
             }
         }
 
@@ -223,7 +277,7 @@ namespace sparta_9team_project
                 Console.WriteLine("경험치와 보상을 획득했습니다.");
                 ConsoleManager.PrintAsciiAt(Print.dogImage[1], 73, 5);
                 // 경험치나 골드 증가 코드는 여기에 추가 가능
-                ConsoleManager.PrintAnywhere("\n>> [Enter]를 눌러 마을로 돌아가기...",42,27);
+                ConsoleManager.PrintAnywhere(">> [Enter]를 눌러 마을로 돌아가기...",42,27);
                 Console.ReadLine();
                 GameManager.MainScreen();
                 

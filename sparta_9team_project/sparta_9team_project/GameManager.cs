@@ -31,7 +31,7 @@ namespace sparta_9team_project
                 else if (choice == "2")
                 {
                     Dungeon.Walk();
-                    Dungeon.EnterDungeon();
+                    
                     
                 }
                 else if (choice == "0")
