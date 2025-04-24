@@ -60,7 +60,7 @@ namespace sparta_9team_project
             ConsoleManager.PrintAsciiAt(Print.dogImage[1], 36, 30);
             Console.WriteLine();
             ConsoleManager.PrintCentered($"hp : [{hpbar}]", 40);
-            ConsoleManager.PrintCentered($"1. lv{level} [{name}]", 40);
+            ConsoleManager.PrintCentered($"lv{level} [{name}]", 40);
         }
 
         public static void EnterDungeon()
@@ -274,8 +274,8 @@ namespace sparta_9team_project
             if (win)
             {
                 ConsoleManager.PrintAnywhere("🎉 전투에서 승리했습니다! 🎉",40 , 2);
-                Console.WriteLine("경험치와 보상을 획득했습니다.");
-                ConsoleManager.PrintAsciiAt(Print.dogImage[1], 73, 5);
+                ConsoleManager.PrintAnywhere("경험치와 보상을 획득했습니다.", 40, 4);
+                ConsoleManager.PrintAsciiAt(Print.dogImage[1], 37, 5);
                 // 경험치나 골드 증가 코드는 여기에 추가 가능
                 ConsoleManager.PrintAnywhere(">> [Enter]를 눌러 마을로 돌아가기...",42,27);
                 Console.ReadLine();
@@ -308,7 +308,7 @@ namespace sparta_9team_project
                 ConsoleManager.PrintCenteredSlow("                                ", 49, 2, 30);
                 Thread.Sleep(500);
             }
-
+            PlayerManager.instance.mainPlayer.Hp = PlayerManager.instance.mainPlayer.MaxHp;
             GameManager.MainScreen();
 
 
