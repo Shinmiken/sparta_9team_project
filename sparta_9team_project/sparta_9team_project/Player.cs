@@ -55,6 +55,13 @@ namespace sparta_9team_project
 
         public void DealDamage(Enemy mob, int damage)
         {
+            Random random = new Random();
+
+            int tenPercent = (int)Math.Ceiling(Atk * 0.1);      // ±10% 오차
+            int randomDmgMin =  damage - tenPercent;            // 최소 데미지
+            int randomDmgMax =  damage + tenPercent;            // 최대 데미지
+            damage = random.Next(randomDmgMin - randomDmgMax);  // 랜덤 데미지
+
             mob.GetDamage(damage); // 적의 HP에 데미지 적용
 
             ConsoleManager.PrintAnywhere($"{Name}는 {mob.Name}에게 {damage}의 댕미지를 입혔습니다!",40,24);
