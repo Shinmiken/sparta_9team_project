@@ -113,25 +113,31 @@ namespace sparta_9team_project
             ConsoleManager.PrintCentered("🗡️ 플레이어의 턴입니다! 공격할 적을 선택하세요.", 2);
             Console.WriteLine();
 
-            for (int i = 0; i < 3; i++)  // 3명 고정
+            for (int i = 1; i <= 3; i++)
             {
-                Enemy enemy = enimies.GetEnemy(i);
-                if (enemy != null)
-                    Console.WriteLine($"[{i + 1}] 이름: {enemy.Name}, HP: {enemy.Hp}");
+                Enemy enemy = new Enemy(Enemytype.cat); // 임시 객체
+                if (enimies.GetEnemyInfo(i, ref enemy) && enemy.Hp > 0)
+                {
+                    Console.WriteLine($"[{i}] 이름: {enemy.Name}, HP: {enemy.Hp}");
+                }
             }
 
-            Console.Write(">> 선택: ");
             int choice;
-            while (!int.TryParse(Console.ReadLine(), out choice) || choice < 1 || choice > 3)
+            Console.Write(">> 선택: ");
+            Enemy tempEnemy = new Enemy(Enemytype.cat);  // 임시 Enemy 변수
+            while (!int.TryParse(Console.ReadLine(), out choice) || !enimies.GetEnemyInfo(choice, ref tempEnemy))
             {
                 Console.WriteLine("잘못된 입력입니다. 다시 선택하세요.");
                 Console.Write(">> 선택: ");
             }
 
-            Enemy target = enimies.GetEnemy(choice - 1);
-            int damage = PlayerManager.instance.mainPlayer.Atk;
-            PlayerManager.instance.mainPlayer.DealDamage(target, damage);
-            Console.WriteLine($"{target.Name}에게 {damage}의 피해를 입혔습니다!");
+            Enemy selected = new Enemy(Enemytype.cat);
+            if (enimies.GetEnemyInfo(choice, ref selected))
+            {
+                int damage = PlayerManager.instance.mainPlayer.Atk;
+                enimies.EnemygetDamage(choice, damage);
+                Console.WriteLine($"{selected.Name}에게 {damage}의 피해를 입혔습니다!");
+            }
 
             Thread.Sleep(1000);
         }
@@ -142,15 +148,16 @@ namespace sparta_9team_project
             ConsoleManager.PrintCentered("👾 적의 턴입니다! 공격이 시작됩니다...", 2);
             Console.WriteLine();
 
-            for (int i = 0; i < 3; i++)
+            for (int i = 1; i <= 3; i++)
             {
-                Enemy e = enimies.GetEnemy(i);
-                if (e == null || e.Hp <= 0) continue;
-
-                int damage = Math.Max(0, e.Atk - PlayerManager.instance.mainPlayer.Def);
-                PlayerManager.instance.mainPlayer.TakeDamage(damage);
-                Console.WriteLine($"{e.Name}이(가) {damage}의 피해를 입혔습니다!");
-                Thread.Sleep(1000);
+                Enemy enemy = new Enemy(Enemytype.cat);
+                if (enimies.GetEnemyInfo(i, ref enemy) && enemy.Hp > 0)
+                {
+                    int damage = Math.Max(0, enemy.Atk - PlayerManager.instance.mainPlayer.Def);
+                    PlayerManager.instance.mainPlayer.TakeDamage(damage);
+                    Console.WriteLine($"{enemy.Name}이(가) {damage}의 피해를 입혔습니다!");
+                    Thread.Sleep(1000);
+                }
             }
         }
 
