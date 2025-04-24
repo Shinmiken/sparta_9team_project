@@ -121,7 +121,7 @@ namespace sparta_9team_project
         public static void PlayerPhase()
         {
             Console.Clear();
-            ConsoleManager.PrintAnywhere("🗡️ 플레이어의 턴입니다! 공격할 적을 선택하세요.",36, 2);
+            ConsoleManager.PrintAnywhere("🗡️ 플레이어의 턴입니다! 공격할 적을 선택하세요.",40, 2);
             Console.WriteLine();
 
             for (int i = 0; i < 3; i++)
@@ -129,27 +129,26 @@ namespace sparta_9team_project
                 Enemy enemy = enemies[i];
                 if (enemy.Hp > 0)
                 {
-                    ConsoleManager.PrintAnywhere($"HP: [{enemy.Hp}]", locationx[i]+10 , 21);
-                    ConsoleManager.PrintAnywhere($"[{i + 1}] 레벨: {enemy.Level}, 이름: [{enemy.Name}]", locationx[i], 22);
+                    ConsoleManager.PrintAnywhere($"HP: [{enemy.Hp}]", locationx[i]+10 , 22);
+                    ConsoleManager.PrintAnywhere($"[{i + 1}] 레벨: {enemy.Level}, 이름: [{enemy.Name}]", locationx[i], 23);
                 }
                 ConsoleManager.PrintAsciiAt(Print.dogImage[6], 0, 6);
                 ConsoleManager.PrintAsciiAt(Print.dogImage[7], 40, 5);
-                ConsoleManager.PrintAsciiAt(Print.dogImage[8], 83, 6);
+                ConsoleManager.PrintAsciiAt(Print.dogImage[10], 83, 4);
             }
 
             int choice;
-            ConsoleManager.PrintAnywhere(">> 선택: ",49, 24);
-            Console.SetCursorPosition(58, 24);
+            ConsoleManager.PrintAnywhere(">> 선택: ",49, 27);
+            Console.SetCursorPosition(58, 27);
             while (!int.TryParse(Console.ReadLine(), out choice) || choice < 1 || choice > 3 || enemies[choice - 1].Hp <= 0)
             {
-                ConsoleManager.PrintAnywhere("잘못된 입력입니다. 다시 선택하세요.", 36, 24);
-                ConsoleManager.PrintAnywhere(">> 선택: ", 49, 24);
+                ConsoleManager.PrintAnywhere("잘못된 입력입니다. 다시 선택하세요.", 36, 26);
+                ConsoleManager.PrintAnywhere(">> 선택: ", 49, 27);
             }
 
             int damage = PlayerManager.instance.mainPlayer.Atk;
             enemies[choice - 1].GetDamage(damage);
-            Console.WriteLine($"{enemies[choice - 1].Name}에게 {damage}의 피해를 입혔습니다!");
-
+            
             Thread.Sleep(1000);
         }
 
@@ -158,20 +157,22 @@ namespace sparta_9team_project
         public static void EnemyPhase()
         {
             Console.Clear();
-            ConsoleManager.PrintCentered("👾 적의 턴입니다! 공격이 시작됩니다...", 2);
+            ConsoleManager.PrintAnywhere("👾 적의 턴입니다! 공격이 시작됩니다...",40, 2);
             Console.WriteLine();
 
             for (int i = 0; i < 3; i++)
             {
                 Enemy enemy = enemies[i];
+
+                int infoIndex = Array.FindIndex(Enemyinfos.enemyinfos, info => info.nm == enemy.Name);
+                Enemyinfo info = Enemyinfos.enemyinfos[infoIndex];
                 if (enemy.Hp > 0)
                 {
-                    ConsoleManager.PrintAnywhere($"HP: [{enemy.Hp}]", locationx[i] + 10, 21);
-                    ConsoleManager.PrintAnywhere($"[{i + 1}] 레벨: {enemy.Level}, 이름: [{enemy.Name}]", locationx[i], 22);
+                    ConsoleManager.PrintAnywhere($"HP: [{enemy.Hp}]", locationx[i] + 10, 26);
+                    ConsoleManager.PrintAnywhere($"[{i + 1}] 레벨: {enemy.Level}, 이름: [{enemy.Name}]", locationx[i], 28);
+                    
                 }
-                ConsoleManager.PrintAsciiAt(Print.dogImage[6], 0, 6);
-                ConsoleManager.PrintAsciiAt(Print.dogImage[7], 40, 5);
-                ConsoleManager.PrintAsciiAt(Print.dogImage[8], 83, 6);
+                ConsoleManager.PrintAsciiAt(info.enepic, locationx[i], 6);
             }
 
             for (int i = 0; i < 3; i++)
@@ -181,7 +182,6 @@ namespace sparta_9team_project
 
                 int damage = Math.Max(0, e.Atk - PlayerManager.instance.mainPlayer.Def);
                 PlayerManager.instance.mainPlayer.TakeDamage(damage);
-                ConsoleManager.PrintAnywhere($"{e.Name}이(가) {damage}의 피해를 입혔습니다!",30,24);2
                 Thread.Sleep(1000);
             }
         }
