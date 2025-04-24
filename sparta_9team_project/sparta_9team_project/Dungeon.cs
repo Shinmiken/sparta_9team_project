@@ -10,23 +10,26 @@ namespace sparta_9team_project
             Console.OutputEncoding = System.Text.Encoding.UTF8;
             Console.Clear();
             ConsoleManager.ConfigureConsoleSize();
+
             Random x = new Random();
-            int ramdomx = x.Next(1, 4);
+            int randomx = x.Next(1, 4);
             int hp = PlayerManager.instance.mainPlayer.Hp;
             Hpbar(hp);
 
             Console.WriteLine();
-            for (int i = 0; i < ramdomx; i++)
+            for (int i = 0; i < randomx; i++)
             {
-
                 ConsoleManager.PrintCenteredSlow("🌲 미르는 산책중.... 🌲", 55, 2, 60);
                 ConsoleManager.PrintCenteredSlow("                       ", 55, 2, 60);
                 Thread.Sleep(500);
-                
             }
 
+            //던전 진입 호출
+            Dungeon dungeon = new Dungeon();
+            dungeon.EnterDungeon();
         }
-        
+
+
         // 현재체력 >> hp바로 표시
         public static void Hpbar(int hp)
         {
@@ -56,10 +59,11 @@ namespace sparta_9team_project
             ConsoleManager.PrintCentered($"1. lv{level} [{name}]", 40);
         }
 
-        public static void EnterDungeon()
+        public void EnterDungeon()
         {
             Console.Clear();
             DiscoverEnermy();
+            PlayerPhase();
 
 
 
@@ -69,29 +73,39 @@ namespace sparta_9team_project
         {
             ConsoleManager.PrintCentered("👾 적을 발견했다! 👾", 2);
 
-            Enimies dungeonmob = new Enimies(3); // 적 3명 생성
+            Random rand = new Random();
+            Enemy[] enemies = new Enemy[3];
 
-            for (int i = 1; i <= 3; i++)
+            for (int i = 0; i < 3; i++)
             {
-                Enemy enemy = new Enemy(Enemytype.cat);
-                if (dungeonmob.GetEnemyInfo(i, ref enemy))
+                int typeIndex = rand.Next(0, 3); // catling(0), chihuahua(1), cat(2)
+                enemies[i] = new Enemy((Enemytype)typeIndex);
+            }
+
+            for (int i = 0; i < 3; i++)
+            {
+                Enemy e = enemies[i];
+                string name = e.Name;
+
+                Enemytype type = (Enemytype)Enum.Parse(typeof(Enemytype), name switch
                 {
-                    Console.WriteLine($"이름: {enemy.Name}, 레벨: {enemy.Level}, HP: {enemy.Hp}");
-                    ConsoleManager.PrintAsciiAt(Print.dogImage[6], 0, 0);
-                    ConsoleManager.PrintAsciiAt(Print.dogImage[7], 0, 0);
-                    ConsoleManager.PrintAsciiAt(Print.dogImage[8], 73, 5);
-                }
-                else
-                {
-                    Console.WriteLine($"{i}번 적 정보 불러오기 실패");
-                }
+                    "새끼고양이" => "catling",
+                    "치와와" => "chihuahua",
+                    "고양이" => "cat",
+                    _ => "catling"  // 기본값 fallback
+                });
+
+                Enemyinfo info = Enemyinfos.enemyinfos[(int)type];
+
+                Console.WriteLine($"[{i + 1}] 이름: {info.nm}, 레벨: {info.level}, HP: {info.hpoint}");
             }
         }
 
 
 
 
-public void PlayerPhase()
+
+        public void PlayerPhase()
         {
             Console.Clear();
             ConsoleManager.PrintCentered("🗡️ 플레이어의 턴입니다! 공격할 적을 선택하세요.", 2);
