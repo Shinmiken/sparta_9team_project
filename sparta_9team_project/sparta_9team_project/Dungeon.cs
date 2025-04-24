@@ -7,8 +7,7 @@ namespace sparta_9team_project
         private Enimies enimies;
         private static Enemy[] enemies = new Enemy[3];
         private static int[] locationx = { 1, 40, 82 };
-
-
+        
         public static void Walk()
         {
             Console.OutputEncoding = System.Text.Encoding.UTF8;
@@ -169,8 +168,8 @@ namespace sparta_9team_project
             }
 
             int damage = PlayerManager.instance.mainPlayer.Atk;
-            enemies[choice - 1].GetDamage(damage);
-            
+            PlayerManager.instance.mainPlayer.DealDamage(enemies[choice - 1], damage);
+
             Thread.Sleep(1000);
         }
 
