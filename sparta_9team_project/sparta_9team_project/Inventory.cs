@@ -27,12 +27,24 @@
 
 
         // 플레이어의 인벤토리 리스트
-        private Dictionary<string, int> inventory = new Dictionary<string, int>()
+        public Dictionary<string, int> inventory = new Dictionary<string, int>()
         {
             [ItemDataBase.smallHealingPotion.Name] = ItemDataBase.smallHealingPotion.Counts + 3, 
         };
-                
+
         // 인벤토리 [Methods]
+        public bool HasItem(Item item)
+        {
+            // 아이템이 인벤토리에 있는지 확인
+            if (inventory.ContainsKey(item.Name))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
         public void AddItem(Item item)
         {
             if (inventory.ContainsKey(item.Name))
