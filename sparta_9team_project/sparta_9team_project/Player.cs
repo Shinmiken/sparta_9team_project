@@ -27,13 +27,15 @@ namespace sparta_9team_project
 		public int MaxHp { get; set; } = 100;
 	    public JobType Job { get; set; }
         public string Bones { get; set; }
+        public int ImageType { get; set; }
 
         // [Constructor]
-        public Player (string name, int level, int hp, int maxHp, int atk, int def, JobType job, string bones) : base(name, level, atk, def, hp, maxHp) // 부모 클래스인 Character의 생성자 호출
+        public Player (string name, int level, int hp, int maxHp, int atk, int def, JobType job, string bones, int imageType) : base(name, level, atk, def, hp, maxHp) // 부모 클래스인 Character의 생성자 호출
         {
             MaxHp = maxHp;
             Job = job;
             Bones = bones;
+            ImageType = imageType;
         }
 
 
