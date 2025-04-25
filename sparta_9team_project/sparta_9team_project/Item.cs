@@ -105,7 +105,8 @@
                 return false;
             }
         }
-
+        //return Type == ItemType.소모품; 을 사용하면 위의 if 구문과 else 구문을 간결하게 사용할 수 있다고 합니다! - 황연주
+        
         public override void UseItem(Item item)
         {
             bool contains = ContainsItem(item);                                                                 // 아이템이 인벤토리에 있는지 체크
@@ -144,10 +145,12 @@
             // 소모품만 있는 딕셔너리에서 아이템 이름과 개수 출력
             Dictionary<string, int> onlyConsumables = new Dictionary<string, int>();
 
-            bool contains = ContainsItem()
-
-            
-
+            bool contains = ContainsItem() 
+            /*public bool ContainsItem(Item item)
+            {
+            return inventory.ContainsKey(item.Name) && inventory[item.Name] > 0;
+            }*/
+            // 특정 아이템을 추가하기 위한 메서드 구조입니다. bool contains = ContainsItem() 을 대체해서 사용할 수 있다고 합니다! - 황연주
 
         }
     }
