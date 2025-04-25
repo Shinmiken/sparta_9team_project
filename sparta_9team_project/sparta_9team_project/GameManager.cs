@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Numerics;
 using System.Text;
+using Newtonsoft.Json;
 
 namespace sparta_9team_project
 {
@@ -14,28 +15,46 @@ namespace sparta_9team_project
             ConsoleManager.ConfigureConsoleSize();
             Dungeon dungeon = new Dungeon();
 
-            StartGame(); // 시작화면 
-            ChoiceJob(); // 직업 선택
-            Player player = new Player("미르", 1, 100, 100, 10, 5, selectjob, "0"); // 플레이어 능력치 매개변수를 넣어 주기 위해 직업을 선택하고 불러오기 
+            Player player = StartGame();
+            type = player.ImageType;
             PlayerManager.instance.Init(player);
+
 
             while (true)
             {
+                Console.Clear();
                 MainScreen();
 
                 Console.SetCursorPosition(61, 28);
                 string choice = Console.ReadLine();
-                if (choice == "1")
+
+                if (choice == "1") // 상태 보기
                 {
                     MakeAnimation();
                     Thread.Sleep(500);
                     ShowStatus(player);
                 }
-                else if (choice == "2")
+                else if (choice == "2") // 던전 입장
                 {
                     Dungeon.Walk();
                 }
-                else if (choice == "0")
+                else if (choice == "3") // 인벤토리
+                {
+                    Console.Clear();
+                    Console.WriteLine("공사 중...");
+                    Thread.Sleep(1000);
+                }
+                else if (choice == "4") // 스킬보기
+                {
+                    Console.Clear();
+                    Console.WriteLine("공사 중...");
+                    Thread.Sleep(1000);
+                }
+                else if (choice == "5") // 게임 저장
+                {
+                    SaveDate.SaveGame(player);
+                }
+                else if (choice == "0") // 게임 종료
                 {
                     ShowGameEnd();
                 }
@@ -43,26 +62,42 @@ namespace sparta_9team_project
         }
 
         //첫 시작화면
-        public static void StartGame()
+        public static Player StartGame()
         {
             while (true)
             {
                 Console.Clear();
+                ConsoleManager.ColorPrintAsciiAt(ConsoleColor.Red, Print.dogImage[3], 75, 6);
+                ConsoleManager.ColorPrintAsciiAt(ConsoleColor.Yellow, Print.dogImage[5], 0, 7);
                 ConsoleManager.PrintAnywhere("『 미  르  의  모  험 』", 50, 2);
                 ConsoleManager.ColorPrintAnyWhere(ConsoleColor.Blue, "✦･ﾟ:* 미지의 세계로 떠나는 여정 *:･ﾟ✦", 43, 3);
-                ConsoleManager.ColorPrintAnyWhere(ConsoleColor.White, "⟡༺༒ 1. 시작하기 ༒༻⟡", 51, 5);
-                ConsoleManager.PrintAnywhere("⟡༺༒ 0. 종료하기 ༒༻⟡", 51, 7);
-                ConsoleManager.ColorPrintAsciiAt(ConsoleColor.Red, Print.dogImage[3], 74, 5);
-                ConsoleManager.ColorPrintAsciiAt(ConsoleColor.Yellow, Print.dogImage[5], 0, 5);
-                ConsoleManager.PrintAnywhere(">>", 58, 9);
-                ConsoleManager.PrintAnywhere("<<", 63, 9);
-                Console.SetCursorPosition(61, 9);
-                string choice = Console.ReadLine();
-                if (choice == "1")
+                ConsoleManager.ColorPrintAnyWhere(ConsoleColor.Green, "⟡༺༒ 1. 새로운 여정 시작하기 ༒༻⟡", 46, 5);
+                ConsoleManager.ColorPrintAnyWhere(ConsoleColor.Red, "⟡༺༒ 2. 저장된 여정 이어하기 ༒༻⟡", 46, 7);
+                ConsoleManager.ColorPrintAnyWhere(ConsoleColor.White, "⟡༺༒ 0. 종료하기 ༒༻⟡", 51, 9);
+
+                ConsoleManager.PrintAnywhere(">>", 58, 11);
+                ConsoleManager.PrintAnywhere("<<", 63, 11);
+                Console.SetCursorPosition(61, 11);
+                string Choice = Console.ReadLine();
+                if (Choice == "1")
                 {
-                    break;
+                    ChoiceJob(); // 직업 선택
+                    return new Player("미르", 1, 100, 100, 10, 5, selectjob, "0", type);
                 }
-                else if (choice == "0")
+                else if (Choice == "2")
+                {
+                    Player load = SaveDate.LoadGame();
+                    if (load != null)
+                    {
+                        return load;
+                    }
+                    else
+                    {
+                        ConsoleManager.PrintAnywhere("저장된 게임이 없습니다.", 50, 13);
+                        Thread.Sleep(1000);
+                    }
+                }
+                else if (Choice == "0")
                 {
                     ShowGameEnd();
                 }
@@ -121,11 +156,17 @@ namespace sparta_9team_project
         //게임 메인화면
         public static void MainScreen()
         {
+            int x = 20;
             Console.Clear();
-            ConsoleManager.ColorPrintAsciiAt(ConsoleColor.White, Print.dogImage[0], 35, 3);
-            ConsoleManager.PrintAnywhere("✦･ﾟ:* 1. 상태보기 *:･ﾟ✦", 50, 24);
-            ConsoleManager.PrintAnywhere("✦･ﾟ:* 2. 산책하기 *:･ﾟ✦", 50, 26);
-            ConsoleManager.PrintAnywhere("✦･ﾟ:* 0. 종료하기 *:･ﾟ✦", 50, 28);
+            ConsoleManager.ColorPrintAsciiAt(ConsoleColor.White, Print.dogImage[0], 60, 5);
+            ConsoleManager.PrintAnywhere("✦ ────── 『MENU 』────── ✦", 16, 6);
+            ConsoleManager.PrintAnywhere("[1] ✧ 『상태보기 』", 20, 8);
+            ConsoleManager.PrintAnywhere("[2] ✧ 『산책하기 』", 20, 10);
+            ConsoleManager.PrintAnywhere("[3] ✧ 『인벤토리 』", 20, 12);
+            ConsoleManager.PrintAnywhere("[4] ✧ 『스킬보기 』", 20, 14);
+            ConsoleManager.PrintAnywhere("[5] ✧ 『게임저장 』", 20, 16);
+            ConsoleManager.PrintAnywhere("[0] ✧ 『종료하기 』", 20, 18);
+            ConsoleManager.PrintAnywhere("✦ ────────────────────── ✦", 16, 20);
             ConsoleManager.PrintAnywhere(">>", 56, 31);
             ConsoleManager.PrintAnywhere("<<", 65, 28);
         }
@@ -133,43 +174,43 @@ namespace sparta_9team_project
         //미르 모습 변경 함수
         static void MakeAnimation()
         {
+            int y = 23;
             string[] image1Lines = Print.dogImage[0].Split('\n');
             string[] image2Lines = Print.dogImage[type + 2].Split('\n');
 
-            int height = Math.Min(image1Lines.Length, image2Lines.Length);
-            int width = Math.Max(image1Lines.Max(list => list.Length), image2Lines.Max(list => list.Length));
+            //int width = Math.Max(image1Lines.Max(list => list.Length), image2Lines.Max(list => list.Length));
 
             // 밑에서부터 두 번째 이미지로 한 줄씩 덮어쓰기
-            for (int i = 20; i >= 0; i--)
+            for (int i = 21; i >= 0; i--)
             {
-                Console.SetCursorPosition(36, i);
-                Console.Write(image2Lines[i].PadRight(width)); // 공백으로 채워서 덮어쓰기
-
+                Console.SetCursorPosition(61, y);
+                Console.Write(image2Lines[i].PadRight(50)); // 공백으로 채워서 덮어쓰기
+                y--;
                 Thread.Sleep(100); // 덮는 속도 조절
             }
-
-            Console.SetCursorPosition(25, height); // 커서를 이미지 아래로
-
         }
 
         //미르의 상태보기
         public static void ShowStatus(Player player)
         {
+            int x = 20;
             while (true)
             {
                 Console.Clear();
-                ConsoleManager.PrintAnywhere("미르의 상태보기", 30, 7);
-                ConsoleManager.PrintAnywhere($"Lvl. {player.Level}", 30, 10);
-                ConsoleManager.PrintAnywhere($"미르           직업 : {player.Job}", 30, 11);
-                ConsoleManager.PrintAnywhere("=================================", 30, 12);
-                ConsoleManager.ColorPrintAnyWhere(ConsoleColor.Red, $"공격력 : {player.Atk}", 30, 13);
-                ConsoleManager.ColorPrintAnyWhere(ConsoleColor.Blue, $"방어력 : {player.Def}", 30, 14);
-                ConsoleManager.ColorPrintAnyWhere(ConsoleColor.Green, $"체력 : {player.Hp} / {player.MaxHp}", 32, 15);
-                ConsoleManager.ColorPrintAnyWhere(ConsoleColor.Yellow, $"뼈다귀 : {player.Bones}", 30, 16);
-                ConsoleManager.ColorPrintAnyWhere(ConsoleColor.White, ">> [0]돌아가기", 30, 17);
-                ConsoleManager.PrintAsciiAt(Print.dogImage[type + 2], 70, 6);
-                ConsoleManager.PrintAnywhere(">>", 30, 18);
-                Console.SetCursorPosition(34, 18);
+                ConsoleManager.PrintAnywhere("미르의 상태보기", x, 6);
+                ConsoleManager.PrintAnywhere($"Lvl. {player.Level}", x, 9);
+                ConsoleManager.PrintAnywhere($"Exp : 경험치", x, 10); // 경험치 변수 생기면 변경 필요
+                ConsoleManager.PrintAnywhere($"미르           직업 : {player.Job}", x, 11);
+                ConsoleManager.PrintAnywhere("=================================", x, 12);
+                ConsoleManager.ColorPrintAnyWhere(ConsoleColor.Red, $"공격력 : {player.Atk}", x, 13);
+                ConsoleManager.ColorPrintAnyWhere(ConsoleColor.Blue, $"방어력 : {player.Def}", x, 14);
+                ConsoleManager.ColorPrintAnyWhere(ConsoleColor.Green, $"체력 : {player.Hp} / {player.MaxHp}", x + 2, 15);
+                ConsoleManager.ColorPrintAnyWhere(ConsoleColor.Yellow, $"뼈다귀 : {player.Bones}", x, 16);
+                ConsoleManager.ColorPrintAnyWhere(ConsoleColor.Red, $"패배 : {player.Bones}", x + 2, 17); // 패배 변수 생기면 변경 필요
+                ConsoleManager.ColorPrintAnyWhere(ConsoleColor.White, ">> [0]돌아가기", x, 18);
+                ConsoleManager.PrintAsciiAt(Print.dogImage[type + 2], 61, 2);
+                ConsoleManager.PrintAnywhere(">>", x, 19);
+                Console.SetCursorPosition(24, 19);
                 string choice = Console.ReadLine();
                 if (choice == "0")
                 {
@@ -263,7 +304,7 @@ namespace sparta_9team_project
 ⠀⠀⠀⠀⠀⠈⠹⡞⡧⡯⢷⠽⡼⢮⠊⠙⠑⠙⠑⠙⠉⠉⠳⡵⡯⣞⢷⢵⢧⠷⡵⡵⡧⡗⠙⠉⠋⠑⠉⠃⠈⠀⠀⠀⠀⠀⠀⠀⠀⠀",
 
            //2
-             @"                         ⢀⣀⣀⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+             @"          ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
 ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣰⢞⡽⣝⣞⡵⣶⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
 ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣰⢞⣵⡫⣞⣞⡼⡾⣕⣟⣶⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
 ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣸⣳⡫⣞⢮⣳⢵⣻⣻⣗⡷⡽⣾⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
