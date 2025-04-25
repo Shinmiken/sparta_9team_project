@@ -176,6 +176,15 @@ namespace sparta_9team_project
     }
 }
 
+public static class QuestManager
+{
+    public static void TriggerQuest(string questName)
+    {
+        // TODO: 나중에 조건 확인하고 선물 지급하는 로직 추가 필요 !!
+        Console.WriteLine($"[퀘스트 트리거됨] : {questName}");
+    }
+}
+
 // - 기능 체크리스트
 // - player.UsedItem(string) 메서드를                  {특정 아이템 사용 여부 체크 목적}	                Player.cs 클래스에 추가 필요
 // - enemies 리스트 (현재 전투 중 몬스터 목록)을	           {EncounterManager / Battle.cs에서 활용 목적}	  EncounterManager.cs에 있도록 연결하기
