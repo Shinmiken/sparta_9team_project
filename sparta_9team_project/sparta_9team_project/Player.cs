@@ -29,6 +29,8 @@ namespace sparta_9team_project
         public string Bones { get; set; }
         public int ImageType { get; set; }
 
+        InventoryManager inventory = InventoryManager.Instance; // 인벤토리 매니저의 플레이어 인벤토리
+
         // [Constructor]
         public Player (string name, int level, int hp, int maxHp, int atk, int def, JobType job, string bones, int imageType) : base(name, level, atk, def, hp, maxHp) // 부모 클래스인 Character의 생성자 호출
         {
@@ -44,10 +46,10 @@ namespace sparta_9team_project
         {
             Random random = new Random();
 
-            int tenPercent = (int)Math.Ceiling(damage * 0.1);   // ±10% 오차
-            int randomDmgMin =  damage - tenPercent;            // 최소 데미지
-            int randomDmgMax =  damage + tenPercent;            // 최대 데미지
-            damage = random.Next(randomDmgMin, randomDmgMax + 1);  // 랜덤 데미지
+            int tenPercent = (int)Math.Ceiling(damage * 0.1);       // ±10% 오차
+            int randomDmgMin =  damage - tenPercent;                // 최소 데미지
+            int randomDmgMax =  damage + tenPercent;                // 최대 데미지
+            damage = random.Next(randomDmgMin, randomDmgMax + 1);   // 랜덤 데미지
 
             mob.GetDamage(damage); // 적의 HP에 데미지 적용
 
