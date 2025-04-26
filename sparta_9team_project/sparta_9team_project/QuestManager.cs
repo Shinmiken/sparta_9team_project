@@ -165,7 +165,7 @@ namespace sparta_9team_project
         }
     }
 
-    public static class Inventory
+    public static class InventoryUI
     {
         private static List<string> items = new List<string>();
 
