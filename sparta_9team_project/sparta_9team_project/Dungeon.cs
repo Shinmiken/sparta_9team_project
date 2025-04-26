@@ -10,7 +10,7 @@ namespace sparta_9team_project
         private Enimies enimies;
         private static Enemy[] enemies = new Enemy[3];
         private static int[] locationx = { 1, 40, 82 };
-
+        private static int currentDungeonType = 1;
 
 
         public static void Walking(int dungeonType)
@@ -96,6 +96,7 @@ namespace sparta_9team_project
             }
 
             Thread.Sleep(1000);
+            currentDungeonType = choice;
             Walking(choice);
         }
 
@@ -418,7 +419,7 @@ namespace sparta_9team_project
         }
 
 
-        public static void PrintPlayerInfo(int dungeonType)
+        public static void PrintPlayerInfo()
         {
             Player player = PlayerManager.instance.mainPlayer;
 
@@ -440,20 +441,21 @@ namespace sparta_9team_project
             // 현재 던전 위치 표시
             string dungeonName = "";
 
-            if (dungeonType == 1)
+            if (currentDungeonType == 1)
             {
                 dungeonName = "집앞 공원";
             }
-            else if (dungeonType == 2)
+            else if (currentDungeonType == 2)
             {
                 dungeonName = "한강 공원";
             }
-            else if (dungeonType == 3)
+            else if (currentDungeonType == 3)
             {
                 dungeonName = "뒷산";
             }
             Console.WriteLine($"현재 위치: {dungeonName}");
         }
+
 
 
     }
