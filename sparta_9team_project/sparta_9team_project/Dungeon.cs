@@ -335,31 +335,25 @@ namespace sparta_9team_project
 
         public static void EnemyPhase()
         {
-            Console.Clear();
-            ConsoleManager.PrintAnywhere("👾 적의 턴입니다! 공격이 시작됩니다...", 40, 2);
-            Console.WriteLine();
-
             for (int i = 0; i < 3; i++)
             {
                 Enemy enemy = enemies[i];
-
+                if (enemy.Hp <= 0) continue; // 죽은 적 건너뜀
+                Console.Clear();
+                ConsoleManager.PrintAnywhere("👾 적의 턴입니다! 공격이 시작됩니다...", 40, 2);
                 int infoIndex = Array.FindIndex(Enemyinfos.enemyinfos, info => info.nm == enemy.Name);
                 Enemyinfo info = Enemyinfos.enemyinfos[infoIndex];
-                if (enemy.Hp > 0)
-                {
-                    ConsoleManager.PrintAnywhere($"HP: [{enemy.Hp}]", locationx[i] + 10, 22);
-                    ConsoleManager.PrintAnywhere($"[{i + 1}] 레벨: {enemy.Level}, 이름: [{enemy.Name}]", locationx[i], 23);
-                    ConsoleManager.PrintAsciiAt(info.enepic, locationx[i], 6);
+                ConsoleManager.PrintAsciiAt(info.enepic, locationx[i], 6);
+                ConsoleManager.PrintAnywhere($"HP: [{enemy.Hp}]", locationx[i] + 10, 22);
+                ConsoleManager.PrintAnywhere($"[{i + 1}] 레벨: {enemy.Level}, 이름: [{enemy.Name}]", locationx[i], 23);
+                int damage = Math.Max(0, enemy.Atk - PlayerManager.instance.mainPlayer.Def);
+                PlayerManager.instance.mainPlayer.TakeDamage(damage);
 
-                    int damage = Math.Max(0, enemy.Atk - PlayerManager.instance.mainPlayer.Def);
-                    PlayerManager.instance.mainPlayer.TakeDamage(damage);
-                    PrintPlayerInfo();
-                    Thread.Sleep(1000);
-                }
+                PrintPlayerInfo();
+
+                Thread.Sleep(1000);
             }
         }
-
-
 
 
         public static void Result(bool win)
