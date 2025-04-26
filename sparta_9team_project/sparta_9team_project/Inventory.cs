@@ -48,7 +48,7 @@
         public bool HasItem(Item item)
         {
             // 아이템이 인벤토리에 있는지 확인
-            if (inventory.ContainsKey(item.Name))
+            if (inventory.ContainsKey(item.Name) && inventory[item.Name] > 0)
             {
                 return true;
             }
