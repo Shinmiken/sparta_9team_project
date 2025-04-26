@@ -27,6 +27,8 @@ namespace sparta_9team_project
 		public int MaxHp { get; set; } = 100;
 	    public JobType Job { get; set; }
         public string Bones { get; set; }
+        public int Exp { get; set; } = 0;       // 경험치
+        public int MaxExp { get; set; } = 100;  // 최대 경험치
         public int ImageType { get; set; }
 
         InventoryManager inventory = InventoryManager.Instance; // 인벤토리 매니저의 플레이어 인벤토리
@@ -65,5 +67,25 @@ namespace sparta_9team_project
             ConsoleManager.PrintAnywhere($"{Name}는 {damage}만큼의 댕미지를 입었습니다!",40,25);
             ConsoleManager.PrintAnywhere($"현재 {Name}의 체력: {Hp}",46,27);
         }
+
+        public void GainExp(int exp)
+        {
+            Exp += exp;
+            if (Exp >= MaxExp)
+            {
+                LevelUp();
+                Exp = Exp - MaxExp; // 남은 경험치
+            }
+        }   // 러프. 추후 수정 예정
+
+        public void LevelUp()
+        {
+            Level++;
+            MaxHp += 10; // 레벨업 시 최대 체력 증가
+            Hp = MaxHp;  // 체력 회복
+            Atk += 5;    // 공격력 증가
+            Def += 2;    // 방어력 증가
+            ConsoleManager.PrintAnywhere($"{Name}이(가) 성장했습니다! 현재 레벨: {Level}", 40, 25);
+        }          // 러프. 추후 수정 예정
     }
 }

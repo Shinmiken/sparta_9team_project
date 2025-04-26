@@ -1,6 +1,6 @@
 ﻿namespace sparta_9team_project
 {
-    class InventoryManager
+    public class InventoryManager
     {
         // 인벤토리 싱글톤 활성화
         private static InventoryManager _instance;
@@ -33,6 +33,18 @@
         };
 
         // 인벤토리 [Methods]
+        public bool isEmpty()
+        {
+            // 인벤토리가 비어있는지 확인
+            if (inventory.Count == 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
         public bool HasItem(Item item)
         {
             // 아이템이 인벤토리에 있는지 확인
@@ -47,6 +59,10 @@
         }
         public void AddItem(Item item)
         {
+            // 만약 인벤토리에 이미 아이템이 있다면
+            // 아이템.카운트 + 1
+            // 만약 인벤토리에 아이템이 없다면
+            // 아이템 추가 후 카운트 +1
             if (inventory.ContainsKey(item.Name))
             {
                 item.Counts++;
@@ -61,6 +77,11 @@
         }
         public void RemoveOneByOne(Item item)
         {
+            // 만약 인벤토리에 아이템이 이미 있다면
+            // 만약 있는 아이템의 카운트가 0보다 크다면
+            // 아이템.카운트 -1
+            // 만약 인벤토리에 아이템이 없다면
+            // 아이템이 없다는 문구 출력
             if (inventory.ContainsKey(item.Name))
             {   
                 if (item.Counts > 0)
@@ -79,9 +100,14 @@
         }
         public void RemoveAll(Item item)
         {
+            // 만약 아이템이 인벤토리에 있다면
+            // 아이템.카운트 == 0, 아이템 인벤토리에서 삭제
+            // 만약 아이템이 인벤토리에 없다면
+            // 아이템이 없다는 문구 출력
             if (inventory.ContainsKey(item.Name))
             {
-                inventory.Remove(item.Name);
+                item.Counts = 0;
+                inventory.Remove(item.Name);  
             }
             else
             {
