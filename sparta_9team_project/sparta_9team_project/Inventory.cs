@@ -33,7 +33,7 @@
         };
 
         // 인벤토리 [Methods]
-        public bool isEmpty()
+        public bool IsEmpty()
         {
             // 인벤토리가 비어있는지 확인
             if (inventory.Count == 0)
