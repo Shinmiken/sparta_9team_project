@@ -22,6 +22,7 @@ namespace sparta_9team_project
     // [Player] 클래스 - 플레이어 캐릭터
     public class Player : Character
     {
+   	public bool IsInvincible { get; set; } = false; // 최종 보스 무적 처리 관련 함수 추가했습니당 - 황연주
 		// [Fields]
 
 		public int MaxHp { get; set; } = 100;
@@ -31,6 +32,8 @@ namespace sparta_9team_project
         public int MaxExp { get; set; } = 100;  // 최대 경험치
         public int ImageType { get; set; }
 
+	private List<string> usedItems = new List<string>(); // 사용한 아이템 이름 저장용 리스트 - 황연주
+ 
         InventoryManager inventory = InventoryManager.Instance; // 인벤토리 매니저의 플레이어 인벤토리
 
         // [Constructor]
@@ -61,12 +64,29 @@ namespace sparta_9team_project
 
         public void TakeDamage(int damage)
         {
+	    if (IsInvincible)
+    	    {
+           	 Console.WriteLine("미르는 갑자기 힘이 넘쳐남을 느꼈다!");
+            	 return;
+    	    }	
+	 
             Hp -= damage;
             if (Hp < 0) { Hp = 0; }
 
             ConsoleManager.PrintAnywhere($"{Name}는 {damage}만큼의 댕미지를 입었습니다!",40,25);
             ConsoleManager.PrintAnywhere($"현재 {Name}의 체력: {Hp}",46,27);
         }
+	public void UseItem(string itemName)
+	{
+   		usedItems.Add(itemName);
+   		Console.WriteLine($"{itemName}을(를) 사용했습니다.");
+	}
+
+	public bool HasUsedItem(string itemName)
+	{
+  		return usedItems.Contains(itemName);
+	}
+
 
         public void GainExp(int exp)
         {

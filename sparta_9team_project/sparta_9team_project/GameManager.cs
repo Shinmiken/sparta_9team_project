@@ -3,6 +3,10 @@ using System.Numerics;
 using System.Text;
 using Newtonsoft.Json;
 using System.Media;
+using System.ComponentModel.Design;
+using System.IO.Compression;
+using System.Diagnostics.Metrics;
+using System.Xml.Linq;
 
 namespace sparta_9team_project
 {
@@ -41,9 +45,7 @@ namespace sparta_9team_project
                 }
                 else if (choice == "3") // 인벤토리
                 {
-                    Console.Clear();
-                    Console.WriteLine("공사 중...");
-                    Thread.Sleep(1000);
+                    ShowInventory();
                 }
                 else if (choice == "4") // 스킬보기
                 {
@@ -51,7 +53,11 @@ namespace sparta_9team_project
                     Console.WriteLine("공사 중...");
                     Thread.Sleep(1000);
                 }
-                else if (choice == "5") // 게임 저장
+                else if (choice == "5") // 퀘스트 보기
+                {
+                    ShowQuest();
+                }
+                else if (choice == "6") // 게임 저장
                 {
                     SaveDate.SaveGame(player);
                 }
@@ -72,7 +78,7 @@ namespace sparta_9team_project
                 ConsoleManager.ColorPrintAsciiAt(ConsoleColor.Yellow, Print.dogImage[5], 0, 7);
                 ConsoleManager.PrintAnywhere("『 미  르  의  모  험 』", 50, 2);
                 ConsoleManager.ColorPrintAnyWhere(ConsoleColor.Blue, "✦･ﾟ:* 미지의 세계로 떠나는 여정 *:･ﾟ✦", 43, 3);
-                ConsoleManager.ColorPrintAnyWhere(ConsoleColor.Green, "⟡༺༒ 1. 새로운 여정 시작하기 ༒༻⟡", 46, 5);
+                ConsoleManager.ColorPrintAnyWhere(ConsoleColor.Cyan, "⟡༺༒ 1. 새로운 여정 시작하기 ༒༻⟡", 46, 5);
                 ConsoleManager.ColorPrintAnyWhere(ConsoleColor.Red, "⟡༺༒ 2. 저장된 여정 이어하기 ༒༻⟡", 46, 7);
                 ConsoleManager.ColorPrintAnyWhere(ConsoleColor.White, "⟡༺༒ 0. 종료하기 ༒༻⟡", 51, 9);
 
@@ -119,8 +125,8 @@ namespace sparta_9team_project
             while (true)
             {
                 Console.Clear();
-                ConsoleManager.ColorPrintAsciiAt(ConsoleColor.Red, Print.dogImage[3], 74, 5);
-                ConsoleManager.ColorPrintAsciiAt(ConsoleColor.Yellow, Print.dogImage[5], 0, 5);
+                ConsoleManager.ColorPrintAsciiAt(ConsoleColor.Red, Print.dogImage[3], 75, 6);
+                ConsoleManager.ColorPrintAsciiAt(ConsoleColor.Yellow, Print.dogImage[5], 0, 7);
                 ConsoleManager.PrintAnywhere("✦･ﾟ:* 락토프리 우유를 너무나도 좋아하는 댕댕이 미르는 *:･ﾟ✦", 33, 1);
                 ConsoleManager.PrintAnywhere("✦･ﾟ:* 주인들이 주는 우유의 양이 턱없이 부족했던 탓에 *:･ﾟ✦", 34, 2);
                 ConsoleManager.PrintAnywhere("✦･ﾟ:* 우유를 직접 찾으러 나서기로 하는데... *:･ﾟ✦", 38, 3);
@@ -165,9 +171,10 @@ namespace sparta_9team_project
             ConsoleManager.PrintAnywhere("[2] ✧ 『산책하기 』", 20, 10);
             ConsoleManager.PrintAnywhere("[3] ✧ 『인벤토리 』", 20, 12);
             ConsoleManager.PrintAnywhere("[4] ✧ 『스킬보기 』", 20, 14);
-            ConsoleManager.PrintAnywhere("[5] ✧ 『게임저장 』", 20, 16);
-            ConsoleManager.PrintAnywhere("[0] ✧ 『종료하기 』", 20, 18);
-            ConsoleManager.PrintAnywhere("✦ ────────────────────── ✦", 16, 20);
+            ConsoleManager.PrintAnywhere("[5] ✧ 『퀘스트창 』", 20, 16);
+            ConsoleManager.PrintAnywhere("[6] ✧ 『게임저장 』", 20, 18);
+            ConsoleManager.PrintAnywhere("[0] ✧ 『종료하기 』", 20, 20);
+            ConsoleManager.PrintAnywhere("✦ ────────────────────── ✦", 16, 22);
             ConsoleManager.PrintAnywhere(">>", 56, 31);
             ConsoleManager.PrintAnywhere("<<", 65, 28);
         }
@@ -200,7 +207,7 @@ namespace sparta_9team_project
                 Console.Clear();
                 ConsoleManager.PrintAnywhere("미르의 상태보기", x, 6);
                 ConsoleManager.PrintAnywhere($"Lvl. {player.Level}", x, 9);
-                ConsoleManager.PrintAnywhere($"Exp : 경험치", x, 10); // 경험치 변수 생기면 변경 필요
+                ConsoleManager.PrintAnywhere($"Exp : {player.Exp}", x, 10); // 경험치 변수 생기면 변경 필요
                 ConsoleManager.PrintAnywhere($"미르           직업 : {player.Job}", x, 11);
                 ConsoleManager.PrintAnywhere("=================================", x, 12);
                 ConsoleManager.ColorPrintAnyWhere(ConsoleColor.Red, $"공격력 : {player.Atk}", x, 13);
@@ -228,6 +235,210 @@ namespace sparta_9team_project
             }
         }
 
+        //혹시 인벤토리에서 오류 생기면 아이템에 클래스 초기화 부분을 람다식으로 변경하면 오류가 사라집니다.
+        //public Player player => PlayerManager.instance.mainPlayer;
+        //public Inventory invenManager => InventoryManager.Instance.PlayerInventory;
+        //public Dictionary<string, int> inventory => InventoryManager.Instance.PlayerInventory.inventory;
+        //인벤토리 보여주기
+        public static void ShowInventory()
+        {
+            bool isOver = true;
+            while (isOver)
+            {
+                Console.Clear();
+                int width = 150;
+                int height = 29;
+
+                // 상단과 하단 테두리 출력
+                for (int y = 0; y < height; y++)
+                {
+                    for (int x = 0; x < width; x++)
+                    {
+                        if (x == 0 && y == 0)
+                        {
+                            ConsoleManager.PrintAnywhere("╔", x, y);
+                        }
+                        else if (x == width - 1 && y == 0)
+                        {
+                            ConsoleManager.PrintAnywhere("╗", x, y);
+                        }
+                        else if (x == 0 && y == 28)
+                        {
+                            ConsoleManager.PrintAnywhere("╚", x, y);
+                        }
+                        else if (x == width - 1 && y == 28)
+                        {
+                            ConsoleManager.PrintAnywhere("╝", x, y);
+                        }
+                        else if (x == 0 && y == 14)
+                        {
+                            ConsoleManager.PrintAnywhere("╠", x, y);
+                        }
+                        else if (x == width - 1 && y == 14)
+                        {
+                            ConsoleManager.PrintAnywhere("╣", x, y);
+                        }
+                        else if (y == 0 || y == height - 1)
+                        {
+                            ConsoleManager.PrintAnywhere("═", x, y);
+                        }
+                        else if (x == 0 || x == width - 1)
+                        {
+                            ConsoleManager.PrintAnywhere("║", x, y);
+                        }
+
+                    }
+                }
+                for (int x = 1; x < 119; x++) // 중앙 가로 줄 출력
+                {
+                    string line = (x == 119 / 2) ? "╦" : "═";
+                    ConsoleManager.PrintAnywhere(line, x, 14);
+                }
+                for (int y = 15; y < 29; y++) // 중앙 세로 줄 출력
+                {
+                    string line = (y == 28) ? "╩" : "║";
+                    ConsoleManager.PrintAnywhere(line, 59, y);
+                }
+                //찐 인벤 표시
+                var inventory = InventoryManager.Instance.PlayerInventory.inventory;
+
+                // 인벤토리가 비었는지 체크
+                if (inventory.Count == 0)
+                {
+                    Console.WriteLine("인벤토리가 비어 있습니다.");
+                }
+                else
+                {
+                    int i = 1;
+                    foreach (var (itemName, count) in inventory)
+                    {
+                        Item itemObject = null;
+
+                        // consumableStorage에서 아이템 찾아오기
+                        if (ItemDataBase.consumableStorage.TryGetValue(itemName, out itemObject) ||
+                            ItemDataBase.weaponStorage.TryGetValue(itemName, out itemObject) ||
+                            ItemDataBase.armorStorage.TryGetValue(itemName, out itemObject))
+                        {
+                            Console.SetCursorPosition(1, i);
+                            Console.WriteLine($"{itemObject.Name}: {count}개 - {itemObject.Description}"); // 개수 표기가 인벤토리 DIctionary에서의 Count만큼 표시되지만 실제 가지고 있는건 itemBase의 count만큼 자지고 있습니다
+                                                                                                          // 그래서 사용해도 표시 개수가 줄어들지 않네요
+                        }
+                        i++;
+                    }
+                }
+                // 아이템 표시
+
+                ConsoleManager.PrintAnywhere("아이템 이름을 입력해주세요 : ", 60, 15);
+                ConsoleManager.PrintAnywhere("나가기는 나가기를 입력해주세요", 60, 16);
+                Console.SetCursorPosition(90, 15);
+                string chooseitem = Console.ReadLine();
+
+                // 1. 아이템을 찾는다
+                Item selectedItem = null;
+
+                if (ItemDataBase.consumableStorage.ContainsKey(chooseitem))
+                {
+                    selectedItem = ItemDataBase.consumableStorage[chooseitem];
+                }
+                //else if (ItemDataBase.weaponStorage.ContainsKey(chooseitem)) // 공격 장비 추가하면 활성화
+                //{
+                //    selectedItem = ItemDataBase.weaponStorage[chooseitem];
+                //}
+                //else if (ItemDataBase.armorStorage.ContainsKey(chooseitem))// 방어 장비 추가하면 활성화
+                //{
+                //    selectedItem = ItemDataBase.armorStorage[chooseitem];
+                //}
+
+                if (chooseitem == "나가기")
+                {
+                    isOver = false;
+                }
+                else if (selectedItem == null)
+                {
+                    ConsoleManager.PrintAnywhere("아이템이 없습니다!", 90, 15);
+                    Thread.Sleep(1000);
+                }
+                else
+                {
+                    // 여기부터 selectedItem 안전하게 사용
+                    if (selectedItem.Type == ItemType.소모품)
+                    {
+                        Consumable potion = (Consumable)selectedItem;
+                        while (true)
+                        {
+                            ConsoleManager.PrintAnywhere($"{potion.Name}", 2, 15);
+                            ConsoleManager.PrintAnywhere("[1] 사용하기", 2, 16);
+                            ConsoleManager.PrintAnywhere("[2] 취소하기", 2, 17);
+                            ConsoleManager.PrintAnywhere(">>", 2, 18);
+                            ConsoleManager.PrintAnywhere(" ", 5, 18);
+                            Console.SetCursorPosition(5, 18);
+                            string choice = Console.ReadLine();
+                            if (choice == "1")
+                            {
+                                Console.SetCursorPosition(2, 19);
+                                if (potion.Counts == 0) // 여기서 포션의 개수를 비교했지만 UseItem()메서드에 if (contains)이분분을 if (contains && Count != 0)이걸로 수정해도 될거같습니다
+                                {
+                                    Console.WriteLine($"포션이 부족합니다.");
+                                    Thread.Sleep(1000);
+                                    break;
+                                }
+                                else
+                                {
+                                    potion.UseItem(potion);
+                                    Thread.Sleep(1000);
+                                    break;
+                                } 
+                            }
+                            else if (choice == "2")
+                            {
+
+                                break;
+                            }
+                        }
+                    }
+                    //else // 무기 만들시 활성화
+                    //{
+                    //    Weapon weapon = (Weapon)selectedItem;
+                    //    if (weapon.Type == ItemType.무기)
+                    //    {
+                    //        while (true)
+                    //        {
+                    //            ConsoleManager.PrintAnywhere($"{weapon.Name}", 2, 15);
+                    //            ConsoleManager.PrintAnywhere("[1] 장착하기", 2, 16);
+                    //            ConsoleManager.PrintAnywhere("[2] 취소하기", 2, 17);
+                    //            ConsoleManager.PrintAnywhere(">>", 2, 18);
+                    //            ConsoleManager.PrintAnywhere(" ", 5, 18);
+                    //            Console.SetCursorPosition(5, 18);
+                    //            string choice = Console.ReadLine();
+                    //            if (choice == "1")
+                    //            {
+                    //                Console.SetCursorPosition(2, 19);
+                    //                weapon.EquipItem(weapon);
+                    //                Thread.Sleep(1000);
+                    //                break;
+                    //            }
+                    //            else if (choice == "2")
+                    //            {
+                    //                break;
+                    //            }
+                    //        }
+                    //    }
+                    //    else
+                    //    {
+                    //        Console.WriteLine("방어 구현중");
+                    //    }
+                    //}
+                }
+            }
+        }
+
+        //퀘스트 보여주기
+        public static void ShowQuest()
+        {
+            QuestManager.InitQuests();
+            QuestManager.ShowQuestList();
+
+        }
         //게임 종료 화면
         static void ShowGameEnd()
         {
