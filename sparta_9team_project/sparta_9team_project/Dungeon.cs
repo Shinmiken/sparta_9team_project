@@ -308,20 +308,10 @@ namespace sparta_9team_project
             }
             else if (choice == 2)
             {
-                Skill();
+                Skills.HandleSkill(PlayerManager.instance.mainPlayer, enemies);
+                Thread.Sleep(500);
+                PlayerPhase();
             }
-        }
-
-        // 스킬 (임시)
-        public static void Skill ()
-        {
-            ConsoleManager.PrintAnywhere("                                                 ", 36, 26);
-            ConsoleManager.PrintAnywhere("                                                 ", 36, 27);
-            ConsoleManager.PrintAnywhere("                                                 ", 36, 28);
-            ConsoleManager.PrintAnywhere("미구현입니다.", 50, 26);
-            ConsoleManager.PrintAnywhere(">> [Enter]를 눌러 돌아가기...", 42, 27);
-            Console.ReadLine();
-            PlayerPhase();
         }
 
 
@@ -539,7 +529,8 @@ namespace sparta_9team_project
                 }
                 else
                 {
-                    Skill(); 
+                    Skills.HandleSkill(PlayerManager.instance.mainPlayer, enemies);
+                    Thread.Sleep(500);
                 }
 
                 Thread.Sleep(500);
