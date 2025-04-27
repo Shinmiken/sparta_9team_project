@@ -14,7 +14,8 @@ namespace sparta_9team_project
         mortorcycle,  //오토바이
         bear, // 곰
         boar, // 멧돼지
-        eagle // 독수리
+        eagle, // 독수리
+        finalboss
         // 더 추가가능...
     }
 
@@ -59,7 +60,8 @@ namespace sparta_9team_project
             new Enemyinfo("오토바이", 5, 24, 10, 120, 22, "부릉부릉",    Print.dogImage[8], 120, Enemytype.mortorcycle),
             new Enemyinfo("곰돌이",6,22,14,110,22,"으르렁",     Print.dogImage[13],110,Enemytype.bear),
             new Enemyinfo("멧돼지",7,24,12, 95,20,"돌진",       Print.dogImage[15], 95,Enemytype.boar),
-            new Enemyinfo("독수리",8,26, 8, 80,25,"하늘 강타", Print.dogImage[14], 80,Enemytype.eagle)
+            new Enemyinfo("독수리",8,26, 8, 80,25,"하늘 강타", Print.dogImage[14], 80,Enemytype.eagle),
+            new Enemyinfo("동물병원의사",25,60,40,600,300,"사나운 주사기",Print.dogImage[16],600,Enemytype.finalboss)
 
         };
     }
@@ -90,14 +92,14 @@ namespace sparta_9team_project
         private Enemy[] enemies;
         private int enemycount;
 
-        public Enimies(int ecount) // enemycount : 적들의 수
+        public Enimies(int ecount, int rangestart, int rangeend) // enemycount : 적들의 수, rangestar : 랜덤 시작 , rangeend : rangeend
         {
             Random rand = new Random();
             enemycount = ecount;
             enemies = new Enemy[ecount]; // 적들의 수를 받아서 enemy 배열을 생성.
             for (int i = 0; i < ecount; i++)
             {
-                int t = rand.Next(0, Enemyinfos.enemyinfos.Length);
+                int t = rand.Next(rangestart, rangeend);
                 enemies[i] = new Enemy((Enemytype)t);
             }
 
