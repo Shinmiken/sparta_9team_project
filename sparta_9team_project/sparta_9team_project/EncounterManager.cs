@@ -5,27 +5,26 @@ namespace sparta_9team_project
 {
     public static class EncounterManager
     {
-        // 현재 전투 중인 몬스터 리스트
-        public static List<Enemy> CurrentEnemies = new List<Enemy>();
+        private static Enemy[] currentEnemies;
 
-        // 몬스터 리스트 초기화
-        public static void SetupEnemies(Enemy[] enemiesArray)
+        // 몬스터 체력 추적용
+        public static void SetupEnemies(Enemy[] enemies)
         {
-            CurrentEnemies.Clear();
-            foreach (var enemy in enemiesArray)
-            {
-                CurrentEnemies.Add(enemy);
-            }
+            currentEnemies = enemies;
         }
 
-        // 살아있는 몬스터 수 세기
-        public static int CountAliveEnemies()
+        // 체력 5 이하로 남은 몬스터 카운트용
+        public static int CountLowHpEnemies(int hpThreshold = 5)
         {
+            if (currentEnemies == null) return 0;
+
             int count = 0;
-            foreach (var enemy in CurrentEnemies)
+            foreach (var enemy in currentEnemies)
             {
-                if (enemy.Hp > 0)
+                if (enemy != null && enemy.Hp > 0 && enemy.Hp <= hpThreshold)
+                {
                     count++;
+                }
             }
             return count;
         }
