@@ -495,14 +495,14 @@ namespace sparta_9team_project
             SoundManager.PlayLastBGM();
             Console.Clear();
             ConsoleManager.PrintAnywhere("　흐흐흐　여기까지　잘도왔군．．．．　", locationx[1], 2);
+
             enemies = new Enemy[1] { new Enemy(Enemytype.finalboss) };
             var boss = enemies[0];
             var info = Enemyinfos.enemyinfos[(int)Enemytype.finalboss];
 
-            int centerX = (Console.WindowWidth -  40) / 2;
             ConsoleManager.PrintAsciiAt(info.enepic, locationx[1], 4);
-            ConsoleManager.PrintAnywhere($"Lv. {boss.Level} {boss.Name}", centerX, 25);
-            Hpbar(boss.Hp, info.mhp, centerX, 24);
+            ConsoleManager.PrintAnywhere($"Lv. {boss.Level} {boss.Name}", locationx[1] + 8, 25);
+            Hpbar(boss.Hp, info.mhp, locationx[1] + 8, 24);
 
             ConsoleManager.PrintAnywhere(">> [Enter]를 눌러 전투 시작...", 49, 27);
             Console.ReadLine();
@@ -511,36 +511,63 @@ namespace sparta_9team_project
             while (true)
             {
                 // 플레이어 턴
+                
                 Console.Clear();
-                ConsoleManager.PrintAnywhere("🗡️ 플레이어의 턴입니다!", 40, 2);
-                ConsoleManager.PrintAnywhere("1. 공격   2. 스킬", 40, 4);
-                ConsoleManager.PrintAnywhere(">> 선택: ", 40, 6);
-                Console.SetCursorPosition(50, 6);
-                var choice = Console.ReadLine();
+                ConsoleManager.PrintAnywhere("🗡️ 플레이어의 턴입니다! 행동을 선택하세요.", 40, 2);
+                PrintPlayerInfo();
 
-                if (choice == "1")
+                // 보스 정보 다시 출력
+                ConsoleManager.PrintAsciiAt(info.enepic, locationx[1]-2, 4);
+                ConsoleManager.PrintAnywhere($"HP: ", locationx[1] + 5, 24);
+                Hpbar(boss.Hp, info.mhp, locationx[1] + 10, 24);
+                ConsoleManager.PrintAnywhere($"1, Lv. {boss.Level}, 이름: {boss.Name}", locationx[1]+2, 25);
+
+                // 행동 선택
+                ConsoleManager.PrintAnywhere("1. 공격 ", 55, 26);
+                ConsoleManager.PrintAnywhere("2. 스킬 ", 55, 27);
+                ConsoleManager.PrintAnywhere(">> 선택: ", 55, 28);
+                Console.SetCursorPosition(63, 28);
+
+                string input = Console.ReadLine();
+                if (input == "1")
                 {
+                    ConsoleManager.PrintAnywhere("             ", 55, 26);
+                    ConsoleManager.PrintAnywhere("             ", 55, 27);
+                    ConsoleManager.PrintAnywhere("             ", 55, 28);
                     PlayerManager.instance.mainPlayer.DealDamage(boss, PlayerManager.instance.mainPlayer.Atk);
+                    Thread.Sleep(1000);
                 }
                 else
                 {
-                    Skill();
+                    Skill(); 
                 }
+
                 Thread.Sleep(500);
                 if (boss.Hp <= 0) { win = true; break; }
 
                 // 보스 턴
                 Console.Clear();
-                ConsoleManager.PrintAnywhere("👾 보스의 턴입니다!", 40, 2);
+                ConsoleManager.PrintAnywhere("👾 적의 턴입니다! 공격이 시작됩니다...", 40, 2);
+
+                // 보스 아트 & 정보
+                ConsoleManager.PrintAsciiAt(info.enepic, locationx[1]-2, 4);
+                ConsoleManager.PrintAnywhere($"HP: ", locationx[1] + 5, 24);
+                Hpbar(boss.Hp, info.mhp, locationx[1] + 10, 24);
+                ConsoleManager.PrintAnywhere($"Lv. {boss.Level}, 이름: {boss.Name}", locationx[1]+2, 25);
+                Thread.Sleep(1000);
+
                 int dmg = Math.Max(0, boss.Atk - PlayerManager.instance.mainPlayer.Def);
-                PlayerManager.instance.mainPlayer.TakeDamage(dmg);
-                Thread.Sleep(500);
+                PlayerManager.instance.mainPlayer.TakeDamage(dmg)2
+
+                PrintPlayerInfo();
+
+                Thread.Sleep(1000);
                 if (PlayerManager.instance.mainPlayer.Hp <= 0) { win = false; break; }
             }
 
-            // 6) 결과 처리
             Result(win);
         }
+
 
 
 
