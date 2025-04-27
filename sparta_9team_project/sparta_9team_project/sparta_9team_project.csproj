@@ -10,6 +10,7 @@
   <ItemGroup>
     <None Remove="Resources\basic bgm.wav" />
     <None Remove="Resources\battle bgm.wav" />
+    <None Remove="Resources\Start bgm.wav" />
   </ItemGroup>
 
   <ItemGroup>
@@ -17,6 +18,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Resources\battle bgm.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Start bgm.wav">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

@@ -62,6 +62,8 @@ namespace sparta_9team_project
 
         public static void Walk()
         {
+            SoundManager.StopBGM();
+            SoundManager.PlayBasicBGM();
             Console.Clear();
             ConsoleManager.ConfigureConsoleSize();
             Console.OutputEncoding = System.Text.Encoding.UTF8;
