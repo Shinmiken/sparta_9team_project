@@ -172,7 +172,7 @@
             }
             else                                                                  
             {   
-                Console.WriteLine($"포션이 부족합니다.");                                                           // 아이템이 인벤토리에 없다면
+                Console.WriteLine($"해당 아이템이 부족합니다.");                                                           // 아이템이 인벤토리에 없다면
                 return;
             }
 
