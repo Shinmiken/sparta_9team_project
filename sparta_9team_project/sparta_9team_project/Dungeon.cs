@@ -414,6 +414,8 @@ namespace sparta_9team_project
         {
             Console.Clear();
             ConsoleManager.ConfigureConsoleSize();
+            SoundManager.StopBGM();
+            SoundManager.PlayDieBGM();
 
             int startX = 20;
             int endX = 100;

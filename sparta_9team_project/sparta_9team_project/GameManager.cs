@@ -16,7 +16,8 @@ namespace sparta_9team_project
         static JobType selectjob; // 직업 선택 enum 변수
         static void Main(string[] args)
         {
-            
+            SoundManager.StopBGM();
+            SoundManager.PlayStartBGM();
             Console.OutputEncoding = Encoding.UTF8;
             ConsoleManager.ConfigureConsoleSize();
             Dungeon dungeon = new Dungeon();
