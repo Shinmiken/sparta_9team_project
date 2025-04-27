@@ -52,6 +52,12 @@ namespace sparta_9team_project
                 ConsoleManager.PrintCenteredSlow("                                                         ", 33, 2, 60);
                 Thread.Sleep(100);
             }
+            // 산책 중 캣닢 드랍 시도
+            if (DropManager.TryDropCatnip())
+            {
+                InventoryUI.AddItem("캣닢 x 1");
+                Console.WriteLine("🌿 산책 중 캣닢을 발견했습니다!");
+            }
 
             // 산책 끝나고 던전 진입
             EnterDungeon(dungeonType);
@@ -149,6 +155,14 @@ namespace sparta_9team_project
         public static void EnterDungeon(int dungeonType)
         {
             Console.Clear();
+
+            var quest = QuestManager.AllQuests.Find(q => q.TITLE == "9, 또 너야 ?");
+            if (quest != null && quest.IS_COMPLETED && quest.IS_REWARD_CLAIMED)
+            {
+                Console.WriteLine("⟡༺༒9조의 축복༒༻⟡을 받았습니다!");
+                PlayerManager.instance.mainPlayer.IsInvincible = true; // 엔딩 전 무적 부여
+            }
+            
             DiscoverEnemy(dungeonType);
             EncounterManager.SetupEnemies(enemies); // 전투 중인 몬스터 리스트 확인용 함수 추가했습니다 - 황연주
 
@@ -351,6 +365,31 @@ namespace sparta_9team_project
             Console.Clear();
             if (win)
             {
+                // 체력 5 이하로 3마리 남겼는지 체크
+                int lowHpEnemyCount = EncounterManager.CountLowHpEnemies();
+                if (lowHpEnemyCount >= 3)
+                {
+                    Console.WriteLine("3아가냥이와 친구가 되었어요 !");
+                    
+                    var quest = QuestManager.AllQuests.Find(q => q.TITLE == "3아가냥이와 친구가 되었어요 !");
+                    
+                    if (quest != null && quest.IS_ACCEPTED && !quest.IS_COMPLETED)
+                    {
+                        quest.CURRENT_COUNT++;  // 달성 수 +1
+                        Console.WriteLine("📜 퀘스트 진행도 +1 증가!");
+
+                        // 퀘스트 자동 완료 확인용
+                        if (quest.CURRENT_COUNT >= quest.REQUIRED_COUNT)
+                        {
+                            quest.IS_REWARD_CLAIMED = false;  // 선물 지급 대기
+                            Console.WriteLine("📜 퀘스트 완료!");
+                            Console.WriteLine(">> [Enter]를 누르세요...");
+                            Console.ReadLine(); 
+
+                            Console.WriteLine("어? 인벤토리에 무언가가?");
+                        }
+                    }
+                }
                 ConsoleManager.PrintAnywhere("🎉 전투에서 승리했습니다! 🎉",40 , 2);
                 ConsoleManager.PrintAnywhere("경험치와 보상을 획득했습니다.", 40, 4);
                 ConsoleManager.PrintAsciiAt(Print.dogImage[1], 37, 5);
@@ -358,7 +397,6 @@ namespace sparta_9team_project
                 ConsoleManager.PrintAnywhere(">> [Enter]를 눌러 마을로 돌아가기...",42,27);
                 Console.ReadLine();
                 GameManager.MainScreen();
-                
             }
             else
             {
