@@ -27,10 +27,7 @@
 
 
         // 플레이어의 인벤토리 리스트
-        public Dictionary<string, int> inventory = new Dictionary<string, int>()
-        {
-            [ItemDataBase.smallHealingPotion.Name] = ItemDataBase.smallHealingPotion.Counts + 3, 
-        };
+        public Dictionary<string, int> inventory = new Dictionary<string, int>();
 
         // 인벤토리 [Methods]
         public bool IsEmpty()
@@ -63,20 +60,20 @@
 
             return yes;
         }
-        public void AddItem(Item item)
+        public void AddItem(Item item, int count)
         {
             // 만약 인벤토리에 이미 아이템이 있다면
-            // 아이템.카운트 + 1
+            // 아이템.카운트 + 추가하고 싶은 개수
             // 만약 인벤토리에 아이템이 없다면
-            // 아이템 추가 후 카운트 +1
+            // 아이템 추가 후 카운트 + 추가하고 싶은 개수
             if (inventory.ContainsKey(item.Name))
             {
-                item.Counts++;
+                item.Counts += count;
                 return;
             }
             else
             {
-                inventory[item.Name] = item.Counts + 1;
+                inventory[item.Name] = item.Counts + count;
             }
 
             Console.WriteLine($"{player.Name}의 소지품에 {item.Name}이(가) 추가되었습니다.");
