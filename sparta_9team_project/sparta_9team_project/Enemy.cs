@@ -11,7 +11,10 @@ namespace sparta_9team_project
         chihuahua,   //치와와
         cat,         //고양이
         husky,       //허스키
-        mortorcycle  //오토바이
+        mortorcycle,  //오토바이
+        bear, // 곰
+        boar, // 멧돼지
+        eagle // 독수리
         // 더 추가가능...
     }
 
@@ -52,8 +55,12 @@ namespace sparta_9team_project
             new Enemyinfo("새끼고양이", 1, 6, 3, 30, 4, "냥냥 펀치", Print.dogImage[10], 30, Enemytype.catling),
             new Enemyinfo("치와와", 2, 10, 5, 40, 6, "물어 뜯기", Print.dogImage[6], 40, Enemytype.chihuahua),
             new Enemyinfo("고양이", 3, 15, 7, 60, 8, "할퀴기", Print.dogImage[9], 60, Enemytype.cat),
-            new Enemyinfo("허스키", 0, 0, 0, 0, 0, "", Print.dogImage[7], 0, Enemytype.husky),
-            new Enemyinfo("오토바이", 0, 0, 0, 0, 0, "", Print.dogImage[8], 0, Enemytype.mortorcycle)
+            new Enemyinfo("허스키",   4, 20, 15,  90, 18, "얼음 으르렁", Print.dogImage[7],  90, Enemytype.husky),
+            new Enemyinfo("오토바이", 5, 24, 10, 120, 22, "부릉부릉",    Print.dogImage[8], 120, Enemytype.mortorcycle),
+            new Enemyinfo("곰돌이",6,22,14,110,22,"으르렁",     Print.dogImage[13],110,Enemytype.bear),
+            new Enemyinfo("멧돼지",7,24,12, 95,20,"돌진",       Print.dogImage[15], 95,Enemytype.boar),
+            new Enemyinfo("독수리",8,26, 8, 80,25,"하늘 강타", Print.dogImage[14], 80,Enemytype.eagle)
+
         };
     }
     // 사용 방법 :  Enemyinfos.emeyinfos[i]로 접근하면 Enemy정보에 접근 가능(static이기 때문)
