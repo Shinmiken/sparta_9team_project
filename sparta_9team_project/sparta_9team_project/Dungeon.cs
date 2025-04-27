@@ -150,6 +150,7 @@ namespace sparta_9team_project
         {
             Console.Clear();
             DiscoverEnemy(dungeonType);
+            EncounterManager.SetupEnemies(enemies); // 전투 중인 몬스터 리스트 확인용 함수 추가했습니다 - 황연주
 
             bool win = false;
 
