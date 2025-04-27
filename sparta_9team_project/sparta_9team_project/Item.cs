@@ -55,8 +55,34 @@
         // 방어구
 
         // 소모품
-        public static Consumable smallHealingPotion = new Consumable(30, "힐링포션(소)", ItemType.소모품, ConsumableEffect.체력회복, 1, "체력을 30 회복합니다.");
+        
+        public static Dictionary<string, Item> consumableStorage;
+        public static Consumable smallHealingPotion; // 59~60번째 줄 : 생성자 변환하느라 추가했습니다! - 황연주
+        // 퀘스트 아이템입니다 - 황연주
+        public static Item fish;
+        public static Item glassPiece;
+        public static Item blessing9jo;
+
+        static ItemDataBase() // 생성자 static 으로 변경했습니당 - 황연주
+        {
+            smallHealingPotion = new Consumable(30, "힐링포션(소)", ItemType.소모품, ConsumableEffect.체력회복, 1, "체력을 30 회복합니다.");
+
+            // 퀘스트용 아이템 추가했습니다 - 황연주
+            fish = new Consumable(0, "생선", ItemType.소모품, ConsumableEffect.체력회복, 1, "고양이를 회피할 수 있습니다.");
+            glassPiece = new Consumable(0, "유리조각", ItemType.소모품, ConsumableEffect.공격력증가, 1, "깨진 유리조각입니다.");
+            blessing9jo = new Consumable(0, "⟡༺༒9조의 축복༒༻⟡", ItemType.소모품, ConsumableEffect.방어력증가, 1, "9조가 내려준 신비로운 축복입니다.");
+        
+
+            consumableStorage = new Dictionary<string, Item>
+            {
+                [smallHealingPotion.Name] = smallHealingPotion,
+                [fish.Name] = fish,
+                [glassPiece.Name] = glassPiece,
+                [blessing9jo.Name] = blessing9jo
+            };
+        }
     }
+    
 
     /* -------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
 
