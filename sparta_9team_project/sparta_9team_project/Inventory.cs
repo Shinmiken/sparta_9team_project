@@ -107,7 +107,7 @@
             }
             return 0;
         }
-        // 유리 조각 조합용 - 황연주
+        // 유리 조각 조합용 (우유병 조합) - 황연주
         public void CombineItems(string baseItemName)
         {
             int count = GetItemCount(baseItemName);
