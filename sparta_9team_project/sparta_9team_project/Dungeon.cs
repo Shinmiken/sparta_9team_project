@@ -24,12 +24,12 @@ namespace sparta_9team_project
             int hp = PlayerManager.instance.mainPlayer.Hp;
             int maxhp = PlayerManager.instance.mainPlayer.MaxHp;
 
-            ConsoleManager.PrintAsciiAt(Print.dogImage[1], 36, 30);
-            Console.SetCursorPosition(44, 45);
+            
             Hpbar(hp, maxhp);
             var p = PlayerManager.instance.mainPlayer;
             Console.SetCursorPosition(44, 46);
             ConsoleManager.PrintAnywhere($"Lv. {p.Level} {p.Name} ({p.Job})",49,25);
+            ConsoleManager.PrintAnywhere(Print.dogImage[1], 42, 20);
 
             Console.WriteLine();
 
@@ -38,11 +38,11 @@ namespace sparta_9team_project
             {
                 if (dungeonType == 1)
                 {
-                    ConsoleManager.PrintCenteredSlow("🌸 미르는 꽃길을 산책하고 있어요...", 38, 2, 60);
+                    ConsoleManager.PrintCenteredSlow("🌸 미르는 꽃길을 산책하고 있어요...", 42, 2, 60);
                 }
                 else if (dungeonType == 2)
                 {
-                    ConsoleManager.PrintCenteredSlow("🌊 한강 바람이 시원하게 불어요...", 38, 2, 60);
+                    ConsoleManager.PrintCenteredSlow("🌊 한강 바람이 시원하게 불어요...", 42, 2, 60);
                 }
                 else if (dungeonType == 3)
                 {
@@ -91,13 +91,13 @@ namespace sparta_9team_project
             switch (choice)
             {
                 case 1:
-                    ConsoleManager.PrintAnywhere("🏞️ 집앞 공원으로 출발합니다...", 55,31);
+                    ConsoleManager.PrintAnywhere("🏞️ 집앞 공원으로 출발합니다...", 48,31);
                     break;
                 case 2:
-                    ConsoleManager.PrintAnywhere("🏞️ 한강 공원으로 출발합니다...", 55, 31);
+                    ConsoleManager.PrintAnywhere("🏞️ 한강 공원으로 출발합니다...", 48, 31);
                     break;
                 case 3:
-                    ConsoleManager.PrintAnywhere("🏞️ 뒷산으로 출발합니다...", 48, 31);
+                    ConsoleManager.PrintAnywhere("🏞️ 뒷산으로 출발합니다...", 52, 31);
                     break;
             }
 
@@ -210,7 +210,7 @@ namespace sparta_9team_project
                 var info = Enemyinfos.enemyinfos[typeIndex];
                 ConsoleManager.PrintAsciiAt(info.enepic, locationx[i], 6);
                 var e = enemies[i];
-                ConsoleManager.PrintAnywhere($"Lv. {e.Level} {e.Name}", locationx[i] + 40, 23);
+                ConsoleManager.PrintAnywhere($"Lv. {e.Level} {e.Name}", locationx[i] + 40, 18);
                 Hpbar(e.Hp, info.mhp);
             }
             while (true)

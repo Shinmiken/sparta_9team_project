@@ -23,7 +23,7 @@
     {
         public Player player = PlayerManager.instance.mainPlayer;                                                  // 로컬변수에 플레이어 싱글톤 저장
         public Inventory invenManager = InventoryManager.Instance.PlayerInventory;                                 // 로컬변수에 인벤토리 싱글톤 저장
-        public Dictionary<string, int> inventory = InventoryManager.Instance.PlayerInventory.inventory;            // 로컬변수에 인벤토리 리스트 싱글톤 저장
+        public Dictionary<string, Item> inventory = InventoryManager.Instance.PlayerInventory.inventory;            // 로컬변수에 인벤토리 리스트 싱글톤 저장
 
         // [Fields]
         public string Name { get; set; }
@@ -57,24 +57,23 @@
 
         // 소모품      
         public static Dictionary<string, Item> consumableStorage;
-        public static Consumable smallHealingPotion; // 59~60번째 줄 : 생성자 변환하느라 추가했습니다! - 황연주
-        // 퀘스트 아이템입니다 - 황연주
+        public static Consumable smallHealingPotion;
+        
+        // 소모품 - 퀘스트 아이템
         public static Item fish;
         public static Item glassPiece;
         public static Item blessing9jo;
         public static Item catnip;
 
-        static ItemDataBase() // 생성자 static 으로 변경했습니당 - 황연주
+        static ItemDataBase()
         {
             smallHealingPotion = new Consumable(30, "힐링포션(소)", ItemType.소모품, ConsumableEffect.체력회복, 1, "체력을 30 회복합니다.");
 
-            // 퀘스트용 아이템 추가했습니다 - 황연주
+            // 퀘스트용 아이템 추가
             fish = new Consumable(0, "생선", ItemType.소모품, ConsumableEffect.None, 1, "고양이한테 생선을 맡기면 ?");
             glassPiece = new Consumable(0, "유리조각", ItemType.소모품, ConsumableEffect.None, 1, "꽤 큰 유리조각이다.");
             blessing9jo = new Consumable(0, "⟡༺༒9조의 축복༒༻⟡", ItemType.소모품, ConsumableEffect.None, 1, "이제 미르는 누구도 무섭지 않아요 !");
-            catnip = new Consumable(0, "캣닢", ItemType.소모품, ConsumableEffect.None, 1, "아가냥이가 세상에서 제일 좋아하는 풀이라고 한다.");
-
-        
+            catnip = new Consumable(0, "캣닢", ItemType.소모품, ConsumableEffect.None, 1, "아가냥이가 세상에서 제일 좋아하는 풀이라고 한다.")       
 
             consumableStorage = new Dictionary<string, Item>
             {
@@ -161,13 +160,18 @@
                         Counts -= 1;                                                                             // 사용된 아이템 개수 감소
                         Console.WriteLine($"{player.Name}이(가) {Name}을(를) 사용했습니다.\n회복을 완료했습니다.");
                         break;
-
+                    case ConsumableEffect.공격력증가:
+                        player.Atk += EffectAmount;                                                      // 플레이어 공격력 증가
+                        break;
+                    case ConsumableEffect.방어력증가:
+                        player.Def += EffectAmount;                                                      // 플레이어 방어력 증가
+                        break;
                         //아이템 추가 가능
                 }
             }
             else                                                                  
             {   
-                Console.WriteLine($"포션이 부족합니다.");                                                           // 아이템이 인벤토리에 없다면
+                Console.WriteLine($"해당 아이템이 부족합니다.");                                                           // 아이템이 인벤토리에 없다면
                 return;
             }
 

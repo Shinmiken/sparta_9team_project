@@ -16,7 +16,7 @@ namespace sparta_9team_project
         {
             if (TryDropCatnip())
             {
-                InventoryManager.Instance.PlayerInventory.AddItem(ItemDataBase.catnip);
+                InventoryManager.Instance.PlayerInventory.AddItem(ItemDataBase.catnip, 1);
                 Console.WriteLine("어디선가 캣닢 향기가 난다!");
             }
         }
