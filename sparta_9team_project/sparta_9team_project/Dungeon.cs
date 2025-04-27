@@ -53,11 +53,8 @@ namespace sparta_9team_project
                 Thread.Sleep(100);
             }
             // 산책 중 캣닢 드랍 시도
-            if (DropManager.TryDropCatnip())
-            {
-                InventoryUI.AddItem("캣닢 x 1");
-                Console.WriteLine("🌿 산책 중 캣닢을 발견했습니다!");
-            }
+            DropManager.TryGiveCatnip();
+        
 
             // 산책 끝나고 던전 진입
             EnterDungeon(dungeonType);
