@@ -57,6 +57,12 @@
                 return false;
             }
         }
+        public bool HasUsed(Item item) // 제작중. 완성 X
+        {
+            bool yes = HasItem(item);
+
+            return yes;
+        }
         public void AddItem(Item item)
         {
             // 만약 인벤토리에 이미 아이템이 있다면
