@@ -98,5 +98,30 @@
                  Console.WriteLine($"{player.Name}의 소지품에 {item.Name}이 없습니다.");
             }
         }
+        // 우유 개수 확인용 - 황연주
+        public int GetItemCount(string itemName)
+        {
+            if (inventory.ContainsKey(itemName))
+            {
+                return inventory[itemName].Counts;
+            }
+            return 0;
+        }
+        // 유리 조각 조합용 - 황연주
+        public void CombineItems(string baseItemName)
+        {
+            int count = GetItemCount(baseItemName);
+            if (count >= 5)
+            {
+                // 유리병 조합 성공
+                RemoveAll(inventory[baseItemName]); // 기존 유리조각 삭제
+                AddItem(new Item("유리병", ItemType.소모품, 1, "유리조각 5개를 모아 완성된 유리병입니다."), 1);
+                Console.WriteLine($"[{baseItemName}] 5개를 모아 유리병을 완성했습니다!");
+            }
+            else
+            {
+                Console.WriteLine($"{baseItemName}이(가) 부족합니다. (현재 {count}/5)");
+            }
+        }    
     }
 }
