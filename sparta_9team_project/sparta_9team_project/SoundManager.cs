@@ -43,7 +43,7 @@ namespace sparta_9team_project
         }
         public static void PlayDieBGM()
         {
-            player = new SoundPlayer("Resources/Die bgm.wav");
+            player = new SoundPlayer("Resources/Diebgm.wav");
             player.PlayLooping();
         }
         public static void PlayLastBGM()

@@ -64,14 +64,14 @@ namespace sparta_9team_project
             // 방구뀌기: 3턴 지속 데미지
             if (type == SkillType.Fart)
             {
-                Console.WriteLine($"{player.Name}가 {info.Name}을 시전하여 지속 피해를 시도합니다.");
+                Console.WriteLine($"{player.Name}가 {info.Name}을 시전하여 {target.Name}은 지속적으로 피해를 입습니다.");
                 Thread.Sleep(500);
                 for (int tick = 1; tick <= 3; tick++)
                 {
                     int dmg = (int)Math.Ceiling(player.Atk * info.DamageRatio);
-                    Console.WriteLine($"Tick {tick}: {target.Name}에게 {dmg} 피해");
+                    Console.WriteLine($"{tick}턴 동안 {target.Name}에게 {dmg} 피해");
                     player.DealDamage(target, dmg);
-                    Thread.Sleep(600);
+                    Thread.Sleep(7000);
                 }
             }
             // 연속베기 로직
@@ -85,7 +85,7 @@ namespace sparta_9team_project
                 {
                     int dmg = (int)Math.Ceiling(player.Atk * info.DamageRatio);
                     player.DealDamage(target, dmg);
-                    Thread.Sleep(300);
+                    Thread.Sleep(700);
                 }
             }
             else
