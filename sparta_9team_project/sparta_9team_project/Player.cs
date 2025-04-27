@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 
 namespace sparta_9team_project
 {
@@ -22,7 +23,7 @@ namespace sparta_9team_project
     // [Player] 클래스 - 플레이어 캐릭터
     public class Player : Character
     {
-   	    public bool IsInvincible { get; set; } = false; // 최종 보스 무적 처리 관련 함수 추가했습니당 - 황연주
+   	    public bool IsInvincible { get; set; } = false; // 최종 보스 무적 처리 관련 함수
 		// [Fields]
 
 		public int MaxHp { get; set; } = 100;
@@ -30,16 +31,16 @@ namespace sparta_9team_project
         public string Bones { get; set; }
         public int Exp { get; set; } = 0;       // 경험치
         public int MaxExp { get; set; } = 100;  // 최대 경험치
-        public int Mana { get; set; } = 100;     // 마나
-        public int MaxMana { get; set; } = 100;  // 최대 마나
+        public int Mp { get; set; } = 100;      // 마나
+        public int MaxMp { get; set; } = 100;   // 최대 마나
         public int ImageType { get; set; }
 
-	    private List<string> usedItems = new List<string>(); // 사용한 아이템 이름 저장용 리스트 - 황연주
+	    private List<string> usedItems = new List<string>();    // 사용한 아이템 이름 저장용 리스트
  
         InventoryManager inventory = InventoryManager.Instance; // 인벤토리 매니저의 플레이어 인벤토리
 
         // [Constructor]
-        public Player (string name, int level, int hp, int maxHp, int atk, int def, JobType job, string bones, int imageType) : base(name, level, atk, def, hp, maxHp) // 부모 클래스인 Character의 생성자 호출
+        public Player (string name, int level, int hp, int maxHp, int mp, int MaxMp, int atk, int def, JobType job, string bones, int imageType) : base(name, level, atk, def, hp, maxHp) // 부모 클래스인 Character의 생성자 호출
         {
             MaxHp = maxHp;
             Job = job;
@@ -51,19 +52,12 @@ namespace sparta_9team_project
         // [Methods]
         public void DealDamage(Enemy mob, int damage)
         {
-            Random random = new Random();
+            int totalDamage = Randomize(0.1f, damage);  // ±10% 오차
+            mob.GetDamage(totalDamage);                      // 적의 HP에 데미지 적용
 
-            int tenPercent = (int)Math.Ceiling(damage * 0.1);       // ±10% 오차
-            int randomDmgMin =  damage - tenPercent;                // 최소 데미지
-            int randomDmgMax =  damage + tenPercent;                // 최대 데미지
-            damage = random.Next(randomDmgMin, randomDmgMax + 1);   // 랜덤 데미지
-
-            mob.GetDamage(damage); // 적의 HP에 데미지 적용
-
-            ConsoleManager.PrintAnywhere($"{Name}는 {mob.Name}에게 {damage}의 댕미지를 입혔습니다!",40,25);
+            ConsoleManager.PrintAnywhere($"{Name}는 {mob.Name}에게 {totalDamage}의 댕미지를 입혔습니다!",40,25);
             ConsoleManager.PrintAnywhere($"{mob.Name}의 HP가 {mob.Hp} 남았습니다.",46,27);
         }
-
         public void TakeDamage(int damage)
         {
 	        if (IsInvincible)
@@ -83,13 +77,10 @@ namespace sparta_9team_project
    		usedItems.Add(itemName);
    		Console.WriteLine($"{itemName}을(를) 사용했습니다.");
 	}
-
 	    public bool HasUsedItem(string itemName)
 	{
   		return usedItems.Contains(itemName);
 	}
-
-
         public void GainExp(int exp)
         {
             Exp += exp;
@@ -99,15 +90,98 @@ namespace sparta_9team_project
                 Exp = Exp - MaxExp; // 남은 경험치
             }
         }   // 러프. 추후 수정 예정
-
-        public void LevelUp()
+        public void LevelUp(string jobType)
         {
-            Level++;
-            MaxHp += 10; // 레벨업 시 최대 체력 증가
-            Hp = MaxHp;  // 체력 회복
-            Atk += 5;    // 공격력 증가
-            Def += 2;    // 방어력 증가
-            ConsoleManager.PrintAnywhere($"{Name}이(가) 성장했습니다! 현재 레벨: {Level}", 40, 25);
-        }          // 러프. 추후 수정 예정
+            // 레벨업 시 선택지 (공격력, 방어력, 체력 증가 중 택 1)
+            if (jobType == "전사")
+            {
+                var LevelUpMessage01 = new StringBuilder();
+                LevelUpMessage01.AppendLine($"나이스! {Name}가 한 걸음 더 성장했습니다! {Level - 1} >> {Level}");
+                LevelUpMessage01.AppendLine($"{Name}의 성장을 선택해주세요! ૮ ˶ᵔ ᵕ ᵔ˶ ა");
+                LevelUpMessage01.AppendLine($"-----------------------------------------------------------------");
+                LevelUpMessage01.AppendLine($"1. 댕댕파워 증가 ");
+                LevelUpMessage01.AppendLine($"2. 댕댕방어 증가 :: {Name}는 {Job}이기에 해당 수치가 더 강해집니다!");
+                LevelUpMessage01.AppendLine($"3. 댕댕체력 증가 :: {Name}는 {Job}이기에 해당 수치가 더 강해집니다!");
+                LevelUpMessage01.AppendLine($"4. 댕댕기력 증가");
+                LevelUpMessage01.AppendLine($"-----------------------------------------------------------------");
+                LevelUpMessage01.Append($">>");
+            }
+            else if (jobType == "마법사")
+            {
+                var LevelUpMessage02 = new StringBuilder();
+                LevelUpMessage02.AppendLine($"나이스! {Name}가 한 걸음 더 성장했습니다! {Level - 1} >> {Level}");
+                LevelUpMessage02.AppendLine($"{Name}의 성장을 선택해주세요! ૮ ˶ᵔ ᵕ ᵔ˶ ა");
+                LevelUpMessage02.AppendLine($"-----------------------------------------------------------------");
+                LevelUpMessage02.AppendLine($"1. 댕댕파워 증가 :: {Name}는 {Job}이기에 해당 수치가 더 강해집니다!");
+                LevelUpMessage02.AppendLine($"2. 댕댕방어 증가");
+                LevelUpMessage02.AppendLine($"3. 댕댕체력 증가");
+                LevelUpMessage02.AppendLine($"4. 댕댕기력 증가 :: {Name}는 {Job}이기에 해당 수치가 더 강해집니다!");
+                LevelUpMessage02.AppendLine($"-----------------------------------------------------------------");
+                LevelUpMessage02.Append($">>");
+            }            
+
+            bool isDecided = false;
+            while (!isDecided)
+            {
+                string input = Console.ReadLine();
+
+                switch (input)
+                {
+                    case "1":
+                        Atk += Randomize(3, 6);
+                        ConsoleManager.PrintAnywhere($"{Name}의 댕댕파워가 증가했습니다!", 40, 25);
+                        isDecided = true;
+                        break;
+                    case "2":
+                        Def += Randomize(3, 6);
+                        ConsoleManager.PrintAnywhere($"{Name}의 댕댕방어가 증가했습니다!", 40, 25);
+                        isDecided = true;
+                        break;
+                    case "3":
+                        MaxHp += Randomize(15, 20);
+                        ConsoleManager.PrintAnywhere($"{Name}의 댕댕체력이 증가했습니다!", 40, 25);
+                        isDecided = true;
+                        break;
+                    case "4":
+                        MaxMp += Randomize(15, 20);
+                        ConsoleManager.PrintAnywhere($"{Name}의 댕댕기력이 증가했습니다!", 40, 25);
+                        isDecided = true;
+                        break;
+                    default:
+                        ConsoleManager.PrintAnywhere("잘못된 입력입니다. (1 ~ 3에서 선택해주세요!)", 40, 25);
+                        break;
+                }
+            }
+
+            HpMpMax();                      // 레벨업 시 체력과 마나를 최대치로 회복
+            MaxExp = Exp * (Level * Level); // 레벨업 시 최대 경험치 증가
+        }    
+        public void HpMpMax()
+        {
+            // 체력과 마나를 최대치로 회복
+            Hp = MaxHp;
+            Mp = MaxMp;
+            ConsoleManager.PrintAnywhere($"{Name}의 체력과 기력이 최대치로 회복되었습니다!", 40, 25);
+        }
+
+        // [Methods] - Overloading
+        public int Randomize(int min, int max)                  // General Randomize
+        {
+            Random random = new Random();
+
+            int randomValue = random.Next(min, max + 1);
+            return randomValue;
+        }
+        public int Randomize(float percent, int damage)          // Randomize 데미지
+        {
+            Random random = new Random();
+            int totalPercent = (int)Math.Ceiling(damage * (float)percent);
+            int minValue = damage - totalPercent;
+            int maxValue = damage + totalPercent;
+            int randomValue = random.Next(minValue, maxValue + 1);
+
+            return randomValue;
+
+        }
     }
 }

@@ -28,5 +28,19 @@ namespace sparta_9team_project
             }
             return count;
         }
+
+        // 캣닢 사용 체크 
+        public static void CheckCatnipUsage()
+        {
+            var quest = QuestManager.AllQuests.Find(q => q.TITLE == "3 아가냥이와 친구가 되었어요 !");
+            if (quest != null && quest.IS_ACCEPTED && !quest.IS_COMPLETED)
+            {
+                if (PlayerManager.instance.mainPlayer.HasUsedItem("캣닢"))
+                {
+                    quest.CURRENT_COUNT++; // 퀘스트 진행도 증가
+                    Console.WriteLine("퀘스트 진행도 +1!");
+                }
+            }
+        }
     }
 }

@@ -8,6 +8,32 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Resources\basic bgm.wav" />
+    <None Remove="Resources\battle bgm.wav" />
+    <None Remove="Resources\Diebgm.wav" />
+    <None Remove="Resources\Last bgm.wav" />
+    <None Remove="Resources\Start bgm.wav" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Resources\basic bgm.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\battle bgm.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Diebgm.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Last bgm.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Start bgm.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="System.Windows.Extensions" Version="9.0.4" />
   </ItemGroup>

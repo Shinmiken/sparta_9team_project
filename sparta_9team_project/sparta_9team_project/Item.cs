@@ -183,7 +183,7 @@
             // 안 비었다면 인벤토리에서 소모품만 필터링
             // 필터링 후 소모품만 있는 딕셔너리에 저장
             // 소모품만 있는 딕셔너리에서 아이템 이름과 개수 출력
-            Dictionary<string, int> onlyConsumables = new Dictionary<string, int>();
+            Dictionary<string, Item> onlyConsumables = new Dictionary<string, Item>();
 
             bool isEmpty = invenManager.IsEmpty();                               // 인벤토리 비었는지 체크
 
