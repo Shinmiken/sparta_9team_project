@@ -23,7 +23,7 @@
     {
         public Player player = PlayerManager.instance.mainPlayer;                                                  // 로컬변수에 플레이어 싱글톤 저장
         public Inventory invenManager = InventoryManager.Instance.PlayerInventory;                                 // 로컬변수에 인벤토리 싱글톤 저장
-        public Dictionary<string, int> inventory = InventoryManager.Instance.PlayerInventory.inventory;            // 로컬변수에 인벤토리 리스트 싱글톤 저장
+        public Dictionary<string, Item> inventory = InventoryManager.Instance.PlayerInventory.inventory;            // 로컬변수에 인벤토리 리스트 싱글톤 저장
 
         // [Fields]
         public string Name { get; set; }
