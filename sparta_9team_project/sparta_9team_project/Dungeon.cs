@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Numerics;
 using System.Security.Cryptography.X509Certificates;
 
 
@@ -539,21 +540,25 @@ namespace sparta_9team_project
                 // 보스 턴
                 Console.Clear();
                 ConsoleManager.PrintAnywhere("👾 적의 턴입니다! 공격이 시작됩니다...", 40, 2);
+                var player = PlayerManager.instance.mainPlayer;
+                int dmg = Math.Max(0, boss.Atk - player.Def);
 
                 // 보스 아트 & 정보
                 ConsoleManager.PrintAsciiAt(info.enepic, locationx[1]-2, 4);
                 ConsoleManager.PrintAnywhere($"HP: ", locationx[1] + 5, 24);
                 Hpbar(boss.Hp, info.mhp, locationx[1] + 10, 24);
                 ConsoleManager.PrintAnywhere($"Lv. {boss.Level}, 이름: {boss.Name}", locationx[1]+2, 25);
-                Thread.Sleep(1000);
-
-                int dmg = Math.Max(0, boss.Atk - PlayerManager.instance.mainPlayer.Def);
                 PlayerManager.instance.mainPlayer.TakeDamage(dmg);
+                Thread.Sleep(1000);
 
                 PrintPlayerInfo();
 
                 Thread.Sleep(1000);
-                if (PlayerManager.instance.mainPlayer.Hp <= 0) { win = false; break; }
+                if (player.Hp <= 0)
+                {
+                    win = false;
+                    break;
+                }
             }
 
             Result(win);
