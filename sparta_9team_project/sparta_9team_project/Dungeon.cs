@@ -33,6 +33,8 @@ namespace sparta_9team_project
             Console.WriteLine();
 
             // 난이도 선택에 따른 멘트 변경
+
+            
             for (int i = 0; i < randomx; i++)
             {
                 if (dungeonType == 1)
@@ -47,8 +49,12 @@ namespace sparta_9team_project
                 {
                     ConsoleManager.PrintCenteredSlow("🌲 뒷산의 어두운 숲을 조심히 걷고 있어요...", 38, 2, 60);
                 }
+                else if (dungeonType == 4)
+                {
+                    ConsoleManager.PrintCenteredSlow("        여긴 어디일까.......?      ", 38, 2, 60);
+                }
 
-                ConsoleManager.PrintCenteredSlow("                                                         ", 33, 2, 60);
+                    ConsoleManager.PrintCenteredSlow("                                                         ", 33, 2, 60);
                 Thread.Sleep(100);
             }
             // 산책 중 캣닢 드랍 시도
@@ -73,15 +79,16 @@ namespace sparta_9team_project
             ConsoleManager.PrintAnywhere("1. 집앞 공원 (쉬움)", 52,25);
             ConsoleManager.PrintAnywhere("2. 한강 공원 (보통)",52,26);
             ConsoleManager.PrintAnywhere("3. 뒷산 (어려움)", 54,27);
+            ConsoleManager.PrintAnywhere("4. ??? (???)", 54, 28);
             Console.WriteLine();
-            ConsoleManager.PrintAnywhere(">> 선택 (1~3): ", 56,29);
+            ConsoleManager.PrintAnywhere(">> 선택 (1~3): ", 56,30);
             Console.SetCursorPosition(62, Console.CursorTop);
 
             string input = Console.ReadLine();
             int choice;
             bool isValid = int.TryParse(input, out choice);
 
-            if (!isValid || choice < 1 || choice > 3)
+            if (!isValid || choice < 1 || choice > 4)
             {
                 ConsoleManager.PrintCentered("잘못된 입력입니다. 다시 선택하세요.", 40);
                 Thread.Sleep(1000);
@@ -99,6 +106,10 @@ namespace sparta_9team_project
                     break;
                 case 3:
                     ConsoleManager.PrintAnywhere("🏞️ 뒷산으로 출발합니다...", 52, 31);
+                    break;
+                case 4:
+                    ConsoleManager.PrintAnywhere("🏞️ ???으로 출발합니다...", 52, 31);
+                    HiddenStage();
                     break;
             }
 
@@ -477,6 +488,66 @@ namespace sparta_9team_project
             }
             Console.WriteLine($"현재 위치: {dungeonName}");
         }
+
+        public static void HiddenStage()
+        {
+            SoundManager.StopBGM();
+            SoundManager.PlayLastBGM();
+            Console.Clear();
+            ConsoleManager.PrintAnywhere("👑 히든 던전에 오신 것을 환영합니다! 👑", fortyCenter(), 2);
+            enemies = new Enemy[1] { new Enemy(Enemytype.finalboss) };
+            var boss = enemies[0];
+            var info = Enemyinfos.enemyinfos[(int)Enemytype.finalboss];
+
+            int centerX = (Console.WindowWidth -  40) / 2;
+            ConsoleManager.PrintAsciiAt(info.enepic, centerX, 6);
+            ConsoleManager.PrintAnywhere($"Lv. {boss.Level} {boss.Name}", centerX + 8, 23);
+            Hpbar(boss.Hp, info.mhp, centerX + 8, 22);
+
+            ConsoleManager.PrintAnywhere(">> [Enter]를 눌러 전투 시작...", 49, 27);
+            Console.ReadLine();
+
+            bool win = false;
+            while (true)
+            {
+                // 플레이어 턴
+                Console.Clear();
+                ConsoleManager.PrintAnywhere("🗡️ 플레이어의 턴입니다!", 40, 2);
+                ConsoleManager.PrintAnywhere("1. 공격   2. 스킬", 40, 4);
+                ConsoleManager.PrintAnywhere(">> 선택: ", 40, 6);
+                Console.SetCursorPosition(50, 6);
+                var choice = Console.ReadLine();
+
+                if (choice == "1")
+                {
+                    PlayerManager.instance.mainPlayer.DealDamage(boss, PlayerManager.instance.mainPlayer.Atk);
+                }
+                else
+                {
+                    Skill();
+                }
+                Thread.Sleep(500);
+                if (boss.Hp <= 0) { win = true; break; }
+
+                // 보스 턴
+                Console.Clear();
+                ConsoleManager.PrintAnywhere("👾 보스의 턴입니다!", 40, 2);
+                int dmg = Math.Max(0, boss.Atk - PlayerManager.instance.mainPlayer.Def);
+                PlayerManager.instance.mainPlayer.TakeDamage(dmg);
+                Thread.Sleep(500);
+                if (PlayerManager.instance.mainPlayer.Hp <= 0) { win = false; break; }
+            }
+
+            // 6) 결과 처리
+            Result(win);
+        }
+
+        // 유틸: 대략 화면 중앙 X 좌표 계산
+        private static int fortyCenter()
+        {
+            return (Console.WindowWidth - 40) / 2;
+        }
+
 
 
 
