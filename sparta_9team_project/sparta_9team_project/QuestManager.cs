@@ -34,6 +34,7 @@ namespace sparta_9team_project
             Console.WriteLine("Quest!!\n");
             Console.WriteLine($"{TITLE}\n");
             Console.WriteLine($"{DESCRIPTION}\n");
+            
 
             // ‘9조의 축복’은 던전 재입장 시에만 보이게 설정
           
@@ -50,12 +51,26 @@ namespace sparta_9team_project
             if (TITLE == "9, 또 너야 ?" && IS_COMPLETED && IS_REWARD_CLAIMED)
                 displayReward = "⟡༺༒9조의 축복༒༻⟡"; // 던전 재입성 즉, 보상 수령 시 문구 출력
 
-            Console.WriteLine("- 선물 -\n" + REWARD + "\n");
+            Console.WriteLine("- 선물 -\n" + displayReward + "\n");
 
             if (IS_COMPLETED && !IS_REWARD_CLAIMED)
             {
                 Console.WriteLine("1. 선물 받기");
                 Console.WriteLine("2. 돌아가기");
+
+                Console.Write("\n원하시는 행동을 입력해주세요.\n>> ");
+                string input = Console.ReadLine();
+
+                if (input == "1")
+                {
+                    RewardManager.GiveReward(this);
+                    IS_REWARD_CLAIMED = true;
+                    Console.WriteLine("🎁 선물을 받았습니다!");
+                }
+                else
+                {
+                    Console.WriteLine("돌아갑니다.");
+                }
             }
             else if (!IS_ACCEPTED)
             {
@@ -78,7 +93,7 @@ namespace sparta_9team_project
         public static void InitQuests()
         {
             AllQuests.Add(new Quest(
-                "3 아가냥이와 친구가 되었어요 !",
+                "3아가냥이와 친구가 되었어요 !",
                 "전투 중 아가냥이를 만나서 우정을 쌓아보세요.",
                 "아가냥이 달래기 성공 (≡・x・≡)", // 내부 조건
                 1,

@@ -9,7 +9,7 @@ namespace sparta_9team_project
         private static Enimies dungeonEnemies;
         private Enimies enimies;
         private static Enemy[] enemies = new Enemy[3];
-        private static int[] locationx = { 1, 40, 82 };
+        private static int[] locationx = { 3, 46, 84 };
         private static int currentDungeonType = 1;
 
 
@@ -27,6 +27,9 @@ namespace sparta_9team_project
             ConsoleManager.PrintAsciiAt(Print.dogImage[1], 36, 30);
             Console.SetCursorPosition(44, 45);
             Hpbar(hp, maxhp);
+            var p = PlayerManager.instance.mainPlayer;
+            Console.SetCursorPosition(44, 46);
+            ConsoleManager.PrintAnywhere($"Lv. {p.Level} {p.Name} ({p.Job})",49,25);
 
             Console.WriteLine();
 
@@ -35,19 +38,19 @@ namespace sparta_9team_project
             {
                 if (dungeonType == 1)
                 {
-                    ConsoleManager.PrintCenteredSlow("🌸 미르는 꽃길을 산책하고 있어요...", 55, 2, 60);
+                    ConsoleManager.PrintCenteredSlow("🌸 미르는 꽃길을 산책하고 있어요...", 38, 2, 60);
                 }
                 else if (dungeonType == 2)
                 {
-                    ConsoleManager.PrintCenteredSlow("🌊 한강 바람이 시원하게 불어요...", 55, 2, 60);
+                    ConsoleManager.PrintCenteredSlow("🌊 한강 바람이 시원하게 불어요...", 38, 2, 60);
                 }
                 else if (dungeonType == 3)
                 {
-                    ConsoleManager.PrintCenteredSlow("🌲 뒷산의 어두운 숲을 조심히 걷고 있어요...", 55, 2, 60);
+                    ConsoleManager.PrintCenteredSlow("🌲 뒷산의 어두운 숲을 조심히 걷고 있어요...", 38, 2, 60);
                 }
 
-                ConsoleManager.PrintCenteredSlow("                                                      ", 55, 2, 60);
-                Thread.Sleep(500);
+                ConsoleManager.PrintCenteredSlow("                                                         ", 33, 2, 60);
+                Thread.Sleep(100);
             }
 
             // 산책 끝나고 던전 진입
@@ -61,13 +64,13 @@ namespace sparta_9team_project
             ConsoleManager.ConfigureConsoleSize();
             Console.OutputEncoding = System.Text.Encoding.UTF8;
 
-            ConsoleManager.PrintCentered("🚶 미르의 산책을 떠날 곳을 선택하세요 🚶", 40);
+            ConsoleManager.PrintAnywhere("🚶 미르의 산책을 떠날 곳을 선택하세요 🚶", 42,23);
             Console.WriteLine();
-            ConsoleManager.PrintCentered("1. 집앞 공원 (쉬움)", 40);
-            ConsoleManager.PrintCentered("2. 한강 공원 (보통)", 40);
-            ConsoleManager.PrintCentered("3. 뒷산 (어려움)", 40);
+            ConsoleManager.PrintAnywhere("1. 집앞 공원 (쉬움)", 52,25);
+            ConsoleManager.PrintAnywhere("2. 한강 공원 (보통)",52,26);
+            ConsoleManager.PrintAnywhere("3. 뒷산 (어려움)", 54,27);
             Console.WriteLine();
-            ConsoleManager.PrintCentered(">> 선택 (1~3): ", 40);
+            ConsoleManager.PrintAnywhere(">> 선택 (1~3): ", 56,29);
             Console.SetCursorPosition(62, Console.CursorTop);
 
             string input = Console.ReadLine();
@@ -78,20 +81,20 @@ namespace sparta_9team_project
             {
                 ConsoleManager.PrintCentered("잘못된 입력입니다. 다시 선택하세요.", 40);
                 Thread.Sleep(1000);
-                Walk(); // 다시 선택
+                Walk();
                 return;
             }
 
             switch (choice)
             {
                 case 1:
-                    ConsoleManager.PrintCentered("🏞️ 집앞 공원으로 출발합니다...", 40);
+                    ConsoleManager.PrintAnywhere("🏞️ 집앞 공원으로 출발합니다...", 55,31);
                     break;
                 case 2:
-                    ConsoleManager.PrintCentered("🏞️ 한강 공원으로 출발합니다...", 40);
+                    ConsoleManager.PrintAnywhere("🏞️ 한강 공원으로 출발합니다...", 55, 31);
                     break;
                 case 3:
-                    ConsoleManager.PrintCentered("🏞️ 뒷산으로 출발합니다...", 40);
+                    ConsoleManager.PrintAnywhere("🏞️ 뒷산으로 출발합니다...", 48, 31);
                     break;
             }
 
@@ -105,6 +108,8 @@ namespace sparta_9team_project
             int maxBarCount = 5;
             string[] hpview = new string[maxBarCount];
             int presenthp = (int)Math.Ceiling((double)hp / maxhp * maxBarCount);
+            presenthp = Math.Max(0, Math.Min(maxBarCount, presenthp));
+
             for (int i = 0; i < presenthp; i++)
             {
                 hpview[i] = "■";
@@ -132,7 +137,8 @@ namespace sparta_9team_project
             {
                 Console.ForegroundColor = ConsoleColor.White; // 50% 이상 흰색
             }
-            Console.Write($"[{hpbar}]");
+
+            ConsoleManager.PrintAnywhere($"[{hpbar}] ({hp} / {maxhp}", 49, 26);
 
             // 색 복구
             Console.ForegroundColor = originalColor;
@@ -144,6 +150,7 @@ namespace sparta_9team_project
         {
             Console.Clear();
             DiscoverEnemy(dungeonType);
+            EncounterManager.SetupEnemies(enemies); // 전투 중인 몬스터 리스트 확인용 함수 추가했습니다 - 황연주
 
             bool win = false;
 
@@ -179,54 +186,37 @@ namespace sparta_9team_project
 
         public static void DiscoverEnemy(int difficulty)
         {
-            ConsoleManager.PrintAnywhere("👾앗! 미르의 적을 발견했다! 👾", 44, 2);
-
-            Random rand = new Random();
-            dungeonEnemies = new Enimies(3);
-
-            //던전 난이도별 에너미 배치
+            ConsoleManager.PrintAnywhere("👾앗! 미르의 적을 발견했다! 👾", 48, 2);
+            var rand = new Random();
+            //  난이도별 Enemy 객체 생성 + 화면 출력
             for (int i = 0; i < 3; i++)
             {
-                int typeIndex = 0;
-
-                if (difficulty == 1) // 집앞 공원
-                {
-                    typeIndex = rand.Next(0, 3); // 새끼고양이, 치와와, 고양이
-                }
-                else if (difficulty == 2) // 한강공원
-                {
-                    typeIndex = rand.Next(2, 5); // 고양이, 허스키, 오토바이
-                }
-                else if (difficulty == 3) // 뒷산
-                {
-                    typeIndex = rand.Next(3, 5); // 허스키, 오토바이
-                }
-
-                Enemyinfo info = Enemyinfos.enemyinfos[typeIndex];
-
+                int typeIndex;
+                if (difficulty == 1) typeIndex = rand.Next(0, 3);  // 새끼고양이~고양이
+                else if (difficulty == 2) typeIndex = rand.Next(2, 5);  // 고양이~오토바이
+                else typeIndex = rand.Next(3, 5);  // 허스키~오토바이
+                enemies[i] = new Enemy((Enemytype)typeIndex);
+                var info = Enemyinfos.enemyinfos[typeIndex];
                 ConsoleManager.PrintAsciiAt(info.enepic, locationx[i], 6);
-                Console.SetCursorPosition(locationx[i] + 5, 22);
-                Hpbar(info.hpoint, info.mhp);
-
+                var e = enemies[i];
+                ConsoleManager.PrintAnywhere($"Lv. {e.Level} {e.Name}", locationx[i] + 40, 23);
+                Hpbar(e.Hp, info.mhp);
             }
-
             while (true)
             {
                 ConsoleManager.PrintAnywhere(">> 0. 전투 시작: ", 49, 27);
                 Console.SetCursorPosition(66, 27);
-                string choice = Console.ReadLine();
-                if (choice == "0")
+                if (Console.ReadLine() == "0")
                 {
                     Thread.Sleep(1000);
                     break;
                 }
-                else
-                {
-                    ConsoleManager.PrintAnywhere("잘못된 입력입니다.", 49, 27);
-                    Thread.Sleep(1000);
-                }
+                ConsoleManager.PrintAnywhere("잘못된 입력입니다.", 49, 27);
+                Thread.Sleep(1000);
             }
         }
+
+
 
 
 
@@ -372,8 +362,8 @@ namespace sparta_9team_project
             }
             else
             {
-                ConsoleManager.PrintAnywhere("💀 전투에서 패배했습니다... 💀",45, 7);
-                ConsoleManager.PrintAsciiAt(Print.dogImage[11], 35, 8);
+                ConsoleManager.PrintAnywhere("💀 전투에서 패배했습니다... 💀",48, 7);
+                ConsoleManager.PrintAsciiAt(Print.dogImage[11], 23, 8);
                 ConsoleManager.PrintAnywhere(">> [Enter]를 눌러 마을로 돌아가기...", 42, 50);
                 Console.SetCursorPosition(49, 51);
                 Console.ReadLine();
@@ -388,8 +378,8 @@ namespace sparta_9team_project
             Console.Clear();
             ConsoleManager.ConfigureConsoleSize();
 
-            int startX = 70; 
-            int endX = 10;  
+            int startX = 0; 
+            int endX = 100;  
             int y = 20;      
 
             for (int x = startX; x >= endX; x--)
@@ -418,9 +408,8 @@ namespace sparta_9team_project
             Player player = PlayerManager.instance.mainPlayer;
 
             int left = 0;
-            int bottom = Console.WindowHeight - 8; //밑에 2줄 추가
 
-            Console.SetCursorPosition(left, bottom);
+            Console.SetCursorPosition(left,0);
             Console.WriteLine("=========================");
             Console.WriteLine($"[플레이어 정보]");
             Console.WriteLine($"Lv. {player.Level}  {player.Name} ({player.Job})");
