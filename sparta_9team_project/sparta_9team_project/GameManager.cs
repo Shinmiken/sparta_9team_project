@@ -89,7 +89,7 @@ namespace sparta_9team_project
                 if (Choice == "1")
                 {
                     ChoiceJob(); // 직업 선택
-                    return new Player("미르", 1, 100, 100, 10, 5, selectjob, "0", type);
+                    return new Player("미르", 1, 100, 100, 100, 100, 10, 5, selectjob, "0", type);
                 }
                 else if (Choice == "2")
                 {

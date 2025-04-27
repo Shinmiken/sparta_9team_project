@@ -75,7 +75,6 @@
             blessing9jo = new Consumable(0, "⟡༺༒9조의 축복༒༻⟡", ItemType.소모품, ConsumableEffect.방어력증가, 1, "이제 미르는 누구도 무섭지 않아요 !");
             catnip = new Consumable(0, "캣닢", ItemType.소모품, ConsumableEffect.체력회복, 1, "아가냥이가 세상에서 제일 좋아하는 풀이라고 한다.");
         
-
             consumableStorage = new Dictionary<string, Item>
             {
                 [smallHealingPotion.Name] = smallHealingPotion,
@@ -184,7 +183,7 @@
             // 안 비었다면 인벤토리에서 소모품만 필터링
             // 필터링 후 소모품만 있는 딕셔너리에 저장
             // 소모품만 있는 딕셔너리에서 아이템 이름과 개수 출력
-            Dictionary<string, int> onlyConsumables = new Dictionary<string, int>();
+            Dictionary<string, Item> onlyConsumables = new Dictionary<string, Item>();
 
             bool isEmpty = invenManager.IsEmpty();                               // 인벤토리 비었는지 체크
 

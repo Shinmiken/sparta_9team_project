@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 
 namespace sparta_9team_project
 {
@@ -22,7 +23,7 @@ namespace sparta_9team_project
     // [Player] 클래스 - 플레이어 캐릭터
     public class Player : Character
     {
-   	    public bool IsInvincible { get; set; } = false; // 최종 보스 무적 처리 관련 함수 추가했습니당 - 황연주
+   	    public bool IsInvincible { get; set; } = false; // 최종 보스 무적 처리 관련 함수
 		// [Fields]
 
 		public int MaxHp { get; set; } = 100;
@@ -30,16 +31,16 @@ namespace sparta_9team_project
         public string Bones { get; set; }
         public int Exp { get; set; } = 0;       // 경험치
         public int MaxExp { get; set; } = 100;  // 최대 경험치
-        public int Mana { get; set; } = 100;     // 마나
-        public int MaxMana { get; set; } = 100;  // 최대 마나
+        public int Mp { get; set; } = 100;      // 마나
+        public int MaxMp { get; set; } = 100;   // 최대 마나
         public int ImageType { get; set; }
 
-	    private List<string> usedItems = new List<string>(); // 사용한 아이템 이름 저장용 리스트 - 황연주
+	    private List<string> usedItems = new List<string>();    // 사용한 아이템 이름 저장용 리스트
  
         InventoryManager inventory = InventoryManager.Instance; // 인벤토리 매니저의 플레이어 인벤토리
 
         // [Constructor]
-        public Player (string name, int level, int hp, int maxHp, int atk, int def, JobType job, string bones, int imageType) : base(name, level, atk, def, hp, maxHp) // 부모 클래스인 Character의 생성자 호출
+        public Player (string name, int level, int hp, int maxHp, int mp, int MaxMp, int atk, int def, JobType job, string bones, int imageType) : base(name, level, atk, def, hp, maxHp) // 부모 클래스인 Character의 생성자 호출
         {
             MaxHp = maxHp;
             Job = job;
@@ -63,7 +64,6 @@ namespace sparta_9team_project
             ConsoleManager.PrintAnywhere($"{Name}는 {mob.Name}에게 {damage}의 댕미지를 입혔습니다!",40,25);
             ConsoleManager.PrintAnywhere($"{mob.Name}의 HP가 {mob.Hp} 남았습니다.",46,27);
         }
-
         public void TakeDamage(int damage)
         {
 	        if (IsInvincible)
@@ -83,13 +83,10 @@ namespace sparta_9team_project
    		usedItems.Add(itemName);
    		Console.WriteLine($"{itemName}을(를) 사용했습니다.");
 	}
-
 	    public bool HasUsedItem(string itemName)
 	{
   		return usedItems.Contains(itemName);
 	}
-
-
         public void GainExp(int exp)
         {
             Exp += exp;
@@ -99,7 +96,6 @@ namespace sparta_9team_project
                 Exp = Exp - MaxExp; // 남은 경험치
             }
         }   // 러프. 추후 수정 예정
-
         public void LevelUp()
         {
             Level++;
@@ -109,5 +105,59 @@ namespace sparta_9team_project
             Def += 2;    // 방어력 증가
             ConsoleManager.PrintAnywhere($"{Name}이(가) 성장했습니다! 현재 레벨: {Level}", 40, 25);
         }          // 러프. 추후 수정 예정
+        public void LevelUpOptions()
+        {
+            // 레벨업 시 선택지 (공격력, 방어력, 체력 증가 중 택 1)
+            var LevelUpMessage = new StringBuilder();
+                LevelUpMessage.AppendLine($"나이스! {Name}가 한 걸음 더 성장했다! {Level - 1} >> {Level}");
+                LevelUpMessage.AppendLine($"{Name}의 성장을 선택해주세요! ૮ ˶ᵔ ᵕ ᵔ˶ ა");
+                LevelUpMessage.AppendLine($"-----------------------------------------------------------------");
+                LevelUpMessage.AppendLine($"1. 댕댕파워 증가");
+                LevelUpMessage.AppendLine($"2. 댕댕방어 증가");
+                LevelUpMessage.AppendLine($"3. 댕댕체력 증가");
+                LevelUpMessage.AppendLine($"4. 댕댕기력 증가");
+                LevelUpMessage.AppendLine($"-----------------------------------------------------------------");
+                LevelUpMessage.Append($">>");
+
+            bool isDecided = false; 
+            while (isDecided)
+            {
+                string input = Console.ReadLine();
+
+                switch (input)
+                {
+                    case "1":
+                        Atk += 5;
+                        ConsoleManager.PrintAnywhere($"{Name}의 댕댕파워가 증가했습니다!", 40, 25);
+                        isDecided = true;
+                        break;
+                    case "2":
+                        Def += 2;
+                        ConsoleManager.PrintAnywhere($"{Name}의 댕댕방어가 증가했습니다!", 40, 25);
+                        isDecided = true;
+                        break;
+                    case "3":
+                        MaxHp += 10;
+                        Hp = MaxHp; // 체력 회복
+                        ConsoleManager.PrintAnywhere($"{Name}의 댕댕체력이 증가했습니다!", 40, 25);
+                        isDecided = true;
+                        break;
+                    case "4":
+                        MaxMp += 10;
+                        Mp = MaxMp; // 마나 회복
+                        ConsoleManager.PrintAnywhere($"{Name}의 댕댕기력이 증가했습니다!", 40, 25);
+                        isDecided = true;
+                        break;
+                    default:
+                        ConsoleManager.PrintAnywhere("잘못된 입력입니다. (1 ~ 3에서 선택해주세요!)", 40, 25);
+                        break;
+                }             
+            }
+        }
+        public void Randomize(int min, int max)
+        {
+            Random random = new Random();
+
+        }
     }
 }
