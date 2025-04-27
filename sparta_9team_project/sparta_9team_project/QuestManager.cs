@@ -159,17 +159,6 @@ namespace sparta_9team_project
         }
     }
 
-    public static class DropManager // 산책 중 캣닢 드랍 확률 5%
-    {
-        private static Random rng = new Random();
-
-        public static bool TryDropCatnip()
-        {
-            int chance = rng.Next(0, 100);
-            return chance < 5;
-        }
-    }
-
     public static class InventoryUI // 인벤토리 임시 구현
     {
         private static List<string> items = new List<string>();
