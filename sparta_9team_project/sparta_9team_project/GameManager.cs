@@ -16,6 +16,7 @@ namespace sparta_9team_project
         static JobType selectjob; // 직업 선택 enum 변수
         static void Main(string[] args)
         {
+            
             Console.OutputEncoding = Encoding.UTF8;
             ConsoleManager.ConfigureConsoleSize();
             Dungeon dungeon = new Dungeon();
@@ -163,6 +164,8 @@ namespace sparta_9team_project
         //게임 메인화면
         public static void MainScreen()
         {
+            SoundManager.StopBGM();
+            SoundManager.PlayBasicBGM();
             int x = 20;
             Console.Clear();
             ConsoleManager.ColorPrintAsciiAt(ConsoleColor.White, Print.dogImage[0], 60, 5);

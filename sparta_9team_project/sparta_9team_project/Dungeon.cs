@@ -196,6 +196,8 @@ namespace sparta_9team_project
 
         public static void DiscoverEnemy(int difficulty)
         {
+            SoundManager.StopBGM();
+            SoundManager.PlayBattleBGM(); 
             ConsoleManager.PrintAnywhere("👾앗! 미르의 적을 발견했다! 👾", 48, 2);
             var rand = new Random();
 
