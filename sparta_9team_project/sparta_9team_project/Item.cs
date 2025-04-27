@@ -7,9 +7,11 @@
         소모품,
     }
 
+
     public enum ConsumableEffect
     {
         체력회복,
+        마나회복,
         공격력증가,
         방어력증가,
     }
@@ -17,14 +19,17 @@
     /* -------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
 
     // [Item] - 부모 클래스 
-    public class Item
+    public abstract class Item
     {
+        public Player player = PlayerManager.instance.mainPlayer;                                                  // 로컬변수에 플레이어 싱글톤 저장
+        public Inventory invenManager = InventoryManager.Instance.PlayerInventory;                                 // 로컬변수에 인벤토리 싱글톤 저장
+        public Dictionary<string, int> inventory = InventoryManager.Instance.PlayerInventory.inventory;            // 로컬변수에 인벤토리 리스트 싱글톤 저장
+
         // [Fields]
         public string Name { get; set; }
         public ItemType Type { get; set; }
         public int Counts { get; set; } = 1; // 아이템 개수
         public string Description { get; set; }
-        
 
         // [Constructor]
         public Item(string name, ItemType type, int counts, string description)
@@ -36,26 +41,21 @@
         }
 
         // [Methods]
-        public virtual void UseItem(Player player) 
-        {
-            if (Counts <= 0)
-            {
-                Console.WriteLine($"{player.Name}의 소지품에 {Name}이 없습니다.");
-                return;
-            }
-        }
+        public virtual void UseItem(Item item) { }
     }
 
 
     // [ItemDataBase] - 아이템 데이터베이스
     public static class ItemDataBase
     {
+        // 아이템 저장고
         // 무기
+        public static Dictionary<string, Item> weaponStorage;
 
         // 방어구
+        public static Dictionary<string, Item> armorStorage;
 
-        // 소모품
-        
+        // 소모품      
         public static Dictionary<string, Item> consumableStorage;
         public static Consumable smallHealingPotion; // 59~60번째 줄 : 생성자 변환하느라 추가했습니다! - 황연주
         // 퀘스트 아이템입니다 - 황연주
@@ -84,6 +84,7 @@
                 [catnip.Name] = catnip
             };
         }
+
     }
     
 
@@ -91,22 +92,30 @@
 
     // [Item]클래스를 상속받은 자식 클래스들
     public class Weapon : Item
-    {
+    {  
+        // [Fields]
         public int AttackPower { get; set; }
+
+        // [Constructor]
         public Weapon(int attackPower, string name, ItemType type, int counts, string description ) : base(name, ItemType.무기, counts, description)
         {
             AttackPower = attackPower;
         }
     }
 
+
     public class Armor : Item
     {
+        // [Fields]
         public int DefensePower { get; set; }
+
+        // [Constructor]
         public Armor (int defensePower, string name, ItemType type, int counts, string description) : base(name, ItemType.방어구, counts, description)
         {
             DefensePower = defensePower;
         }
     }
+
 
     public class Consumable : Item
     {
@@ -115,35 +124,92 @@
         public ConsumableEffect EffectType { get; set; }
 
         // [Constructor]
-        public Consumable (int effectAmount, string name, ItemType type, ConsumableEffect effectType, int counts, string description) : base(name, ItemType.소모품, counts, description)
+        public Consumable(int effectAmount, string name, ItemType type, ConsumableEffect effectType, int counts, string description) : base(name, ItemType.소모품, counts, description)
         {
             EffectAmount = effectAmount;
             EffectType = effectType;
-
         }
 
         // [Methods]
-
-        // UseItem() 사용법:
-        // 01) ItemDataBase.smallHealingPotion.UseItem(player);
-        public override void UseItem(Player player)
+        public bool IsConsumable(Item item)
         {
-            base.UseItem(player);                                                       // 아이템이 인벤토리에 없다면
-            
-            switch (EffectType)                                                         // 아이템이 인벤토리에 있다면 && ConsumableEffect 타입 확인
+            // 존재하는 아이템이 소모품타입인지 체크
+            if (Type == ItemType.소모품)         
             {
-                case ConsumableEffect.체력회복:
-                    int needsHeal = player.MaxHp - player.Hp;                           // 현재 체력과 최대 체력의 차이
-                    int actualHealAmount = Math.Min(EffectAmount, needsHeal);           // 실제 회복량
-                    player.Hp += actualHealAmount;                                      // 플레이어 체력 회복
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
 
-                    Counts -= 1;                                                        // 사용된 아이템 개수 감소
-                    Console.WriteLine($"{player.Name}이(가) {Name}을(를) 사용했습니다.");
-                    break;
+        public override void UseItem(Item item)
+        {
+            bool contains = invenManager.HasItem(item);                                                          // 아이템이 인벤토리에 있는지 체크
+                
+            if (contains)                                                                                        // 아이템이 인벤토리에 있다면 && 소모품이라면               
+            {
+                switch (EffectType)                                                                              // ConsumableEffect 타입 확인
+                {
+                    case ConsumableEffect.체력회복:                                                               // ConsumableEffect 타입 == 체력회복인 경우 
+                        int needsHeal = player.MaxHp - player.Hp;                                                // 현재 체력과 최대 체력의 차이
+                        int actualHealAmount = Math.Min(EffectAmount, needsHeal);                                // 실제 회복량
+                        player.Hp += actualHealAmount;                                                           // 플레이어 체력 회복
 
-                    //아이템 추가 가능
+                        Counts -= 1;                                                                             // 사용된 아이템 개수 감소
+                        Console.WriteLine($"{player.Name}이(가) {Name}을(를) 사용했습니다.\n회복을 완료했습니다.");
+                        break;
+
+                        //아이템 추가 가능
+                }
+            }
+            else                                                                  
+            {   
+                Console.WriteLine($"포션이 부족합니다.");                                                           // 아이템이 인벤토리에 없다면
+                return;
             }
 
+        }
+
+        public void ShowOnlyConsumables()
+        {
+            // 인벤토리가 비었나 검사
+            // 안 비었다면 인벤토리에서 소모품만 필터링
+            // 필터링 후 소모품만 있는 딕셔너리에 저장
+            // 소모품만 있는 딕셔너리에서 아이템 이름과 개수 출력
+            Dictionary<string, int> onlyConsumables = new Dictionary<string, int>();
+
+            bool isEmpty = invenManager.IsEmpty();                               // 인벤토리 비었는지 체크
+
+            if (!isEmpty)
+            {
+                foreach (var (item, count) in inventory)                         // 인벤토리에서 소모품 필터링
+                {
+                    Item itemName = ItemDataBase.consumableStorage[item];        // 아이템 객체의 아이템 이름값 접근
+                    bool yes = IsConsumable(itemName);                           // 타입이 소모품인지 체크
+                    if (item == itemName.Name && yes)
+                    {
+                        onlyConsumables[item] = count;                           // 소모품만 있는 딕셔너리에 저장
+                    }
+                }
+
+                int i = 1;
+                string index = "";
+                foreach (var (item, count) in onlyConsumables)                   // 소모품만 있는 딕셔너리 출력
+                {
+                    index = i.ToString();
+                    Console.WriteLine($"{index:D2}{item}: {count}개");
+                    i++;// 아이템 이름과 개수 출력
+                }
+
+                return;
+            }
+            else
+            {
+                Console.WriteLine($"{player.Name}의 소지품함이 현재 비어있습니다");
+                return;
+            }
         }
     }
 }
