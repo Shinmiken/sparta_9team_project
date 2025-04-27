@@ -10,6 +10,8 @@
   <ItemGroup>
     <None Remove="Resources\basic bgm.wav" />
     <None Remove="Resources\battle bgm.wav" />
+    <None Remove="Resources\Die bgm.wav" />
+    <None Remove="Resources\Last bgm.wav" />
     <None Remove="Resources\Start bgm.wav" />
   </ItemGroup>
 
@@ -18,6 +20,12 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Resources\battle bgm.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Die bgm.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Last bgm.wav">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Resources\Start bgm.wav">

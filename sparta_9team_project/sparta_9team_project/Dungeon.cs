@@ -494,15 +494,15 @@ namespace sparta_9team_project
             SoundManager.StopBGM();
             SoundManager.PlayLastBGM();
             Console.Clear();
-            ConsoleManager.PrintAnywhere("👑 히든 던전에 오신 것을 환영합니다! 👑", fortyCenter(), 2);
+            ConsoleManager.PrintAnywhere("　흐흐흐　여기까지　잘도왔군．．．．　", locationx[1], 2);
             enemies = new Enemy[1] { new Enemy(Enemytype.finalboss) };
             var boss = enemies[0];
             var info = Enemyinfos.enemyinfos[(int)Enemytype.finalboss];
 
             int centerX = (Console.WindowWidth -  40) / 2;
-            ConsoleManager.PrintAsciiAt(info.enepic, centerX, 6);
-            ConsoleManager.PrintAnywhere($"Lv. {boss.Level} {boss.Name}", centerX + 8, 23);
-            Hpbar(boss.Hp, info.mhp, centerX + 8, 22);
+            ConsoleManager.PrintAsciiAt(info.enepic, locationx[1], 4);
+            ConsoleManager.PrintAnywhere($"Lv. {boss.Level} {boss.Name}", centerX, 25);
+            Hpbar(boss.Hp, info.mhp, centerX, 24);
 
             ConsoleManager.PrintAnywhere(">> [Enter]를 눌러 전투 시작...", 49, 27);
             Console.ReadLine();
@@ -541,13 +541,6 @@ namespace sparta_9team_project
             // 6) 결과 처리
             Result(win);
         }
-
-        // 유틸: 대략 화면 중앙 X 좌표 계산
-        private static int fortyCenter()
-        {
-            return (Console.WindowWidth - 40) / 2;
-        }
-
 
 
 
