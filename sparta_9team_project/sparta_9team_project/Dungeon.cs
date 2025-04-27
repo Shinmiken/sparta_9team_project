@@ -255,7 +255,7 @@ namespace sparta_9team_project
 
 
 
-            for (int i = 0; i < 3; i++)
+            for (int i = 0; i < enemies.Length; i++)
             {
                 Enemy enemy = enemies[i];
                 int infoIndex = Array.FindIndex(Enemyinfos.enemyinfos, info => info.nm == enemy.Name);
@@ -557,7 +557,7 @@ namespace sparta_9team_project
                 Thread.Sleep(1000);
 
                 int dmg = Math.Max(0, boss.Atk - PlayerManager.instance.mainPlayer.Def);
-                PlayerManager.instance.mainPlayer.TakeDamage(dmg)2
+                PlayerManager.instance.mainPlayer.TakeDamage(dmg);
 
                 PrintPlayerInfo();
 
