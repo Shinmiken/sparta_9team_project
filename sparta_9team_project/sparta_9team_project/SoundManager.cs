@@ -36,6 +36,21 @@ namespace sparta_9team_project
                 player.Stop();
             }
         }
+        public static void PlayStartBGM()
+        {
+            player = new SoundPlayer("Resources/ bgm.wav");
+            player.PlayLooping();
+        }
+        public static void PlayDieBGM()
+        {
+            player = new SoundPlayer("Resources/battle bgm.wav");
+            player.PlayLooping();
+        }
+        public static void PlayLastBGM()
+        {
+            player = new SoundPlayer("Resources/battle bgm.wav");
+            player.PlayLooping();
+        }
     }
 
 }
