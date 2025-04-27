@@ -90,4 +90,39 @@ namespace sparta_9team_project
             Console.ReadLine();
         }
     }
+
+            public static void HandleSkill(Player player, Enemy[] enemies)
+        {
+            // 대상 선택
+            Console.WriteLine("🏷️ 스킬을 사용할 적 번호를 선택하세요:");
+            for (int i = 0; i < enemies.Length; i++)
+            {
+                if (enemies[i].Hp > 0)
+                    Console.WriteLine($"[{i + 1}] {enemies[i].Name} (HP: {enemies[i].Hp})");
+            }
+            if (!int.TryParse(Console.ReadLine(), out int idx) || idx < 1 || idx > enemies.Length || enemies[idx - 1].Hp <= 0)
+            {
+                Console.WriteLine("잘못된 입력입니다. 다시 시도합니다.");
+                HandleSkill(player, enemies);
+                return;
+            }
+            var target = enemies[idx - 1];
+
+            // 스킬 선택
+            Console.WriteLine("🛡️ 사용할 스킬을 선택하세요:");
+            foreach (var info in SkillInfos.skillInfos)
+                Console.WriteLine($"{(int)info.Type + 1}. {info.Name} (MP: {info.ManaCost})");
+
+            if (!int.TryParse(Console.ReadLine(), out int choice) || choice < 1 || choice > SkillInfos.skillInfos.Length)
+            {
+                Console.WriteLine("잘못된 입력입니다. 다시 시도합니다.");
+                HandleSkill(player, enemies);
+                return;
+            }
+
+            // 스킬 실행
+            var skillType = SkillInfos.skillInfos[choice - 1].Type;
+            UseSkill(player, target, skillType);
+        }
+    } 
 }
