@@ -142,16 +142,13 @@ namespace sparta_9team_project
         {
             if (quest.TITLE == "3 아가냥이와 친구가 되었어요 !")
             {
-                InventoryUI.AddItem("고양이 회피용 생선");
+                InventoryManager.Instance.PlayerInventory.AddItem(ItemDataBase.fish, 1);
                 Console.WriteLine("고양이 회피용 생선 1개를 획득했습니다냥 !");
             }
             else if (quest.TITLE == "우주 최고 용맹 강아지 ~☆")
             {
                 int amount = new Random().Next(1, 4); // 1~3 랜덤
-                for (int i = 0; i < amount; i++)
-                {
-                    InventoryUI.AddItem("유리조각");
-                }
+                InventoryManager.Instance.PlayerInventory.AddItem(ItemDataBase.glassPiece, amount);
                 Console.WriteLine($"유리조각 {amount}개를 획득했습니다 !");
             }
             else if (quest.TITLE == "9, 또 너야 ?")
