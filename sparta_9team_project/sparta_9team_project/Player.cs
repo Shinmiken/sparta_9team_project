@@ -30,6 +30,8 @@ namespace sparta_9team_project
         public string Bones { get; set; }
         public int Exp { get; set; } = 0;       // 경험치
         public int MaxExp { get; set; } = 100;  // 최대 경험치
+        public int Mana { get; set; } = 100;     // 마나
+        public int MaxMana { get; set; } = 100;  // 최대 마나
         public int ImageType { get; set; }
 
 	    private List<string> usedItems = new List<string>(); // 사용한 아이템 이름 저장용 리스트 - 황연주

@@ -152,7 +152,7 @@ namespace sparta_9team_project
         {
             if (quest.TITLE == "3 아가냥이와 친구가 되었어요 !")
             {
-                InventoryManager.Instance.PlayerInventory.AddItem(ItemDataBase.fish);
+                InventoryManager.Instance.PlayerInventory.AddItem(ItemDataBase.fish, 1);
                 Console.WriteLine("고양이 회피용 생선 1개를 획득했습니다냥 !");
             }
             else if (quest.TITLE == "우주 최고 용맹 강아지 ~☆")
@@ -160,13 +160,13 @@ namespace sparta_9team_project
                 int amount = new Random().Next(1, 4); // 1~3 랜덤
                 for (int i = 0; i < amount; i++)
                 {
-                    InventoryManager.Instance.PlayerInventory.AddItem(ItemDataBase.glassPiece);
+                    InventoryManager.Instance.PlayerInventory.AddItem(ItemDataBase.glassPiece, amount);
                 }    
                 Console.WriteLine($"유리조각 {amount}개를 획득했습니다 !");
             }
             else if (quest.TITLE == "9, 또 너야 ?")
             {
-                InventoryManager.Instance.PlayerInventory.AddItem(ItemDataBase.blessing9jo);
+                InventoryManager.Instance.PlayerInventory.AddItem(ItemDataBase.blessing9jo, );
                 Console.WriteLine("⟡༺༒9조의 축복༒༻⟡을 받았습니다! 이번 전투는 좀 쉬울지도..?");
             }
         }
