@@ -161,7 +161,12 @@
                         Counts -= 1;                                                                             // 사용된 아이템 개수 감소
                         Console.WriteLine($"{player.Name}이(가) {Name}을(를) 사용했습니다.\n회복을 완료했습니다.");
                         break;
-
+                    case ConsumableEffect.공격력증가:
+                        player.Atk += EffectAmount;                                                      // 플레이어 공격력 증가
+                        break;
+                    case ConsumableEffect.방어력증가:
+                        player.Def += EffectAmount;                                                      // 플레이어 방어력 증가
+                        break;
                         //아이템 추가 가능
                 }
             }
