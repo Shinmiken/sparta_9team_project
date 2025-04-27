@@ -27,7 +27,7 @@
 
 
         // 플레이어의 인벤토리 리스트
-        public Dictionary<string, int> inventory = new Dictionary<string, int>();
+        public Dictionary<string, Item> inventory = new Dictionary<string, Item>();
 
         // 인벤토리 [Methods]
         public bool IsEmpty()
@@ -45,7 +45,7 @@
         public bool HasItem(Item item)
         {
             // 아이템이 인벤토리에 있는지 확인
-            if (inventory.ContainsKey(item.Name) && inventory[item.Name] > 0)
+            if (inventory.ContainsKey(item.Name) && item.Counts > 0)
             {
                 return true;
             }
@@ -54,28 +54,9 @@
                 return false;
             }
         }
-        public bool HasUsed(Item item) // 제작중. 완성 X
+        public void AddItem(Item item, int counts)
         {
-            bool yes = HasItem(item);
-
-            return yes;
-        }
-        public void AddItem(Item item, int count)
-        {
-            // 만약 인벤토리에 이미 아이템이 있다면
-            // 아이템.카운트 + 추가하고 싶은 개수
-            // 만약 인벤토리에 아이템이 없다면
-            // 아이템 추가 후 카운트 + 추가하고 싶은 개수
-            if (inventory.ContainsKey(item.Name))
-            {
-                item.Counts += count;
-                return;
-            }
-            else
-            {
-                inventory[item.Name] = item.Counts + count;
-            }
-
+            item.Counts += counts;
             Console.WriteLine($"{player.Name}의 소지품에 {item.Name}이(가) 추가되었습니다.");
         }
         public void RemoveOneByOne(Item item)
@@ -85,7 +66,7 @@
             // 아이템.카운트 -1
             // 만약 인벤토리에 아이템이 없다면
             // 아이템이 없다는 문구 출력
-            if (inventory.ContainsKey(item.Name))
+            if (HasItem(item))
             {   
                 if (item.Counts > 0)
                 {
@@ -107,7 +88,7 @@
             // 아이템.카운트 == 0, 아이템 인벤토리에서 삭제
             // 만약 아이템이 인벤토리에 없다면
             // 아이템이 없다는 문구 출력
-            if (inventory.ContainsKey(item.Name))
+            if (HasItem(item))
             {
                 item.Counts = 0;
                 inventory.Remove(item.Name);  
