@@ -152,18 +152,21 @@ namespace sparta_9team_project
         {
             if (quest.TITLE == "3 아가냥이와 친구가 되었어요 !")
             {
-                Inventory.AddItem("생선 x 1");
+                InventoryManager.Instance.PlayerInventory.AddItem(ItemDataBase.fish);
                 Console.WriteLine("고양이 회피용 생선 1개를 획득했습니다냥 !");
             }
             else if (quest.TITLE == "우주 최고 용맹 강아지 ~☆")
             {
                 int amount = new Random().Next(1, 4); // 1~3 랜덤
-                Inventory.AddItem($"유리조각 x {amount}");
+                for (int i = 0; i < amount; i++)
+                {
+                    InventoryManager.Instance.PlayerInventory.AddItem(ItemDataBase.glassPiece);
+                }    
                 Console.WriteLine($"유리조각 {amount}개를 획득했습니다 !");
             }
             else if (quest.TITLE == "9, 또 너야 ?")
             {
-                Inventory.AddItem("⟡༺༒9조의 축복༒༻⟡");
+                InventoryManager.Instance.PlayerInventory.AddItem(ItemDataBase.blessing9jo);
                 Console.WriteLine("⟡༺༒9조의 축복༒༻⟡을 받았습니다! 이번 전투는 좀 쉬울지도..?");
             }
         }
@@ -191,17 +194,7 @@ namespace sparta_9team_project
     }
 }
 
-public static class QuestManager
-{
-    public static void TriggerQuest(string questName)
-    {
-        // TODO: 나중에 조건 확인하고 선물 지급하는 로직 추가 필요 !!
-        Console.WriteLine($"[퀘스트 트리거됨] : {questName}");
-    }
-}
-
 // - 기능 체크리스트
-// - player.UsedItem(string) 메서드를                  {특정 아이템 사용 여부 체크 목적}	                Player.cs 클래스에 추가 필요
 // - enemies 리스트 (현재 전투 중 몬스터 목록)을	           {EncounterManager / Battle.cs에서 활용 목적}	  EncounterManager.cs에 있도록 연결하기
 // - '던전 재입장 시 9조 퀘스트 완료 체크'를	                 “9조의 축복” 표시 여부	                        Dungeon.Enter() 또는 Walk.Start() 시작부에서 IS_COMPLETED 확인 후 처리 (?)
 // - 선물 수령 이후 IS_REWARD_CLAIMED = true; 처리	필요    보상 중복 방지	                                보상 수령 시 RewardManager.GiveReward() 호출 후 Quest 객체 수정 필요 . .
