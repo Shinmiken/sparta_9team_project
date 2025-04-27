@@ -58,7 +58,7 @@ namespace sparta_9team_project
             new Enemyinfo("고양이", 3, 15, 7, 60, 8, "할퀴기", Print.dogImage[9], 60, Enemytype.cat),
             new Enemyinfo("허스키",   4, 20, 15,  90, 18, "얼음 으르렁", Print.dogImage[7],  90, Enemytype.husky),
             new Enemyinfo("오토바이", 5, 24, 10, 120, 22, "부릉부릉",    Print.dogImage[8], 120, Enemytype.mortorcycle),
-            new Enemyinfo("곰돌이",6,22,14,110,22,"으르렁",     Print.dogImage[13],110,Enemytype.bear),
+            new Enemyinfo("곰",6,22,14,110,22,"으르렁",     Print.dogImage[13],110,Enemytype.bear),
             new Enemyinfo("멧돼지",7,24,12, 95,20,"돌진",       Print.dogImage[15], 95,Enemytype.boar),
             new Enemyinfo("독수리",8,26, 8, 80,25,"하늘 강타", Print.dogImage[14], 80,Enemytype.eagle),
             new Enemyinfo("동물병원의사",25,60,40,600,300,"사나운 주사기",Print.dogImage[16],600,Enemytype.finalboss)
