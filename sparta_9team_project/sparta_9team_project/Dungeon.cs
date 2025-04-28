@@ -220,6 +220,9 @@ namespace sparta_9team_project
 
                     // 보스 턴
                     Console.Clear();
+                    ConsoleManager.PrintAsciiAt(info.enepic, locationx[1], 3);
+                    ConsoleManager.PrintAnywhere($"Lv. {boss.Level}, 이름: {boss.Name}", locationx[1] + 8, 23);
+                    Hpbar(boss.Hp, info.mhp, locationx[1] + 8, 22);
                     ConsoleManager.PrintAnywhere("👾 적의 턴입니다! 공격이 시작됩니다...", 40, 2);
                     var player = PlayerManager.instance.mainPlayer;
                     int dmg = Math.Max(0, boss.Atk - player.Def);
@@ -332,11 +335,8 @@ namespace sparta_9team_project
                 );
                 Hpbar(enemies[i].Hp, info.mhp, locationx[i] + 8, 22);
             }
-            while (Console.ReadLine() != "0")
-            {
-                ConsoleManager.PrintAnywhere("잘못된 입력입니다.", 49, 27);
-                Thread.Sleep(1000);
-            }
+            ConsoleManager.PrintAnywhere(">> [Enter]를 눌러 전투 시작...", 49, 27);
+            Console.ReadLine();
         }
 
 
@@ -491,8 +491,8 @@ namespace sparta_9team_project
                         }
                     }
                 }
-                ConsoleManager.PrintAnywhere("🎉 전투에서 승리했습니다! 🎉", 40, 2);
-                ConsoleManager.PrintAnywhere("경험치와 보상을 획득했습니다.", 40, 4);
+                ConsoleManager.PrintAnywhere("🎉 전투에서 승리했습니다! 🎉", 45, 2);
+                ConsoleManager.PrintAnywhere("경험치와 보상을 획득했습니다.", 45, 4);
                 ConsoleManager.PrintAsciiAt(Print.dogImage[1], 37, 5);
                 // 경험치나 골드 증가 코드는 여기에 추가 가능
                 ConsoleManager.PrintAnywhere(">> [Enter]를 눌러 마을로 돌아가기...", 42, 27);
@@ -501,6 +501,7 @@ namespace sparta_9team_project
             }
             else
             {
+
                 ConsoleManager.PrintAnywhere("💀 전투에서 패배했습니다... 💀", 48, 7);
                 ConsoleManager.PrintAsciiAt(Print.dogImage[11], 23, 8);
                 ConsoleManager.PrintAnywhere(">> [Enter]를 눌러 마을로 돌아가기...", 42, 50);

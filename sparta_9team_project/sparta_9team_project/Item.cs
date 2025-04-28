@@ -79,15 +79,14 @@ namespace sparta_9team_project
             smallHealingPotion = new Consumable(30, "힐링포션(소)", ItemType.소모품, ConsumableEffect.체력회복, 1, "체력을 30 회복합니다.");
 
             // 퀘스트용 아이템 추가
-            fish = new Consumable(0, "생선", ItemType.소모품, ConsumableEffect.체력회복, 1, "고양이한테 생선을 맡기면 ?");
-            glassPiece = new Consumable(0, "유리조각", ItemType.소모품, ConsumableEffect.공격력증가, 1, "꽤 큰 유리조각이다.");
-            blessing9jo = new Consumable(0, "⟡༺༒9조의 축복༒༻⟡", ItemType.소모품, ConsumableEffect.방어력증가, 1, "이제 미르는 누구도 무섭지 않아요 !");
-            catnip = new Consumable(0, "캣닢", ItemType.소모품, ConsumableEffect.체력회복, 1, "아가냥이가 세상에서 제일 좋아하는 풀이라고 한다.");
+            fish = new Consumable(0, "생선", ItemType.소모품, ConsumableEffect.None, 1, "고양이한테 생선을 맡기면 ?");
+            glassPiece = new Consumable(0, "유리조각", ItemType.소모품, ConsumableEffect.None, 1, "꽤 큰 유리조각이다.");
+            blessing9jo = new Consumable(0, "⟡༺༒9조의 축복༒༻⟡", ItemType.소모품, ConsumableEffect.None, 1, "이제 미르는 누구도 무섭지 않아요 !");
+            catnip = new Consumable(0, "캣닢", ItemType.소모품, ConsumableEffect.None, 1, "아가냥이가 세상에서 제일 좋아하는 풀이라고 한다.") 
 
             // 우유 아이템 추가
             milk = new Milk("우유", 1, ItemType.우유, $"{player.Name}가 좋아하는 우유이다! 하지만 락토프리가 아니기에 먹으면 왠지 기분은 좋겠지만 배가 아플 것 같다...");
-
-
+          
             consumableStorage = new Dictionary<string, Item>
             {
                 [smallHealingPotion.Name] = smallHealingPotion,

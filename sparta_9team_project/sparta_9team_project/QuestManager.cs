@@ -28,6 +28,14 @@ namespace sparta_9team_project
             this.IS_REWARD_CLAIMED = false;
         }
 
+        public void CheckAutoComplete()
+        {
+            if (IS_COMPLETED)
+            {
+                Console.WriteLine($"퀘스트 {TITLE} 완료!");
+            }
+        }
+
         public void ShowQuestDetail()
         {
             Console.Clear();
@@ -159,7 +167,7 @@ namespace sparta_9team_project
         }
     }
 
-    public static class InventoryUI // 인벤토리 임시 구현
+    public static class InventoryUI // 텍스트 출력용
     {
         private static List<string> items = new List<string>();
 
