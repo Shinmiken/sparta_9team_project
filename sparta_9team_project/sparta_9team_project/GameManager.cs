@@ -7,6 +7,7 @@ using System.ComponentModel.Design;
 using System.IO.Compression;
 using System.Diagnostics.Metrics;
 using System.Xml.Linq;
+#nullable disable
 
 namespace sparta_9team_project
 {
@@ -19,6 +20,7 @@ namespace sparta_9team_project
         public static int type; // 상태보기에서 직업에 따른 이미지 표시를 위한 변수
         static JobType selectjob; // 직업 선택 enum 변수
         static int questcnt = 0;
+        #nullable disable
 
         static void Main(string[] args)
         {
