@@ -176,6 +176,7 @@ namespace sparta_9team_project
         //게임 메인화면
         public static void MainScreen()
         {
+            PlayerManager.instance.mainPlayer.SkillTree(selectjob); // 스킬트리 초기화
             SoundManager.StopBGM();
             SoundManager.PlayStartBGM();
             int x = 20;
