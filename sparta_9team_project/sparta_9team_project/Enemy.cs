@@ -32,7 +32,7 @@ namespace sparta_9team_project
         public string enepic; // 적 그림
         public int mhp; // 최대 hp
         public Enemytype enetyp; // 적 타입
-        int exp;
+        public int exp;
 
         public Enemyinfo(string _nm, int _level, int _attack, int _defense, int _hpoint, int _gld, string _atkname, string _enepic, int _mhp, Enemytype _enetyp, int _exp)
         {

@@ -27,7 +27,13 @@
 
 
         // 플레이어의 인벤토리 리스트
-        public Dictionary<string, Item> inventory = new Dictionary<string, Item>();
+        public Dictionary<string, Item> inventory = new Dictionary<string, Item>()
+        {
+            [ItemDataBase.longSword.Name] = ItemDataBase.longSword,
+            [ItemDataBase.shortarmor.Name] = ItemDataBase.shortarmor,
+            [ItemDataBase.longarmor.Name] = ItemDataBase.longarmor,
+            [ItemDataBase.shortSword.Name] = ItemDataBase.shortSword
+        };
 
         // 인벤토리 [Methods]
         public bool IsEmpty()
@@ -85,7 +91,7 @@
             // 아이템.카운트 == 0, 아이템 인벤토리에서 삭제
             // 만약 아이템이 인벤토리에 없다면
             // 아이템이 없다는 문구 출력
-            if (HasItem(item))
+            if (!HasItem(item))
             {
                 inventory[item.Name].Counts = 0;
                 inventory.Remove(item.Name);  
