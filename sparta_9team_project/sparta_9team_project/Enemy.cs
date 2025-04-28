@@ -32,8 +32,9 @@ namespace sparta_9team_project
         public string enepic; // 적 그림
         public int mhp; // 최대 hp
         public Enemytype enetyp; // 적 타입
-        
-        public Enemyinfo(string _nm, int _level, int _attack, int _defense, int _hpoint, int _gld, string _atkname, string _enepic, int _mhp, Enemytype _enetyp)
+        int exp;
+
+        public Enemyinfo(string _nm, int _level, int _attack, int _defense, int _hpoint, int _gld, string _atkname, string _enepic, int _mhp, Enemytype _enetyp, int _exp)
         {
             nm = _nm;
             level = _level;
@@ -45,6 +46,7 @@ namespace sparta_9team_project
             enepic = _enepic;
             mhp = _mhp;
             enetyp = _enetyp;
+            exp = _exp;
         }
     }
 
@@ -53,15 +55,15 @@ namespace sparta_9team_project
     {
         public static Enemyinfo[] enemyinfos =  // 각 enmyinfo를 미리 배열에 저장
         {
-            new Enemyinfo("새끼고양이", 1, 6, 3, 30, 4, "냥냥 펀치", Print.dogImage[10], 30, Enemytype.catling),
-            new Enemyinfo("치와와", 2, 10, 5, 40, 6, "물어 뜯기", Print.dogImage[6], 40, Enemytype.chihuahua),
-            new Enemyinfo("고양이", 3, 15, 7, 60, 8, "할퀴기", Print.dogImage[9], 60, Enemytype.cat),
-            new Enemyinfo("허스키",   4, 20, 15,  90, 18, "얼음 으르렁", Print.dogImage[7],  90, Enemytype.husky),
-            new Enemyinfo("오토바이", 5, 24, 10, 120, 22, "부릉부릉",    Print.dogImage[8], 120, Enemytype.mortorcycle),
-            new Enemyinfo("곰",6,22,14,110,22,"으르렁",     Print.dogImage[13],110,Enemytype.bear),
-            new Enemyinfo("멧돼지",7,24,12, 95,20,"돌진",       Print.dogImage[15], 95,Enemytype.boar),
-            new Enemyinfo("독수리",8,26, 8, 80,25,"하늘 강타", Print.dogImage[14], 80,Enemytype.eagle),
-            new Enemyinfo("동물병원의사",25,60,40,600,300,"사나운 주사기",Print.dogImage[16],600,Enemytype.finalboss)
+            new Enemyinfo("새끼고양이", 1, 6, 3, 30, 4, "냥냥 펀치", Print.dogImage[10], 30, Enemytype.catling, 25),
+            new Enemyinfo("치와와", 2, 10, 5, 40, 6, "물어 뜯기", Print.dogImage[6], 40, Enemytype.chihuahua, 100),
+            new Enemyinfo("고양이", 3, 15, 7, 60, 8, "할퀴기", Print.dogImage[9], 60, Enemytype.cat, 225),
+            new Enemyinfo("허스키",   4, 20, 15,  90, 18, "얼음 으르렁", Print.dogImage[7],  90, Enemytype.husky, 400),
+            new Enemyinfo("오토바이", 5, 24, 10, 120, 22, "부릉부릉",    Print.dogImage[8], 120, Enemytype.mortorcycle, 625),
+            new Enemyinfo("곰",6,22,14,110,22,"으르렁",     Print.dogImage[13],110,Enemytype.bear, 900),
+            new Enemyinfo("멧돼지",7,24,12, 95,20,"돌진",       Print.dogImage[15], 95,Enemytype.boar, 1225),
+            new Enemyinfo("독수리",8,26, 8, 80,25,"하늘 강타", Print.dogImage[14], 80,Enemytype.eagle, 1600),
+            new Enemyinfo("동물병원의사",25,60,40,600,300,"사나운 주사기",Print.dogImage[16],600,Enemytype.finalboss, 9999)
 
         };
     }
