@@ -82,19 +82,19 @@ namespace sparta_9team_project
 	{
   		return usedItems.Contains(itemName);
 	}
-        public void GainExp(int exp)
+        public void GainExp(int exp, JobType job)
         {
             Exp += exp;
             if (Exp >= MaxExp)
             {
-                LevelUp();
+                LevelUp(job);
                 Exp = Exp - MaxExp; // 남은 경험치
             }
-        }   // 러프. 추후 수정 예정
-        public void LevelUp(string jobType)
+        }   
+        public void LevelUp(JobType jobType)
         {
             // 레벨업 시 선택지 (공격력, 방어력, 체력 증가 중 택 1)
-            if (jobType == "전사")
+            if (jobType == JobType.전사)
             {
                 var LevelUpMessage01 = new StringBuilder();
                 LevelUpMessage01.AppendLine($"나이스! {Name}가 한 걸음 더 성장했습니다! {Level - 1} >> {Level}");
@@ -109,7 +109,7 @@ namespace sparta_9team_project
 
                 Console.WriteLine(LevelUpMessage01.ToString());
             }
-            else if (jobType == "마법사")
+            else if (jobType == JobType.마법사)
             {
                 var LevelUpMessage02 = new StringBuilder();
                 LevelUpMessage02.AppendLine($"나이스! {Name}가 한 걸음 더 성장했습니다! {Level - 1} >> {Level}");
@@ -133,24 +133,59 @@ namespace sparta_9team_project
                 switch (input)
                 {
                     case "1":
-                        Atk += Randomize(3, 6);
-                        ConsoleManager.PrintAnywhere($"{Name}의 댕댕파워가 증가했습니다!", 40, 25);
-                        isDecided = true;
+                        if (jobType == JobType.전사)
+                        {
+                            Atk += Randomize(3, 6);
+                            ConsoleManager.PrintAnywhere($"{Name}의 댕댕파워가 증가했습니다!", 40, 25);
+                            isDecided = true;
+                        }
+                        else if (jobType == JobType.마법사)
+                        {
+                            Atk += Randomize(5, 8);
+                            ConsoleManager.PrintAnywhere($"{Name}의 댕댕파워가 증가했습니다! (슈퍼파워업!!)", 40, 25);
+                        }
                         break;
                     case "2":
-                        Def += Randomize(3, 6);
-                        ConsoleManager.PrintAnywhere($"{Name}의 댕댕방어가 증가했습니다!", 40, 25);
-                        isDecided = true;
+                        if (jobType == JobType.전사)
+                        {
+                            Def += Randomize(5, 8);
+                            ConsoleManager.PrintAnywhere($"{Name}의 댕댕방어가 증가했습니다! (슈퍼파워업!!)", 40, 25);
+                            isDecided = true;
+                        }
+                        else if (jobType == JobType.마법사)
+                        {
+                            Def += Randomize(3, 6);
+                            ConsoleManager.PrintAnywhere($"{Name}의 댕댕방어가 증가했습니다!", 40, 25);
+                            isDecided = true;
+                        }
                         break;
                     case "3":
-                        MaxHp += Randomize(15, 20);
-                        ConsoleManager.PrintAnywhere($"{Name}의 댕댕체력이 증가했습니다!", 40, 25);
-                        isDecided = true;
+                        if (jobType == JobType.전사)
+                        {
+                            MaxHp += Randomize(15, 20);
+                            ConsoleManager.PrintAnywhere($"{Name}의 댕댕체력이 증가했습니다! (슈퍼파워업!!)", 40, 25);
+                            isDecided = true;
+                        }
+                        else if (jobType == JobType.마법사)
+                        {
+                            MaxHp += Randomize(10, 15);
+                            ConsoleManager.PrintAnywhere($"{Name}의 댕댕체력이 증가했습니다!", 40, 25);
+                            isDecided = true;
+                        }
                         break;
                     case "4":
-                        MaxMp += Randomize(15, 20);
-                        ConsoleManager.PrintAnywhere($"{Name}의 댕댕기력이 증가했습니다!", 40, 25);
-                        isDecided = true;
+                        if (jobType == JobType.전사)
+                        {
+                            MaxMp += Randomize(10, 15);
+                            ConsoleManager.PrintAnywhere($"{Name}의 댕댕기력이 증가했습니다!", 40, 25);
+                            isDecided = true;
+                        }
+                        else if (jobType == JobType.마법사)
+                        {
+                            MaxMp += Randomize(15, 20);
+                            ConsoleManager.PrintAnywhere($"{Name}의 댕댕기력이 증가했습니다! (슈퍼파워업!!)", 40, 25);
+                            isDecided = true;
+                        }
                         break;
                     default:
                         ConsoleManager.PrintAnywhere("잘못된 입력입니다. (1 ~ 3에서 선택해주세요!)", 40, 25);
