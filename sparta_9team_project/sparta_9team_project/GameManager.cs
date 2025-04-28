@@ -569,9 +569,10 @@ namespace sparta_9team_project
                 }
             }
             ConsoleManager.PrintAnywhere("스킬 목록", 4, 2);
-            for (int i = 0; i < SkillRepository.All.Length; i++)
+
+            for (int i = 0; i < PlayerManager.instance.mainPlayer.skilltree.Length; i++)
             {
-                SkillData data = SkillRepository.All[i];
+                SkillData data = PlayerManager.instance.mainPlayer.skilltree[i];
 
                 int currentX = startX + (i % boxPerRow) * (boxWidth + 2); // +2는 박스 사이 여백
                 int currentY = startY + (i / boxPerRow) * (boxHeight + 1); // +1은 줄 간격
