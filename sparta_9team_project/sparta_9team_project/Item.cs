@@ -27,9 +27,9 @@ namespace sparta_9team_project
     // [Item] - 부모 클래스 
     public class Item
     {
-        public Player player = PlayerManager.instance.mainPlayer;                                                  // 로컬변수에 플레이어 싱글톤 저장
-        public Inventory invenManager = InventoryManager.Instance.PlayerInventory;                                 // 로컬변수에 인벤토리 싱글톤 저장
-        public Dictionary<string, Item> inventory = InventoryManager.Instance.PlayerInventory.inventory;            // 로컬변수에 인벤토리 리스트 싱글톤 저장
+        public Player player => PlayerManager.instance.mainPlayer;                                                  // 로컬변수에 플레이어 싱글톤 저장
+        public Inventory invenManager => InventoryManager.Instance.PlayerInventory;                                 // 로컬변수에 인벤토리 싱글톤 저장
+        public Dictionary<string, Item> inventory => InventoryManager.Instance.PlayerInventory.inventory;            // 로컬변수에 인벤토리 리스트 싱글톤 저장
 
         // [Fields]
         public string Name { get; set; }
@@ -59,9 +59,12 @@ namespace sparta_9team_project
         // 아이템 저장고
         // 무기
         public static Dictionary<string, Item> weaponStorage;
-
+        public static Weapon longSword;
+        public static Weapon shortSword;
         // 방어구
         public static Dictionary<string, Item> armorStorage;
+        public static Armor shortarmor;
+        public static Armor longarmor;
 
         // 소모품      
         public static Dictionary<string, Item> consumableStorage;
@@ -78,6 +81,24 @@ namespace sparta_9team_project
 
         static ItemDataBase()
         {
+            // 무기
+            longSword = new Weapon(30, "롱소드", ItemType.무기, 1, "공격력이 10증가합니다.");
+            shortSword = new Weapon(15, "요술지팡이", ItemType.무기, 1, "공격력이 15증가합니다.");
+            weaponStorage = new Dictionary<string, Item>
+            {
+                [longSword.Name] = longSword,
+                [shortSword.Name] = shortSword
+            };
+            smallHealingPotion = new Consumable(30, "힐링포션(소)", ItemType.소모품, ConsumableEffect.체력회복, 1, "체력을 30 회복합니다.");
+            //방어구
+            shortarmor = new Armor(30, "갑옷", ItemType.방어구, 1, "방어력이 10증가합니다.");
+            longarmor = new Armor(15, "낡은갑옷", ItemType.방어구, 1, "방어력이 5증가합니다.");
+            armorStorage = new Dictionary<string, Item>
+            {
+                [shortarmor.Name] = shortarmor,
+                [longarmor.Name] = longarmor
+            };
+
             smallHealingPotion = new Consumable(30, "힐링포션(소)", ItemType.소모품, ConsumableEffect.체력회복, 1, "체력을 30 회복합니다.");
 
             // 퀘스트용 아이템 추가
@@ -87,7 +108,7 @@ namespace sparta_9team_project
             catnip = new Consumable(0, "캣닢", ItemType.소모품, ConsumableEffect.None, 1, "아가냥이가 세상에서 제일 좋아하는 풀이라고 한다."); 
 
             // 우유 아이템 추가
-            milk = new Milk("우유", 1, ItemType.우유, $"{player.Name}가 좋아하는 우유이다! 하지만 락토프리가 아니기에 먹으면 왠지 기분은 좋겠지만 배가 아플 것 같다...");
+            milk = new Milk("우유", 1, ItemType.우유, $"미르가 좋아하는 우유이다! 하지만 락토프리가 아니기에 먹으면 왠지 기분은 좋겠지만 배가 아플 것 같다...");
           
             consumableStorage = new Dictionary<string, Item>
             {
@@ -115,6 +136,23 @@ namespace sparta_9team_project
         {
             AttackPower = attackPower;
         }
+
+        public void EquipItem(Item item)
+        {
+            Weapon weapon = (Weapon)item;
+            player.Atk += weapon.AttackPower;
+            GameManager.atkItemCount++;
+            ConsoleManager.PrintAnywhere("아이템을 장착했습니다", 2, 23);
+        }
+
+        public void ReleaseItem(Item item)
+        {
+            Weapon weapon = (Weapon)item;
+            player.Atk -= weapon.AttackPower;
+            GameManager.atkItemCount--;
+            GameManager.wearAtkItemName = "";
+            ConsoleManager.PrintAnywhere("아이템을 해제했습니다", 2, 23);
+        }
     }
 
 
@@ -127,6 +165,23 @@ namespace sparta_9team_project
         public Armor (int defensePower, string name, ItemType type, int counts, string description) : base(name, ItemType.방어구, counts, description)
         {
             DefensePower = defensePower;
+        }
+
+        public void EquipItem(Item item)
+        {
+            Armor armor = (Armor)item;
+            player.Def += armor.DefensePower;
+            GameManager.defItmeCount++;
+            ConsoleManager.PrintAnywhere("아이템을 장착했습니다", 2, 23);
+        }
+
+        public void ReleaseItem(Item item)
+        {
+            Armor armor = (Armor)item;
+            player.Def -= armor.DefensePower;
+            GameManager.defItmeCount--;
+            GameManager.wearDefItemName = "";
+            ConsoleManager.PrintAnywhere("아이템을 해제했습니다", 2, 23);
         }
     }
 
@@ -172,7 +227,7 @@ namespace sparta_9team_project
                         player.Hp += actualHealAmount;                                                           // 플레이어 체력 회복
 
                         Counts -= 1;                                                                             // 사용된 아이템 개수 감소
-                        Console.WriteLine($"{player.Name}이(가) {Name}을(를) 사용했습니다.\n회복을 완료했습니다.");
+                        Console.WriteLine($"{player.Name}이(가) {Name}을(를) 사용했습니다.");
                         break;
                     case ConsumableEffect.공격력증가:
                         player.Atk += EffectAmount;                                                      // 플레이어 공격력 증가
@@ -205,11 +260,16 @@ namespace sparta_9team_project
             {
                 foreach (var (item, count) in inventory)                         // 인벤토리에서 소모품 필터링
                 {
-                    Item itemName = ItemDataBase.consumableStorage[item];        // 아이템 객체의 아이템 이름값 접근
-                    bool yes = IsConsumable(itemName);                           // 타입이 소모품인지 체크
-                    if (item == itemName.Name && yes)
+                    // 먼저 consumableStorage에 있는지 확인
+                    if (ItemDataBase.consumableStorage.ContainsKey(item))
                     {
-                        onlyConsumables[item] = count;                           // 소모품만 있는 딕셔너리에 저장
+                        Item itemName = ItemDataBase.consumableStorage[item];
+
+                        bool yes = IsConsumable(itemName); // 타입이 소모품인지 체크
+                        if (item == itemName.Name && yes)
+                        {
+                            onlyConsumables[item] = itemName; // 소모품만 저장
+                        }
                     }
                 }
 
