@@ -347,11 +347,7 @@ namespace sparta_9team_project
                 enemies[i] = new Enemy((Enemytype)typeIndex);
                 var info = Enemyinfos.enemyinfos[typeIndex];
                 ConsoleManager.PrintAsciiAt(info.enepic, locationx[i], 6);
-                ConsoleManager.PrintAnywhere(
-                    $"Lv. {enemies[i].Level} {enemies[i].Name}",
-                    locationx[i] + 8,
-                    23
-                );
+                ConsoleManager.PrintAnywhere($"Lv. {enemies[i].Level} {enemies[i].Name}",locationx[i] + 8,23 );
                 Hpbar(enemies[i].Hp, info.mhp, locationx[i] + 8, 22);
             }
             ConsoleManager.PrintAnywhere(">> [Enter]를 눌러 전투 시작...", 49, 27);
