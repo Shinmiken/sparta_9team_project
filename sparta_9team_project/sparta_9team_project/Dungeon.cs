@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Numerics;
 using System.Security.Cryptography.X509Certificates;
+#nullable disable
 
 
 namespace sparta_9team_project
 {
     public class Dungeon
     {
-        private static Enimies dungeonEnemies;
-        private Enimies enimies;
         private static Enemy[] enemies = new Enemy[3];
         private static int[] locationx = { 3, 43, 84 };
         private static int currentDungeonType = 1;
@@ -435,22 +434,14 @@ namespace sparta_9team_project
 
                 case 3:  // 아이템 사용
                     {
-                        var inv = InventoryManager.Instance.PlayerInventory;
-                        inv.ShowOnlyConsumables();
+                        ItemDataBase.smallHealingPotion.ShowOnlyConsumables();
                         Console.Write(">> 사용할 아이템 이름: ");
-                        string name = Console.ReadLine();
-                        if (inv.inventory.TryGetValue(name, out Item item))
-                        {
-                            item.UseItem(item);
-                        }
-                        else
-                        {
-                            Console.WriteLine("해당 아이템이 없습니다.");
-                        }
+                        string itemName = Console.ReadLine();
+                        PlayerManager.instance.mainPlayer.UseItem(itemName);
 
                         Thread.Sleep(500);
+                        break;
                     }
-                    break;
 
                 case 4:  // 우유 마시기
                     ItemDataBase.milk.DrinkMilk();
@@ -594,9 +585,6 @@ namespace sparta_9team_project
         public static void PrintPlayerInfo()
         {
             Player player = PlayerManager.instance.mainPlayer;
-
-            int left = 0;
-
             Console.SetCursorPosition(0, 0);
             ConsoleManager.PrintAnywhere("=========================", 0, 0);
             ConsoleManager.PrintAnywhere($"[플레이어 정보]", 0, 1);
