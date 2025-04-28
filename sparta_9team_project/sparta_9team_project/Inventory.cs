@@ -27,7 +27,13 @@
 
 
         // 플레이어의 인벤토리 리스트
-        public Dictionary<string, Item> inventory = new Dictionary<string, Item>();
+        public Dictionary<string, Item> inventory = new Dictionary<string, Item>()
+        {
+            [ItemDataBase.longSword.Name] = ItemDataBase.longSword,
+            [ItemDataBase.shortarmor.Name] = ItemDataBase.shortarmor,
+            [ItemDataBase.longarmor.Name] = ItemDataBase.longarmor,
+            [ItemDataBase.shortSword.Name] = ItemDataBase.shortSword
+        };
 
         // 인벤토리 [Methods]
         public bool IsEmpty()
