@@ -81,9 +81,9 @@ namespace sparta_9team_project
             ConsoleManager.PrintAnywhere("2. 한강 공원 (보통)", 85, 17);
             ConsoleManager.PrintAnywhere("3. 뒷산 (어려움)", 25, 5);
             ConsoleManager.PrintAnywhere("4. ??? (???)", 86, 5);
-            Console.WriteLine();
+            
             ConsoleManager.PrintAnywhere(">> 선택: ", 56, 30);
-            Console.SetCursorPosition(62, Console.CursorTop);
+            Console.SetCursorPosition(62, 30);
 
             string input = Console.ReadLine();
             int choice;
@@ -325,39 +325,38 @@ namespace sparta_9team_project
             // 기존 난이도
             SoundManager.StopBGM();
             SoundManager.PlayBattleBGM();
+            Console.Clear();
             ConsoleManager.PrintAnywhere("👾앗! 미르의 적을 발견했다! 👾", 48, 2);
-            var rand = new Random();
-
-            for (int i = 0; i < 3; i++)
+            
+            int[] spawnIndices = difficulty switch
             {
-                int typeIndex;
-                if (difficulty == 1)
-                {
-                    typeIndex = rand.Next(0, 3);
-                }
-                else if (difficulty == 2)
-                {
-                    typeIndex = rand.Next(2, 5);
-                }
-                else
-                {
-                    typeIndex = rand.Next(5, 8);
-                }
+                1 => new[] { 0, 1, 2 },     // 1단계: index 0~2
+                2 => new[] { 2, 3, 4 },     // 2단계: index 2~4
+                3 => new[] { 5, 6, 7 },     // 3단계: index 5~7
+                _ => new[] { 0, 1, 2 }      // 예외 시 기본 1단계
+            };
 
+            var rand = new Random();
+            enemies = new Enemy[3];
+
+
+            for (int i = 0; i < enemies.Length; i++)
+            {
+                // 가능한 인덱스 중 하나를 랜덤 선택
+                int typeIndex = spawnIndices[rand.Next(spawnIndices.Length)];
                 enemies[i] = new Enemy((Enemytype)typeIndex);
+
                 var info = Enemyinfos.enemyinfos[typeIndex];
+                var e = enemies[i];
+
                 ConsoleManager.PrintAsciiAt(info.enepic, locationx[i], 6);
-                ConsoleManager.PrintAnywhere($"Lv. {enemies[i].Level} {enemies[i].Name}",locationx[i] + 8,23 );
-                Hpbar(enemies[i].Hp, info.mhp, locationx[i] + 8, 22);
+                ConsoleManager.PrintAnywhere($"Lv. {e.Level} {e.Name}", locationx[i] + 8, 23);
+                Hpbar(e.Hp, info.mhp, locationx[i] + 8, 22);
             }
+
             ConsoleManager.PrintAnywhere(">> [Enter]를 눌러 전투 시작...", 49, 27);
             Console.ReadLine();
         }
-
-
-
-
-
 
 
         public static void PlayerPhase()
@@ -399,7 +398,7 @@ namespace sparta_9team_project
             ConsoleManager.PrintAnywhere("3. 아이템 사용 ", 49, 28);
             ConsoleManager.PrintAnywhere("4. 우유 마시기 ", 49, 29);
             ConsoleManager.PrintAnywhere(">> 선택: ", 49, 30);
-            Console.SetCursorPosition(58, 30);
+            Console.SetCursorPosition(58, 29);
             string input = Console.ReadLine();
 
 
@@ -454,7 +453,12 @@ namespace sparta_9team_project
             ConsoleManager.PrintAnywhere("      🗡️ 공격할 적을 선택하세요.                  ", 39, 2);
             PrintPlayerInfo();
             int choice;
+            ConsoleManager.PrintAnywhere("               ", 49, 23);
+            ConsoleManager.PrintAnywhere("               ", 49, 24);
+            ConsoleManager.PrintAnywhere("               ", 49, 25);
+            ConsoleManager.PrintAnywhere("               ", 49, 26);
             ConsoleManager.PrintAnywhere(">> 선택: ", 49, 27);
+            ConsoleManager.PrintAnywhere("               ", 49, 28);
             Console.SetCursorPosition(58, 27);
 
             while (!int.TryParse(Console.ReadLine(), out choice) || choice < 1 || choice > 3 || enemies[choice - 1].Hp <= 0)
