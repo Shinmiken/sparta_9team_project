@@ -162,6 +162,25 @@ namespace sparta_9team_project
             Console.ForegroundColor = originalColor;
         }
 
+        public static void Mpbar(int mp, int maxMp, int x, int y)
+        {
+            int maxBarCount = 5;
+            string[] mpview = new string[maxBarCount];
+            int filled = (int)Math.Ceiling((double)mp / maxMp * maxBarCount);
+            filled = Math.Max(0, Math.Min(maxBarCount, filled));
+            for (int i = 0; i < filled; i++) mpview[i] = "■";
+            for (int i = filled; i < maxBarCount; i++) mpview[i] = "□";
+
+            string mpbar = string.Join("", mpview);
+            var orig = Console.ForegroundColor;
+            Console.ForegroundColor = ConsoleColor.Blue;
+            ConsoleManager.PrintAnywhere($"[{mpbar}] ({mp} / {maxMp})", x, y);
+            Console.ForegroundColor = orig;
+        }
+
+
+
+
 
 
         public static void EnterDungeon(int dungeonType)
@@ -553,7 +572,10 @@ namespace sparta_9team_project
             Console.SetCursorPosition(0, 3);
             Console.Write("HP: ");
             Hpbar(player.Hp, player.MaxHp, 5, 3);
-            ConsoleManager.PrintAnywhere("=========================", 0, 4);
+            Console.SetCursorPosition(0, 4);
+            Console.Write("HP: ");
+            Hpbar(player.Hp, player.MaxHp, 5, 4);
+            ConsoleManager.PrintAnywhere("=========================", 0, 5);
 
             // 현재 던전 위치 표시
             string dungeonName = "";
