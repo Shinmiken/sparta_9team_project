@@ -35,6 +35,7 @@ namespace sparta_9team_project
         public int MaxMp { get; set; } = 100;   // 최대 마나
         public int Loss { get; set; } = 0;
         public int ImageType { get; set; }
+        public SkillData[] skilltree { get; set; }
 
 	    private List<string> usedItems = new List<string>();    // 사용한 아이템 이름 저장용 리스트
  
@@ -202,6 +203,20 @@ namespace sparta_9team_project
             Hp = MaxHp;
             Mp = MaxMp;
             ConsoleManager.PrintAnywhere($"{Name}의 체력과 기력이 최대치로 회복되었습니다!", 40, 25);
+        }
+        public SkillData[] SkillTree(JobType type)
+        {
+            SkillRepository skillRepository = SkillRepository.Instance;
+            if (type == JobType.전사)
+            {
+                skilltree = skillRepository.WarriorSkills;
+            }
+            else if (type == JobType.마법사)
+            {
+                skilltree = skillRepository.MagicSkills;
+            }
+
+            return skilltree;
         }
 
         // [Methods] - Overloading

@@ -185,6 +185,8 @@ namespace sparta_9team_project
 
         public static void EnterDungeon(int dungeonType)
         {
+            Skills skills = SkillsManager.Instance.PlayerSkills;
+
             bool win = false;
             Console.Clear();
             if (dungeonType == 4)
@@ -225,7 +227,7 @@ namespace sparta_9team_project
                         ConsoleManager.PrintAnywhere("               ", 49, 26);
                         ConsoleManager.PrintAnywhere("               ", 49, 27);
                         ConsoleManager.PrintAnywhere("               ", 49, 28);
-                        Skills.HandleSkill(PlayerManager.instance.mainPlayer, enemies);
+                        skills.HandleSkill(PlayerManager.instance.mainPlayer, PlayerManager.instance.mainPlayer.Job, PlayerManager.instance.mainPlayer.skilltree,  enemies);
                         Thread.Sleep(1000);
                     }
                     
@@ -366,6 +368,7 @@ namespace sparta_9team_project
 
         public static void PlayerPhase()
         {
+            Skills skills = SkillsManager.Instance.PlayerSkills;
             Console.Clear();
             ConsoleManager.PrintAnywhere("🗡️ 플레이어의 턴입니다! 행동을 선택하세요.", 40, 2);
             Console.WriteLine();
@@ -426,7 +429,7 @@ namespace sparta_9team_project
             }
             else if (choice == 2)
             {
-                Skills.HandleSkill(PlayerManager.instance.mainPlayer, enemies);
+                skills.HandleSkill(PlayerManager.instance.mainPlayer, PlayerManager.instance.mainPlayer.Job, PlayerManager.instance.mainPlayer.skilltree, enemies);
                 Thread.Sleep(500);
                 PlayerPhase();
             }
