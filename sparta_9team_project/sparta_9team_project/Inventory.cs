@@ -59,7 +59,7 @@
             item.Counts += counts;
             Console.WriteLine($"{player.Name}의 소지품에 {item.Name}이(가) 추가되었습니다.");
         }
-        public void RemoveOneByOne(Item item)
+        public bool RemoveOneByOne(Item item)
         {
             // 만약 인벤토리에 아이템이 이미 있다면
             // 만약 있는 아이템의 카운트가 0보다 크다면
@@ -67,20 +67,22 @@
             // 만약 인벤토리에 아이템이 없다면
             // 아이템이 없다는 문구 출력
             if (HasItem(item))
-            {   
-                if (item.Counts > 0)
+            {
+                if (item.Counts > 1)
                 {
                     item.Counts--;
                 }
-                else if (item.Counts <= 0)
+                else
                 {
                     RemoveAll(item);
                 }
+                return true;
             }
             else
             {
-                Console.WriteLine($"{player.Name}의 소지품에 {item.Name}이 없습니다.");
+                Console.WriteLine($"{item.Name}은(는) {player.Name}의 소지품에 존재하지 않습니다.");
             }
+            return false;
         }
         public void RemoveAll(Item item)
         {

@@ -1,10 +1,14 @@
-﻿namespace sparta_9team_project
+﻿using System.ComponentModel;
+using System.Text;
+
+namespace sparta_9team_project
 {
     public enum ItemType
     {
         무기,
         방어구,
         소모품,
+        우유
     }
 
 
@@ -48,6 +52,8 @@
     // [ItemDataBase] - 아이템 데이터베이스
     public static class ItemDataBase
     {
+        public static Player player = PlayerManager.instance.mainPlayer;
+
         // 아이템 저장고
         // 무기
         public static Dictionary<string, Item> weaponStorage;
@@ -60,10 +66,13 @@
         public static Consumable smallHealingPotion;
         
         // 소모품 - 퀘스트 아이템
-        public static Item fish;
-        public static Item glassPiece;
-        public static Item blessing9jo;
-        public static Item catnip;
+        public static Consumable fish;
+        public static Consumable glassPiece;
+        public static Consumable blessing9jo;
+        public static Consumable catnip;
+
+        // 소모품 & 보스방 열쇠 - 우유
+        public static Milk milk;
 
         static ItemDataBase()
         {
@@ -74,14 +83,19 @@
             glassPiece = new Consumable(0, "유리조각", ItemType.소모품, ConsumableEffect.공격력증가, 1, "꽤 큰 유리조각이다.");
             blessing9jo = new Consumable(0, "⟡༺༒9조의 축복༒༻⟡", ItemType.소모품, ConsumableEffect.방어력증가, 1, "이제 미르는 누구도 무섭지 않아요 !");
             catnip = new Consumable(0, "캣닢", ItemType.소모품, ConsumableEffect.체력회복, 1, "아가냥이가 세상에서 제일 좋아하는 풀이라고 한다.");
-        
+
+            // 우유 아이템 추가
+            milk = new Milk("우유", 1, ItemType.우유, $"{player.Name}가 좋아하는 우유이다! 하지만 락토프리가 아니기에 먹으면 왠지 기분은 좋겠지만 배가 아플 것 같다...");
+
+
             consumableStorage = new Dictionary<string, Item>
             {
                 [smallHealingPotion.Name] = smallHealingPotion,
                 [fish.Name] = fish,
                 [glassPiece.Name] = glassPiece,
                 [blessing9jo.Name] = blessing9jo,
-                [catnip.Name] = catnip
+                [catnip.Name] = catnip,
+                [milk.Name] = milk
             };
         }
 
@@ -214,6 +228,73 @@
             {
                 Console.WriteLine($"{player.Name}의 소지품함이 현재 비어있습니다");
                 return;
+            }
+        }
+    }
+
+
+    public class Milk : Item
+    {
+        // [Fields                                                
+        public bool HasMilk => invenManager.HasItem(this);                              // 우유 카운트가 인벤토리 내에 1개라도 있으면 true                               
+        public bool IsAllMilkCollected => invenManager.HasItem(this) && Counts == 10;   // 우유가 10개 다 모였는지 체크
+        public bool IsMilkUsed { get; set; } = false;
+
+
+        // [Constructor]
+        public Milk(string name, int count, ItemType type, string description) : base(name, type, count, description) { }
+
+        // [Methods]
+        public bool DrinkMilk()
+        {
+            if (HasMilk && !IsMilkUsed)
+            {
+                DrankMilk(); // 우유를 마셨을 때의 효과 적용
+
+                var drinkMilk = new StringBuilder();
+                    drinkMilk.AppendLine($"{player.Name}가 우유를 챱챱 마셨습니다!");
+                    drinkMilk.AppendLine($"우유를 마신 {player.Name}는 매우 행복해졌습니다! ٩(^ᗜ^ )و ´- (공격력 증가!)");
+                    drinkMilk.AppendLine($"하지만 락토프리 우유가 아니기에 알싸해지는 배는 어쩔 수 없군요... ( ˶°ㅁ°) !! (체력 감소!)");
+
+                Console.WriteLine(drinkMilk.ToString());
+            }
+            else if (!HasMilk)
+            {
+                Console.WriteLine($"{player.Name}의 소지품에 우유가 없습니다 (｡•́︿•̀｡)");
+                return false;
+            }
+            else if (IsMilkUsed)
+            {
+                Console.WriteLine($"{player.Name}는 이미 오늘 할당된 양의 우유를 마셨습니다. (•́ ᴖ •̀)");
+                Console.WriteLine($"하루에 너무 많은 양의 우유를 먹으면 {player.Name}에게 해로워요!");
+                return false;
+            }
+
+            return true;
+        }
+        public void DrankMilk()
+        {
+            int milkEffects = 5 * player.Level;     // 레벨에 따라 우유 효과 증가
+
+            player.Hp -= milkEffects;               // 그냥 우유를 마셨기에 플레이어 체력 감소
+            player.Atk += milkEffects;              // 하지만 우유를 마셔서 행복해진 플레이어의 공격력 증가
+
+            inventory[this.Name].Counts -= 1;       // 사용된 우유 개수 감소
+
+            IsMilkUsed = !IsMilkUsed;               // 우유를 마셨기에 true로 변경
+        }
+        public bool ForLactoseFreeMilk()
+        {
+            if (!IsAllMilkCollected)
+            {
+                Console.WriteLine($"{player.Name}은 아직 락토프리 우유를 얻기 위한 우유의 개수가 부족합니다! (부족한 우유 갯수 : {10 - this.Counts})");
+                return false;
+            }
+            else
+            {
+                this.Counts = 0;             // 우유 개수 초기화
+                inventory.Remove(this.Name); // 인벤토리에서 우유 삭제
+                return true;
             }
         }
     }

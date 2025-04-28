@@ -33,6 +33,7 @@ namespace sparta_9team_project
         public int MaxExp { get; set; } = 100;  // 최대 경험치
         public int Mp { get; set; } = 100;      // 마나
         public int MaxMp { get; set; } = 100;   // 최대 마나
+        public int Loss { get; set; } = 0;
         public int ImageType { get; set; }
 
 	    private List<string> usedItems = new List<string>();    // 사용한 아이템 이름 저장용 리스트
@@ -105,6 +106,8 @@ namespace sparta_9team_project
                 LevelUpMessage01.AppendLine($"4. 댕댕기력 증가");
                 LevelUpMessage01.AppendLine($"-----------------------------------------------------------------");
                 LevelUpMessage01.Append($">>");
+
+                Console.WriteLine(LevelUpMessage01.ToString());
             }
             else if (jobType == "마법사")
             {
@@ -118,6 +121,8 @@ namespace sparta_9team_project
                 LevelUpMessage02.AppendLine($"4. 댕댕기력 증가 :: {Name}는 {Job}이기에 해당 수치가 더 강해집니다!");
                 LevelUpMessage02.AppendLine($"-----------------------------------------------------------------");
                 LevelUpMessage02.Append($">>");
+
+                Console.WriteLine(LevelUpMessage02.ToString());
             }            
 
             bool isDecided = false;
@@ -165,7 +170,7 @@ namespace sparta_9team_project
         }
 
         // [Methods] - Overloading
-        public int Randomize(int min, int max)                  // General Randomize
+        public int Randomize(int min, int max)                   // General Randomize
         {
             Random random = new Random();
 
