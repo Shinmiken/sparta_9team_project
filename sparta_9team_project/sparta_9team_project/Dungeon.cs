@@ -400,13 +400,17 @@ namespace sparta_9team_project
 
             ConsoleManager.PrintAnywhere("1. 공격 ", 49, 26);
             ConsoleManager.PrintAnywhere("2. 스킬 ", 49, 27);
-            ConsoleManager.PrintAnywhere(">> 선택: ", 49, 28);
-            Console.SetCursorPosition(58, 28);
-            string Playerchoice = Console.ReadLine();
+            ConsoleManager.PrintAnywhere("3. 아이템 사용 ", 49, 28);
+            ConsoleManager.PrintAnywhere("4. 우유 마시기 ", 49, 29);
+            ConsoleManager.PrintAnywhere(">> 선택: ", 49, 30);
+            Console.SetCursorPosition(58, 30);
+            string input = Console.ReadLine();
 
-            bool isNumber = int.TryParse(Playerchoice, out int choice);
 
-            if (!isNumber || choice < 1 || choice > 3 || enemies[choice - 1].Hp <= 0)
+            if (!int.TryParse(input, out int choice)
+                || choice < 1
+                || choice > 4
+                || (choice >= 1 && choice <= 3 && enemies[choice - 1].Hp <= 0))
             {
                 ConsoleManager.PrintAnywhere("                                                 ", 36, 26);
                 ConsoleManager.PrintAnywhere("                                                 ", 36, 27);
@@ -416,19 +420,42 @@ namespace sparta_9team_project
                 ConsoleManager.PrintAnywhere(">> 선택: ", 49, 27);
                 Console.SetCursorPosition(58, 27);
                 PlayerPhase();
+                return;
             }
-            else if (choice == 1)
+            switch (choice)
             {
-                ConsoleManager.PrintAnywhere("                                                 ", 36, 26);
-                ConsoleManager.PrintAnywhere("                                                 ", 36, 27);
-                ConsoleManager.PrintAnywhere("                                                 ", 36, 28);
-                Attackenemy();
-            }
-            else if (choice == 2)
-            {
-                Skills.HandleSkill(PlayerManager.instance.mainPlayer, enemies);
-                Thread.Sleep(500);
-                PlayerPhase();
+                case 1:  // 공격
+                    Attackenemy();
+                    break;
+
+                case 2:  // 스킬
+                    Skills.HandleSkill(PlayerManager.instance.mainPlayer, enemies);
+                    Thread.Sleep(500);
+                    break;
+
+                case 3:  // 아이템 사용
+                    {
+                        var inv = InventoryManager.Instance.PlayerInventory;
+                        inv.ShowOnlyConsumables();
+                        Console.Write(">> 사용할 아이템 이름: ");
+                        string name = Console.ReadLine();
+                        if (inv.inventory.TryGetValue(name, out Item item))
+                        {
+                            item.UseItem(item);
+                        }
+                        else
+                        {
+                            Console.WriteLine("해당 아이템이 없습니다.");
+                        }
+
+                        Thread.Sleep(500);
+                    }
+                    break;
+
+                case 4:  // 우유 마시기
+                    ItemDataBase.milk.DrinkMilk();
+                    Thread.Sleep(500);
+                    break;
             }
         }
 
@@ -510,10 +537,16 @@ namespace sparta_9team_project
                         }
                     }
                 }
+                int totalExp = 0;
+                for (int i = 1; i <= enemies.Length; i++)
+                {
+                    totalExp += GetEnemyExp(i);
+                }
+
+                PlayerManager.instance.mainPlayer.Exp += totalExp;
                 ConsoleManager.PrintAnywhere("🎉 전투에서 승리했습니다! 🎉", 45, 2);
-                ConsoleManager.PrintAnywhere("경험치와 보상을 획득했습니다.", 45, 4);
+                ConsoleManager.PrintAnywhere($"{totalExp}의 경험치와 보상을 획득했습니다.", 45, 4);
                 ConsoleManager.PrintAsciiAt(Print.dogImage[1], 37, 5);
-                // 경험치나 골드 증가 코드는 여기에 추가 가능
                 ConsoleManager.PrintAnywhere(">> [Enter]를 눌러 마을로 돌아가기...", 42, 27);
                 Console.ReadLine();
                 GameManager.MainScreen();
@@ -599,6 +632,22 @@ namespace sparta_9team_project
         {
             currentDungeonType = 4;
             DiscoverEnemy(4);
+        }
+        public static int GetEnemyExp(int slot)
+        {
+            Enemy e = null;
+            if (dungeonEnemies.GetEnemyInfo(slot, ref e))
+            {
+                int infoIndex = Array.FindIndex(
+                    Enemyinfos.enemyinfos,
+                    info => info.nm == e.Name
+                );
+                if (infoIndex >= 0)
+                {
+                    return Enemyinfos.enemyinfos[infoIndex].exp;
+                }
+            }
+            return 0;
         }
 
     }
