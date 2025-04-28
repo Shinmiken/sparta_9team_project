@@ -73,15 +73,16 @@ namespace sparta_9team_project
             Console.Clear();
             ConsoleManager.ConfigureConsoleSize();
             Console.OutputEncoding = System.Text.Encoding.UTF8;
+            ConsoleManager.PrintAsciiAt(Print.dogImage[17], 40, 1);
 
-            ConsoleManager.PrintAnywhere("🚶 미르의 산책을 떠날 곳을 선택하세요 🚶", 42, 23);
+            ConsoleManager.PrintAnywhere("🚶 미르의 산책을 떠날 곳을 선택하세요 🚶", 42, 25);
             Console.WriteLine();
-            ConsoleManager.PrintAnywhere("1. 집앞 공원 (쉬움)", 52, 25);
-            ConsoleManager.PrintAnywhere("2. 한강 공원 (보통)", 52, 26);
-            ConsoleManager.PrintAnywhere("3. 뒷산 (어려움)", 54, 27);
-            ConsoleManager.PrintAnywhere("4. ??? (???)", 54, 28);
+            ConsoleManager.PrintAnywhere("1. 집앞 공원 (쉬움)", 23, 17);
+            ConsoleManager.PrintAnywhere("2. 한강 공원 (보통)", 85, 17);
+            ConsoleManager.PrintAnywhere("3. 뒷산 (어려움)", 25, 5);
+            ConsoleManager.PrintAnywhere("4. ??? (???)", 86, 5);
             Console.WriteLine();
-            ConsoleManager.PrintAnywhere(">> 선택 (1~3): ", 56, 30);
+            ConsoleManager.PrintAnywhere(">> 선택: ", 56, 30);
             Console.SetCursorPosition(62, Console.CursorTop);
 
             string input = Console.ReadLine();
