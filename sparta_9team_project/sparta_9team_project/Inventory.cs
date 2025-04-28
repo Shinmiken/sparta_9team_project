@@ -85,7 +85,7 @@
             // 아이템.카운트 == 0, 아이템 인벤토리에서 삭제
             // 만약 아이템이 인벤토리에 없다면
             // 아이템이 없다는 문구 출력
-            if (HasItem(item))
+            if (!HasItem(item))
             {
                 inventory[item.Name].Counts = 0;
                 inventory.Remove(item.Name);  
