@@ -8,7 +8,8 @@ namespace sparta_9team_project
         무기,
         방어구,
         소모품,
-        우유
+        우유,
+        None
     }
 
 
@@ -18,12 +19,13 @@ namespace sparta_9team_project
         마나회복,
         공격력증가,
         방어력증가,
+        None
     }
 
     /* -------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
 
     // [Item] - 부모 클래스 
-    public abstract class Item
+    public class Item
     {
         public Player player = PlayerManager.instance.mainPlayer;                                                  // 로컬변수에 플레이어 싱글톤 저장
         public Inventory invenManager = InventoryManager.Instance.PlayerInventory;                                 // 로컬변수에 인벤토리 싱글톤 저장
@@ -82,7 +84,7 @@ namespace sparta_9team_project
             fish = new Consumable(0, "생선", ItemType.소모품, ConsumableEffect.None, 1, "고양이한테 생선을 맡기면 ?");
             glassPiece = new Consumable(0, "유리조각", ItemType.소모품, ConsumableEffect.None, 1, "꽤 큰 유리조각이다.");
             blessing9jo = new Consumable(0, "⟡༺༒9조의 축복༒༻⟡", ItemType.소모품, ConsumableEffect.None, 1, "이제 미르는 누구도 무섭지 않아요 !");
-            catnip = new Consumable(0, "캣닢", ItemType.소모품, ConsumableEffect.None, 1, "아가냥이가 세상에서 제일 좋아하는 풀이라고 한다.") 
+            catnip = new Consumable(0, "캣닢", ItemType.소모품, ConsumableEffect.None, 1, "아가냥이가 세상에서 제일 좋아하는 풀이라고 한다."); 
 
             // 우유 아이템 추가
             milk = new Milk("우유", 1, ItemType.우유, $"{player.Name}가 좋아하는 우유이다! 하지만 락토프리가 아니기에 먹으면 왠지 기분은 좋겠지만 배가 아플 것 같다...");
@@ -100,7 +102,6 @@ namespace sparta_9team_project
 
     }
     
-
     /* -------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
 
     // [Item]클래스를 상속받은 자식 클래스들
@@ -294,6 +295,31 @@ namespace sparta_9team_project
                 this.Counts = 0;             // 우유 개수 초기화
                 inventory.Remove(this.Name); // 인벤토리에서 우유 삭제
                 return true;
+            }
+        }
+        public int GetMilkCounts(string itemName)
+        {
+            if (inventory.ContainsKey(itemName))
+            {
+                return inventory[itemName].Counts;
+            }
+            return 0;
+        }
+        public void CombineGlassPieces(string baseItemName)
+        {
+            int count = GetMilkCounts(baseItemName);
+            if (count >= 5)
+            {
+                // 유리병 조합 성공
+                invenManager.RemoveAll(inventory[baseItemName]); // 기존 유리조각 삭제
+
+                Item GlassBottle = new Item("유리병", ItemType.소모품, 1, "유리조각 5개를 모아 완성된 유리병입니다.");
+                invenManager.AddItem(GlassBottle, 1);
+                Console.WriteLine($"[{baseItemName}] 5개를 모아 유리병을 완성했습니다!");
+            }
+            else
+            {
+                Console.WriteLine($"{baseItemName}이(가) 부족합니다. (현재 {count}/5)");
             }
         }
     }
