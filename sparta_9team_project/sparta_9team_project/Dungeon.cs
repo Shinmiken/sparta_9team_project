@@ -427,7 +427,7 @@ namespace sparta_9team_project
                     break;
 
                 case 2:  // 스킬
-                    Skills.HandleSkill(PlayerManager.instance.mainPlayer, enemies);
+                    skills.HandleSkill(PlayerManager.instance.mainPlayer, PlayerManager.instance.mainPlayer.Job, PlayerManager.instance.mainPlayer.skilltree, enemies);
                     Thread.Sleep(500);
                     break;
 
