@@ -540,9 +540,9 @@ namespace sparta_9team_project
                 int totalExp = 0;
                 for (int i = 1; i <= enemies.Length; i++)
                 {
-                    totalExp += GetEnemyExp(i);
+                    Enemyinfo eleventh = Enemyinfos.enemyinfos[10];
+                    totalExp = +eleventh.exp;
                 }
-
                 PlayerManager.instance.mainPlayer.Exp += totalExp;
                 ConsoleManager.PrintAnywhere("🎉 전투에서 승리했습니다! 🎉", 45, 2);
                 ConsoleManager.PrintAnywhere($"{totalExp}의 경험치와 보상을 획득했습니다.", 45, 4);
@@ -632,22 +632,6 @@ namespace sparta_9team_project
         {
             currentDungeonType = 4;
             DiscoverEnemy(4);
-        }
-        public static int GetEnemyExp(int slot)
-        {
-            Enemy e = null;
-            if (dungeonEnemies.GetEnemyInfo(slot, ref e))
-            {
-                int infoIndex = Array.FindIndex(
-                    Enemyinfos.enemyinfos,
-                    info => info.nm == e.Name
-                );
-                if (infoIndex >= 0)
-                {
-                    return Enemyinfos.enemyinfos[infoIndex].exp;
-                }
-            }
-            return 0;
         }
 
     }
