@@ -71,7 +71,7 @@ namespace sparta_9team_project
                     int dmg = (int)Math.Ceiling(player.Atk * info.DamageRatio);
                     Console.WriteLine($"{tick}턴 동안 {target.Name}에게 {dmg} 피해");
                     player.DealDamage(target, dmg);
-                    Thread.Sleep(7000);
+                    Thread.Sleep(500);
                 }
             }
             // 연속베기 로직

@@ -594,8 +594,8 @@ namespace sparta_9team_project
             Console.Write("HP: ");
             Hpbar(player.Hp, player.MaxHp, 5, 3);
             Console.SetCursorPosition(0, 4);
-            Console.Write("HP: ");
-            Hpbar(player.Hp, player.MaxHp, 5, 4);
+            Console.Write("MP: ");
+            Mpbar(player.Mp, player.MaxMp, 5, 4);
             ConsoleManager.PrintAnywhere("=========================", 0, 5);
 
             // 현재 던전 위치 표시
