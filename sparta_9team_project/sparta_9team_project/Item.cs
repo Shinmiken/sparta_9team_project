@@ -70,14 +70,14 @@ namespace sparta_9team_project
         public static Dictionary<string, Item> consumableStorage;
         public static Consumable smallHealingPotion;
         
-        // 소모품 - 퀘스트 아이템
-        public static Consumable fish;
-        public static Consumable glassPiece;
-        public static Consumable blessing9jo;
-        public static Consumable catnip;
+            // 소모품 - 퀘스트 아이템
+            public static Consumable fish;
+            public static Consumable glassPiece;
+            public static Consumable blessing9jo;
+            public static Consumable catnip;
 
-        // 소모품 & 보스방 열쇠 - 우유
-        public static Milk milk;
+            // 소모품 & 보스방 열쇠 - 우유
+            public static Milk milk;
 
         static ItemDataBase()
         {
@@ -212,7 +212,6 @@ namespace sparta_9team_project
                 return false;
             }
         }
-
         public override void UseItem(Item item)
         {
             bool contains = invenManager.HasItem(item);                                                          // 아이템이 인벤토리에 있는지 체크
@@ -245,7 +244,6 @@ namespace sparta_9team_project
             }
 
         }
-
         public void ShowOnlyConsumables()
         {
             // 인벤토리가 비었나 검사
